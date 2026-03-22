@@ -1,0 +1,242 @@
+/* ═══════════════════════════════════════════
+   Scene 2 — Journey Narrative CSS
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap');
+
+.sc2-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: sc2FadeIn 1.2s ease 0.2s forwards;
+  transition: opacity 1.2s ease;
+}
+.sc2-exit { opacity: 0; pointer-events: none; }
+@keyframes sc2FadeIn { to { opacity: 1; } }
+
+/* Dark overlay removed because space background is removed.
+   The background inherits from index.css base black. */
+.sc2-overlay { display: none; }
+
+
+.sc2-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════
+   WORD-REVEAL ANIMATION
+   Each .wr-word fades in from top-left
+   offset by its animation-delay
+   ═══════════════════════════════════ */
+.wr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.wr-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.25rem;
+  margin: 0;
+}
+
+.wr-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate(-12px, -10px);
+  animation: wordFadeIn 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes wordFadeIn {
+  to { opacity: 1; transform: translate(0, 0); }
+}
+
+/* ── Line-level type classes ── */
+.wr-pre {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Highlight the date inside .wr-pre — handled by making the date span gold
+   We use a separate wr-date class for the date portion */
+.wr-post {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
+  font-weight: 400;
+  color: rgba(179, 157, 219, 0.8);
+  margin-top: 1.5rem; /* Increased spacing below the number */
+}
+
+.wr-finally-pre {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1rem, 3.5vw, 1.4rem);
+  font-weight: 400;
+  color: rgba(179, 157, 219, 0.65);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.wr-finally-main {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(3.2rem, 9vw, 6.5rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 0 30px rgba(179, 157, 219, 0.4),
+    0 0 70px rgba(123, 82, 200, 0.2);
+  line-height: 1.1;
+}
+
+.wr-msg {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+.wr-msg--hl {
+  font-family: 'Dancing Script', cursive;
+  font-style: normal;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  font-weight: 700;
+  color: #b39ddb;
+  text-shadow:
+    0 0 25px rgba(179, 157, 219, 0.55),
+    0 0 55px rgba(123, 82, 200, 0.3);
+}
+
+/* ═══════════════════════════════════
+   JOURNEY CARD
+   ═══════════════════════════════════ */
+.sc2-journey-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.sc2-journey-card.vis { opacity: 1; transform: translateY(0); }
+.sc2-journey-card.hid { opacity: 0; transform: translateY(18px); }
+
+.sc2-count-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.4rem 0;
+}
+
+.sc2-count {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(5.5rem, 18vw, 10rem);
+  font-weight: 500;
+  font-style: normal; /* Force normal to prevent swash clipping on left boundary */
+  line-height: 1.25; /* Increased from 1 to prevent bottom clipping */
+  padding: 0 0.15em 0.15em 0.15em; /* Added bottom padding to prevent clipping of overhangs */
+  background: linear-gradient(135deg, #b39ddb 0%, #7b52c8 50%, #d4a853 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 22px rgba(123, 82, 200, 0.5));
+}
+
+
+/* ═══════════════════════════════════
+   FINALLY CARD
+   ═══════════════════════════════════ */
+.sc2-finally {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ═══════════════════════════════════
+   DATE REVEAL
+   ═══════════════════════════════════ */
+.sc2-date-reveal {
+  opacity: 0;
+  transform: scale(0.88) translateY(20px);
+  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
+}
+.sc2-date-reveal.vis { opacity: 1; transform: scale(1) translateY(0); }
+
+.sc2-reveal-date {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.sc2-day, .sc2-month {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 500;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 35px rgba(179, 157, 219, 0.4);
+}
+.sc2-dot {
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: rgba(123, 82, 200, 0.7);
+  font-family: 'Outfit', sans-serif;
+}
+.year-roll {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 600;
+  background: linear-gradient(135deg, #b39ddb 0%, #7b52c8 50%, #d4a853 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 25px rgba(123, 82, 200, 0.6));
+}
+
+/* ═══════════════════════════════════
+   MESSAGES
+   ═══════════════════════════════════ */
+.sc2-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+}
+.sc2-msg-wrap {
+  animation: msgSlideIn 0.7s cubic-bezier(0.23,1,0.32,1) both;
+}
+@keyframes msgSlideIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════ */
+@media (max-width: 480px) {
+  .sc2-inner    { padding: 1.5rem 1rem; }
+  .sc2-count    { font-size: clamp(4rem, 22vw, 6rem); }
+  .sc2-day, .sc2-month, .year-roll { font-size: clamp(2.8rem, 14vw, 5rem); }
+}

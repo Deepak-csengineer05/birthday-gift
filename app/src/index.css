@@ -1,0 +1,108 @@
+/* ================================
+   🌙 LUNAR GIFT — Global CSS Tokens
+   Violet + Dark Theme
+   ================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@600;700&family=Roboto:wght@400;700&display=swap');
+
+:root {
+  /* === Violet Theme Palette === */
+  --black:           #000000;
+  --deep-black:      #04020d;
+  --deep-violet:     #0d0520;
+  --violet-dark:     #1a0a38;
+  --violet:          #2d1b69;
+  --violet-mid:      #4a2c9e;
+  --violet-soft:     #7b52c8;
+  --violet-light:    #b39ddb;
+  --violet-glow:     rgba(123, 82, 200, 0.35);
+
+  /* Gradient helpers */
+  --grad-violet:      linear-gradient(135deg, #1a0a38 0%, #2d1b69 50%, #4a2c9e 100%);
+  --grad-violet-glow: linear-gradient(135deg, #2d1b69 0%, #7b52c8 100%);
+  --grad-violet-text: linear-gradient(135deg, #b39ddb, #7b52c8, #d4a8ff);
+
+  /* Accent */
+  --gold:            #d4a853;
+  --gold-soft:       #f0c878;
+  --cream:           #fef9ef;
+  --white:           #ffffff;
+  --error-red:       #ff5555;
+
+  /* === Typography === */
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-sans:   'Inter', system-ui, sans-serif;
+  --font-script: 'Dancing Script', cursive;
+  --font-mono:   'Roboto', Arial, sans-serif;
+
+  /* === Font Size Scale === */
+  --text-xs:    0.75rem;
+  --text-sm:    0.9rem;
+  --text-base:  1.1rem;
+  --text-lg:    1.35rem;
+  --text-xl:    1.75rem;
+  --text-2xl:   2.25rem;
+  --text-3xl:   3rem;
+  --text-4xl:   4rem;
+  --text-5xl:   5.5rem;
+
+  /* === Spacing === */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  8rem;
+
+  /* === Borders === */
+  --border-violet:  2px solid rgba(123, 82, 200, 0.5);
+  --border-gold:    2px solid rgba(212, 168, 83, 0.5);
+
+  /* === Easing === */
+  --ease-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =====================
+   Base Reset & Body
+   ===================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =====================
+   Responsive base
+   ===================== */
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+}
+
+/* =====================
+   Utility
+   ===================== */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
