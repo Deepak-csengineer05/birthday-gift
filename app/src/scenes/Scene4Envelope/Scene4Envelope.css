@@ -1,0 +1,287 @@
+/* ═══════════════════════════════════════════════
+   SCENE 4 — Envelope & Doors
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@1,400&display=swap');
+
+.sc4-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Background Sky (Behind everything) */
+.sc4-sky {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   SLIDING DOORS (VIOLET PANELS + JAGGED SVG EDGE)
+   ═══════════════════════════════════════════════ */
+.sc4-door {
+  position: fixed;
+  inset: 0; /* Cover full screen */
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 3.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sc4-door-left {
+  background: #000;
+  /* dynamically styled clip-path in JSX */
+}
+
+.sc4-door-right {
+  background: #000;
+  /* dynamically styled clip-path in JSX */
+}
+
+.sc4-door-left.open { transform: translateX(-100vw); }
+.sc4-door-right.open { transform: translateX(100vw); }
+
+/* The golden crack line SVG attached to doors */
+.edge-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.crack-line {
+  fill: none;
+  stroke: #d4a853;
+  stroke-width: 2.5; 
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: miter;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px #d4a853) drop-shadow(0 0 2px #fff);
+}
+
+/* Slower crack growth (7.5s) */
+.cracking .crack-line {
+  animation: drawCrack 7.5s ease-in-out forwards;
+}
+
+.doors-opening .crack-line, .done .crack-line {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+@keyframes drawCrack {
+  0%   { stroke-dashoffset: 100; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════
+   ENVELOPE 
+   ═══════════════════════════════════════════════ */
+.sc4-envelope-container {
+  position: relative;
+  z-index: 200;
+  width: 320px;
+  height: 220px;
+  filter: drop-shadow(0 0 25px rgba(217, 29, 60, 0.2)) drop-shadow(0 15px 35px rgba(0,0,0,0.8));
+  transition: opacity 0.3s ease, filter 0.5s ease;
+}
+
+.sc4-env-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Step 1: Drop & Settle */
+.anim-drop {
+  animation: envDrop 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes envDrop {
+  from { transform: translateY(-110vh); }
+  to   { transform: translateY(0); }
+}
+
+.anim-settle {
+  animation: envSettle 0.2s ease-out forwards;
+}
+
+@keyframes envSettle {
+  from { transform: scale(1.02); }
+  to   { transform: scale(1); }
+}
+
+.envelope-float {
+  animation: envFloat 4s ease-in-out infinite;
+}
+
+@keyframes envFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { opacity: 0.8; }
+  to   { opacity: 1; }
+}
+
+.envelope-intense-glow {
+  filter: drop-shadow(0 0 100px #C9A0DC);
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   MOON BUTTON & HINT
+   ═══════════════════════════════════════════════ */
+.sc4-btn-wrapper {
+  position: absolute;
+  top: 115px; /* Center of wax seal */
+  left: 160px;
+  /* Transform removed from pure CSS to allow inline physics transform handling */
+}
+
+.sc4-moon-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle, #C9A0DC, #7B2FBE);
+  box-shadow: 0 0 20px #C9A0DC, 0 0 40px #7B2FBE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  animation: btnFadeIn 0.8s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes btnFadeIn {
+  to { opacity: 1; }
+}
+
+.btn-idle {
+  animation: btnPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes btnPulse {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.sc4-moon-btn:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 0 0 30px #C9A0DC, 0 0 60px #7B2FBE;
+}
+
+/* Spin and burst phase */
+.btn-spin {
+  animation: 
+    btnSpinTransform 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    btnFadeOut 200ms 600ms forwards;
+}
+
+@keyframes btnSpinTransform {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(360deg) scale(1.3); }
+  100% { transform: rotate(720deg) scale(0); }
+}
+
+@keyframes btnFadeOut {
+  to { opacity: 0; }
+}
+
+/* Particles */
+.burst-particle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 12px;
+  background: #d4a853;
+  border-radius: 2px;
+  transform-origin: 0 30px; /* Shoot outward */
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0);
+  animation: particleShoot 600ms ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes particleShoot {
+  0% { transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-60px) scale(0); opacity: 0; }
+}
+
+/* Hint Text */
+.sc4-hint {
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  color: #C9A0DC;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+.show-hint {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.5s;
+}
+
+/* Flash */
+.sc4-flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(201, 160, 220, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 150;
+  transition: opacity 100ms;
+}
+.flash-active {
+  animation: flashAnim 200ms ease-out;
+}
+@keyframes flashAnim {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Temp Hero Section behind doors */
+.sc4-temp-hero {
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.sc4-temp-title {
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.sc4-temp-sub {
+  color: #C9A0DC;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 10px;
+}

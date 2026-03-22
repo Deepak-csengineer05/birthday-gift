@@ -4,8 +4,10 @@ import './BirthdayExperience.css';
 import Scene1Twin from '../scenes/Scene1Twin/Scene1Twin';
 import Scene2Countdown from '../scenes/Scene2Countdown/Scene2Countdown';
 import Scene3Fireworks from '../scenes/Scene3Fireworks/Scene3Fireworks';
+import Scene4Envelope from '../scenes/Scene4Envelope/Scene4Envelope';
+import SceneVideo from '../scenes/SceneVideo/SceneVideo';
 
-const SCENES = ['scene1', 'scene2', 'scene3', 'scene4', 'main'];
+const SCENES = ['scene1', 'scene2', 'scene3', 'video', 'scene4', 'main'];
 
 export default function BirthdayExperience() {
   const [sceneIndex, setSceneIndex] = useState(0);
@@ -23,7 +25,7 @@ export default function BirthdayExperience() {
   useEffect(() => {
     if (!audioRef.current) return;
 
-    if (sceneIndex >= 3) {
+    if (sceneIndex >= 4) {
       const audio = audioRef.current;
       const fadeInterval = setInterval(() => {
         if (audio.volume > 0.05) {
@@ -46,11 +48,8 @@ export default function BirthdayExperience() {
       {sceneIndex === 0 && <Scene1Twin onProceed={next} onAudioStart={startAudio} />}
       {sceneIndex === 1 && <Scene2Countdown onProceed={next} />}
       {sceneIndex === 2 && <Scene3Fireworks onProceed={next} />}
-      {sceneIndex >= 3 && (
-        <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.9rem', fontFamily: 'Inter,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', height:'100vh' }}>
-          Scene 4 — Envelope Reveal coming soon...
-        </div>
-      )}
+      {sceneIndex === 3 && <SceneVideo onProceed={next} />}
+      {sceneIndex >= 4 && <Scene4Envelope onProceed={next} />}
     </div>
   );
 }
