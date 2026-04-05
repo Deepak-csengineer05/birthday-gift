@@ -17,6 +17,7 @@ export default function SceneVideo({ onProceed }) {
         src="/video.mp4" 
         className="full-screen-video"
         onEnded={onProceed}
+        preload="auto"
         playsInline
       />
     </div>

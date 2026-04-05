@@ -30,6 +30,7 @@ export default function Section1({ onNext, onVideoStart }) {
         src="/section1.mp4" 
         className="s1-video"
         onEnded={handleVideoEnded}
+        preload="auto"
         playsInline
         muted
       />
