@@ -1,0 +1,244 @@
+@font-face {
+  font-family: 'GreatVibes';
+  src: url('/GreatVibes-Regular.ttf') format('truetype');
+}
+
+.hub-root {
+  width: 100vw;
+  height: 100vh;
+  background: #020105;
+  background-image: 
+    radial-gradient(circle at 50% -20%, #2b1145 0%, #05020a 50%, #000000 100%),
+    linear-gradient(0deg, #020105 0%, transparent 100%);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6rem 2rem 4rem 2rem;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+/* Magical floating dust particles behind the grid */
+.hub-background-particles {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 150px 160px, rgba(255,216,160,0.8), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 220px 110px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 300px 250px, rgba(160,180,255,0.7), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  opacity: 0.15;
+  animation: hubStarScroll 120s linear infinite;
+  z-index: 1;
+}
+
+@keyframes hubStarScroll {
+  from { background-position: 0 0; }
+  to { background-position: -400px 800px; }
+}
+
+.hub-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 10;
+  animation: hubFadeInDown 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hub-header h1 {
+  font-family: 'GreatVibes', cursive;
+  font-size: 5rem;
+  font-weight: normal;
+  background: linear-gradient(to right, #ffd8a0, #ffb2d9, #b088f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  filter: drop-shadow(0 4px 15px rgba(255, 178, 217, 0.3));
+}
+
+.hub-header p {
+  font-size: 1.1rem;
+  color: #a395b5;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.hub-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  animation: hubFadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+}
+
+.hub-card {
+  width: 250px;
+  height: 350px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+.hub-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-gradient);
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.6s ease;
+  mix-blend-mode: color-dodge;
+}
+
+/* Subtle inner glow spotlight on hover */
+.hub-card::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: scale(0.5);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hub-card:hover {
+  transform: translateY(-15px) scale(1.03);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.8), 
+    0 0 30px var(--glow-color),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.hub-card:hover::before { opacity: 0.4; }
+.hub-card:hover::after { opacity: 1; transform: scale(1); }
+
+/* The enormous subtle background Emoji */
+.hub-card .icon-bg {
+  position: absolute;
+  font-size: 11rem;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.05;
+  z-index: 1;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: grayscale(100%) contrast(200%);
+}
+
+.hub-card:hover .icon-bg {
+  opacity: 0.18;
+  transform: translate(-50%, -52%) scale(1.15);
+  filter: grayscale(0%) contrast(100%) drop-shadow(0 0 20px var(--glow-color));
+}
+
+.hub-card .card-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  text-align: center;
+  transform: translateY(22px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hub-card:hover .card-content {
+  transform: translateY(0);
+}
+
+.hub-card .card-number {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 0.4s ease;
+}
+
+.hub-card:hover .card-number {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hub-card .title {
+  font-family: 'GreatVibes', cursive;
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+  line-height: 1.1;
+  transition: color 0.4s ease;
+}
+
+.hub-card:hover .title {
+  color: #ffffff;
+}
+
+.hub-card .enter-btn {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.8rem;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(5px);
+}
+
+.hub-card:hover .enter-btn {
+  opacity: 1;
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes hubFadeInDown {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hubFadeInUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Elegant Scrollbar */
+.hub-root::-webkit-scrollbar { width: 8px; }
+.hub-root::-webkit-scrollbar-track { background: #05020a; }
+.hub-root::-webkit-scrollbar-thumb {
+  background: rgba(176, 136, 249, 0.3);
+  border-radius: 10px;
+}
+.hub-root::-webkit-scrollbar-thumb:hover { background: rgba(176, 136, 249, 0.6); }

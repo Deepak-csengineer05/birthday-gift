@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './Scene3Fireworks.css';
+import { trackEvent } from '../../analytics';
 
 /* ══════════════════════════════════════════════════
    CANVAS FIREWORKS HELPERS
@@ -143,6 +144,7 @@ export default function Scene3Fireworks({ onProceed }) {
 
   /* ── Canvas fireworks loop ── */
   useEffect(() => {
+    trackEvent('Scene3', 'watch_fireworks');
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
@@ -264,6 +266,7 @@ export default function Scene3Fireworks({ onProceed }) {
   }, [onProceed]);
 
   const handleSkip = useCallback(() => {
+    trackEvent('Scene3', 'skip_fireworks', { skipped: true });
     setExiting(true);
     setTimeout(() => onProceed?.(), 1200);
   }, [onProceed]);

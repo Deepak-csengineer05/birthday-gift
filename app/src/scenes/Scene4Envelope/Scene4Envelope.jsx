@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Scene4Envelope.css';
+import { trackEvent } from '../../analytics';
 
-export default function Scene4Envelope({ onProceed }) {
+export default function Scene4Envelope({ onProceed, onDoorsOpen }) {
   const [phase, setPhase] = useState('falling'); // falling, landed, button-ready, spinning, doors-opening, done
   const [crackPoints, setCrackPoints] = useState([]);
   const [clipPathLeft, setClipPathLeft] = useState('');
@@ -145,6 +146,7 @@ export default function Scene4Envelope({ onProceed }) {
 
   const handleButtonClick = () => {
     if (phase !== 'button-ready') return;
+    trackEvent('Scene4', 'moon_button_click', { clicked: true });
     setPhase('spinning');
     setMousePos({ rx: 0, ry: 0 });
     setBtnPos({ x: 0, y: 0 });
@@ -153,6 +155,7 @@ export default function Scene4Envelope({ onProceed }) {
       setPhase('cracking'); 
       setTimeout(() => {
         setPhase('doors-opening');
+        if (onDoorsOpen) onDoorsOpen();
         setTimeout(() => {
           setPhase('done');
           if (onProceed) onProceed();
@@ -226,13 +229,6 @@ export default function Scene4Envelope({ onProceed }) {
       </div>
 
       <div className={`sc4-flash ${phase === 'spinning' ? 'flash-active' : ''}`} />
-
-      {phase === 'done' && (
-         <div className="sc4-temp-hero">
-            <h1 className="sc4-temp-title">Section 01 Hero coming soon...</h1>
-            <p className="sc4-temp-sub">Poojetha 🌙</p>
-         </div>
-      )}
 
       <div className={`sc4-envelope-container 
         ${phase === 'falling' ? 'anim-drop' : ''} 

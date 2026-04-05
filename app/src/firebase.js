@@ -1,22 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
 
-// TODO: Replace with your actual Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAZBUVckG1zhgXoWq8PxafuXGvtscPIryY",
+  authDomain: "lunar-gift.firebaseapp.com",
+  databaseURL: "https://lunar-gift-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "lunar-gift",
+  storageBucket: "lunar-gift.firebasestorage.app",
+  messagingSenderId: "827045936084",
+  appId: "1:827045936084:web:4e48a7b8984f224624b441"
 };
 
 const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
+// We only need Realtime Database for analytics
 export const rtdb = getDatabase(app);
-export const auth = getAuth(app);
 export default app;

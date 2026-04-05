@@ -1,0 +1,541 @@
+.section7-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at center, #18122a, #050308);
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+/* Deep Space Nebula Background */
+.s7-nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 0;
+  animation: driftNebula 25s infinite alternate ease-in-out;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.s7-nebula-1 {
+  top: -20%;
+  left: -20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, #5b1cd4 0%, transparent 70%);
+}
+
+.s7-nebula-2 {
+  bottom: -30%;
+  right: -20%;
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(circle, #ff2a7a 0%, transparent 70%);
+  animation-duration: 30s;
+  animation-direction: alternate-reverse;
+  opacity: 0.4;
+}
+
+.s7-nebula-3 {
+  top: 30%;
+  left: 20%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, #ffb432 0%, transparent 70%);
+  animation-duration: 35s;
+  opacity: 0.3;
+}
+
+.s7-nebula-4 {
+  top: 50%;
+  right: -10%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, #00d2ff 0%, transparent 70%);
+  animation-duration: 28s;
+  animation-direction: alternate-reverse;
+  opacity: 0.35;
+}
+
+@keyframes driftNebula {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(15vw, -10vh) scale(1.1); }
+  66% { transform: translate(-10vw, 15vh) scale(0.9); }
+  100% { transform: translate(-20vw, -15vh) scale(1.2); }
+}
+
+/* Twinkling Starfield */
+.s7-starfield-container {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 1; /* Above nebulas */
+}
+
+.s7-star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px white, 0 0 10px rgba(163, 116, 255, 0.5);
+  animation: twinkle infinite alternate ease-in-out;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Atmospheric Edge Vignette */
+.section7-vignette {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.8) 100%);
+  pointer-events: none;
+  z-index: 2; /* Cover stars and nebulas heavily around edges */
+}
+
+/* Header Text */
+.s7-header {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
+  transition: opacity 0.5s ease;
+}
+
+.s7-header.fade-out {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.s7-header h1 {
+  font-family: var(--font-script, 'Dancing Script', cursive);
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, #ffffff, #d4a8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 10px 0;
+  text-shadow: 0 4px 20px rgba(163, 116, 255, 0.3);
+}
+
+/* 3D Scene Geometry */
+.s7-perspective-scene {
+  position: relative;
+  z-index: 10;
+  perspective: 1200px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh; /* Drop it down slightly from title */
+}
+
+/* The tilted ring */
+.s7-orbit-ring {
+  width: 0; 
+  height: 0;
+  position: relative;
+  transform-style: preserve-3d;
+  /* Pitch backwards 65 degrees */
+  transform: rotateX(65deg) rotateZ(0deg);
+}
+
+.s7-orbit-ring.spinning {
+  animation: orbitRingSpin 40s linear infinite;
+}
+
+@keyframes orbitRingSpin {
+  0% { transform: rotateX(65deg) rotateZ(0deg); }
+  100% { transform: rotateX(65deg) rotateZ(360deg); }
+}
+
+/* The Central Moon Core */
+.s7-orbit-center-star {
+  position: absolute;
+  width: 0; height: 0;
+  transform-style: preserve-3d;
+  /* Must undo X rotation to face screen */
+  transform: rotateX(-65deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.moon-sphere {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e5ccff 30%, #9b72cf 70%, #4a2c9e 100%);
+  box-shadow: 0 0 30px #e5ccff, 0 0 60px rgba(163, 116, 255, 0.6), inset -5px -5px 15px rgba(0,0,0,0.5);
+  animation: pulseMoon 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseMoon {
+  from { box-shadow: 0 0 30px #e5ccff, 0 0 60px rgba(163, 116, 255, 0.6), inset -2px -2px 10px rgba(0,0,0,0.3); }
+  to { box-shadow: 0 0 50px #ffffff, 0 0 90px rgba(163, 116, 255, 0.9), inset -8px -8px 15px rgba(0,0,0,0.6); }
+}
+
+/* Position points on the ring */
+.s7-orbit-pivot {
+  position: absolute;
+  top: 0; left: 0;
+  transform-style: preserve-3d;
+  transform: rotateZ(var(--angle)) translateY(-380px); /* 380px radius */
+}
+
+/* Counter-spin so items don't rotate locally relative to center */
+.s7-orbit-item-container {
+  transform-style: preserve-3d;
+  transform: rotateZ(calc(-1 * var(--angle)));
+}
+
+/* While the ring spins Z from 0->360, this internal wrapper spins Z from 0->-360 to cancel it out */
+.s7-orbit-ring.spinning .s7-orbit-item-container {
+  animation: counterRingSpin 40s linear infinite;
+}
+
+@keyframes counterRingSpin {
+  0% { transform: rotateZ(calc(-1 * var(--angle))) rotateZ(0deg); }
+  100% { transform: rotateZ(calc(-1 * var(--angle))) rotateZ(-360deg); }
+}
+
+/* The card itself that stands up */
+.s7-card-counter-rotator {
+  position: absolute;
+  left: -60px; top: -80px;
+  width: 120px;
+  height: 160px;
+  transform-style: preserve-3d;
+  /* Stand upright from the 65deg tilted floor */
+  transform: rotateX(-65deg);
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.s7-card-counter-rotator:hover {
+  transform: rotateX(-65deg) scale(1.15) translateY(-20px);
+}
+
+.s7-card-counter-rotator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Mini visual for orbiting cards (looks exactly like V1 canvas!) */
+.mini-card-visual {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  border: 1px solid rgba(163, 116, 255, 0.2);
+}
+
+.mini-scratch-layer {
+  width: 100%; height: 100%;
+  background-color: #1e1b30;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #b39ddb, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 120px 90px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 10px 110px, #b39ddb, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 150px 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mini-scratch-layer span {
+  font-family: 'Dancing Script', cursive;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+.mini-ghibli-layer {
+  width: 100%; height: 100%;
+}
+
+.s7-card-counter-rotator.transformed .mini-card-visual {
+  box-shadow: 0 0 30px rgba(255, 180, 50, 0.6);
+  border-color: #ffb432;
+}
+
+/* --- THE FOCUS LAYER (Flat to Screen) --- */
+.s7-focus-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0); /* fades in */
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.s7-focus-layer.active {
+  background: rgba(10, 5, 20, 0.85); /* dim out the background */
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+
+.s7-focused-safe-zone {
+  width: 450px;
+  height: 620px;
+  animation: scaleUpSuper 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUpSuper {
+  0% { transform: scale(0.2) translate(0, 500px); opacity: 0; }
+  100% { transform: scale(1) translate(0, 0); opacity: 1; }
+}
+
+/* --- ScratchCard Enhancements --- */
+.scratch-card-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(163, 116, 255, 0.4);
+  background: #111;
+  user-select: none;
+}
+
+.scratch-card-wrapper.is-ghibli {
+  border-color: #ffb432;
+  box-shadow: 0 20px 80px rgba(255, 180, 50, 0.3);
+}
+
+.card-images, .photo-layer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.ghibli-photo {
+  opacity: 1;
+  z-index: 3;
+  /* Soft magical mask wipe from bottom-left */
+  -webkit-mask-image: radial-gradient(circle at bottom left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+  -webkit-mask-position: bottom left;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 0% 0%;
+  transition: -webkit-mask-size 3s ease-in-out;
+}
+
+.scratch-card-wrapper.is-sweeping .ghibli-photo,
+.scratch-card-wrapper.is-ghibli .ghibli-photo {
+  -webkit-mask-size: 400% 400%; /* Expands massively to cover the whole top-right corner */
+}
+
+/* Implement Graceful Float Animation on Active Card */
+.scratch-card-wrapper.is-sweeping {
+  animation: floatTowel 3s ease-in-out forwards;
+}
+
+@keyframes floatTowel {
+  0% { transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1); box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+  33% { transform: translateY(-40px) rotateX(15deg) rotateY(-10deg) scale(1.05); box-shadow: 0 60px 100px rgba(163, 116, 255, 0.4); border-radius: 20px 10px 20px 10px; }
+  66% { transform: translateY(-20px) rotateX(-10deg) rotateY(15deg) scale(1.02); box-shadow: 0 40px 80px rgba(255, 180, 50, 0.4); border-radius: 10px 20px 10px 20px; }
+  100% { transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1); box-shadow: 0 20px 80px rgba(255, 180, 50, 0.3); border-radius: 15px; }
+}
+
+/* Magic Shine Overlay */
+.scratch-card-wrapper::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -200%;
+  width: 150%;
+  height: 200%;
+  background: linear-gradient(
+    to right, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 220, 150, 0.4) 30%, 
+    rgba(255, 255, 255, 0.9) 50%, 
+    rgba(255, 220, 150, 0.4) 70%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(35deg);
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: overlay;
+}
+
+.scratch-card-wrapper.is-sweeping::after {
+  animation: shineSweep 3s ease-in-out forwards;
+}
+
+@keyframes shineSweep {
+  0% { left: -200%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 200%; opacity: 0; }
+}
+
+.scratch-layer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 5;
+  transition: opacity 1.5s ease;
+}
+
+.scratch-card-wrapper.is-scratched .scratch-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Removed ugly magic sweep beam */
+
+/* Tap Hint Text Overlay */
+.tap-hint {
+  position: absolute;
+  bottom: 25px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: rgba(4, 11, 15, 0.9);
+  font-weight: 500;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+  animation: pulseHintText 1.5s infinite alternate;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes pulseHintText {
+  from { opacity: 0.5; }
+  to { opacity: 1; text-shadow: 0 0 15px rgba(255, 180, 50, 0.8); }
+}
+
+.return-ui {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 25px;
+  animation: fadeIn 1s;
+}
+
+.return-orbit-btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.return-orbit-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@keyframes pulseButton {
+  from { box-shadow: 0 0 10px rgba(255, 138, 101, 0.5); }
+  to { box-shadow: 0 0 30px rgba(255, 180, 50, 1), inset 0 0 10px #fff; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 🌟 Particle System for Glitter 🌟 */
+.glitter-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 20; /* above scratch canvas */
+  box-shadow: 0 0 8px currentColor;
+  animation: glitterFall 1s ease-out forwards;
+}
+
+@keyframes glitterFall {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+  100% { 
+    transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); 
+    opacity: 0; 
+  }
+}
+
+/* Finale */
+.section7-container.section-complete .s7-perspective-scene {
+  animation: implodeOrbit 2s cubic-bezier(0.5, 0, 0.1, 1) forwards;
+}
+
+@keyframes implodeOrbit {
+  0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+  100% { transform: scale(0); opacity: 0; filter: blur(30px); }
+}
+
+.s7-finale-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 200;
+  transition: opacity 2s ease 1s;
+}
+
+.s7-finale-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.s7-finale-content {
+  text-align: center;
+  transform: translateY(30px);
+  transition: transform 2s ease 1s;
+}
+
+.s7-finale-overlay.show .s7-finale-content {
+  transform: translateY(0);
+}
+
+.s7-finale-content h2 {
+  font-family: var(--font-script, 'Dancing Script', cursive);
+  font-size: 5rem;
+  background: linear-gradient(135deg, #ffffff, #ffb432);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.s7-finale-content p {
+  font-size: 1.3rem;
+  color: #e0e0e0;
+  margin-bottom: 50px;
+}

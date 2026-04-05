@@ -1,0 +1,318 @@
+.s2-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--deep-black, #04020d);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: s2FadeIn 1s ease forwards;
+}
+
+@keyframes s2FadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Background Atmosphere */
+.s2-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.s2-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+.orb1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(123, 82, 200, 0.4);
+  top: -100px;
+  left: 10%;
+  animation: orbFloat 10s ease-in-out infinite alternate;
+}
+
+.orb2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(74, 44, 158, 0.3);
+  bottom: -50px;
+  right: -50px;
+  animation: orbFloat 12s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    transform: translateY(40px) scale(1.1);
+  }
+}
+
+/* Top Anchor Beam */
+.s2-top-anchor {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 2;
+}
+
+.s2-glowing-line {
+  width: 100%;
+  height: 100%;
+  background: rgba(216, 180, 254, 0.4);
+  box-shadow: 0 0 15px rgba(216, 180, 254, 0.8), 0 0 30px rgba(123, 82, 200, 0.6);
+}
+
+/* The Gallery Constraint */
+.s2-gallery-container {
+  position: absolute;
+  inset: 0;
+  top: 0px;
+  /* Offset to start below anchor */
+  z-index: 5;
+  pointer-events: none;
+  /* Let clicks pass through except on active items */
+}
+
+/* The Swaying Physics System per Photo */
+.s2-photo-system {
+  position: absolute;
+  top: 0;
+  width: 0px;
+  /* Act as a point */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Origin is at top center where the string attaches to top anchor */
+  transform-origin: top center;
+  animation: sway var(--sway-dur) ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sway {
+  0% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+/* Pause swaying on hover nicely */
+.s2-photo-system:hover {
+  animation-play-state: paused;
+}
+
+/* The SVG String */
+.s2-string {
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 100px;
+  height: var(--string-len);
+  overflow: visible;
+  transition: opacity 0.5s ease;
+}
+
+.s2-string path {
+  stroke: rgba(216, 180, 254, 0.6);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 4px rgba(216,180,254,0.8));
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.string-snapped {
+  opacity: 0;
+}
+
+.string-snapped path {
+  /* Animate the path snapping up magically */
+  d: path("M 10 0 C 10 5, 5 10, 10 15");
+  /* Just shrinking it away */
+}
+
+/* Polaroid Card */
+.s2-polaroid {
+  position: absolute;
+  left: 50%;
+  /* Instead of margin calculation, transform effectively centers the polaroid on the string */
+  transform: translate(-50%, 0) rotate(0deg);
+  background: #fdfbf7;
+  padding: 12px 12px 35px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.5);
+  cursor: pointer;
+  pointer-events: auto;
+  /* Make click targets active */
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  width: clamp(160px, 16vw, 260px);
+  will-change: transform, box-shadow;
+}
+
+.s2-polaroid:hover {
+  box-shadow: 0 15px 40px rgba(123, 82, 200, 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  transform: translate(-50%, -5px) rotate(1deg) scale(1.05);
+}
+
+.s2-pin {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #d8b4fe, #581c87);
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.6), inset -1px -1px 2px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+.s2-photo-img-box {
+  width: 100%;
+  /* Assuming roughly 4:5 or square aspect ratio */
+  aspect-ratio: 4/5;
+  background: #f0ecf4;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: inset 0 3px 10px rgba(0,0,0,0.15); /* Adds depth to photo */
+}
+
+.s2-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.s2-polaroid:hover .s2-img {
+  transform: scale(1.03);
+}
+
+.s2-caption {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  text-align: center;
+  color: #1a0f30;
+  font-weight: 600;
+  margin-top: 15px;
+  line-height: 1;
+}
+
+/* ==================================
+   INTERACTIVE FOCUS STATE (SNAPPED)
+   ================================== */
+.s2-photo-system.is-active {
+  z-index: 100;
+  /* Stop swaying */
+  animation: none;
+  transform: none;
+}
+
+.s2-photo-system.is-active .s2-polaroid {
+  /* Magical transform to the center of the screen ignoring its position!
+     Since it is normally absolutely positioned relative to parent (which has width 0 top center),
+     we override to fixed center via viewport calculation trick or just use huge translates. */
+  position: fixed;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(2) !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(123, 82, 200, 0.5);
+  z-index: 101;
+  cursor: default;
+}
+
+.s2-photo-system.is-blurred {
+  filter: blur(8px) brightness(0.4);
+  pointer-events: none;
+}
+
+.s2-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 2, 13, 0.85);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.s2-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* ==================================
+   NEXT BUTTON
+   ================================== */
+.s2-next-btn-container {
+  position: absolute;
+  bottom: 40px;
+  right: 50px;
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.s2-next-btn-container.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.s2-next-btn {
+  background: linear-gradient(135deg, #2d1b69, #7b52c8);
+  border: 1px solid rgba(179, 157, 219, 0.8);
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(74, 44, 158, 0.5);
+  transition: all 0.3s ease;
+}
+
+.s2-next-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(123, 82, 200, 0.6);
+}
+
+/* ==================================
+   MOBILE RESPONSIVENESS
+   ================================== */
+@media (max-width: 768px) {
+  .s2-photo-system.is-active .s2-polaroid {
+    transform: translate(-50%, -50%) scale(1.5) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .s2-photo-system.is-active .s2-polaroid {
+    transform: translate(-50%, -50%) scale(1.2) !important;
+  }
+}

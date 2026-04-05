@@ -1,0 +1,496 @@
+/* =========================================
+   Section 3: WhatsApp Chat Simulation (Purple Theme)
+   ========================================= */
+
+.s3-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(58, 33, 85, 0.18), transparent 40%),
+    radial-gradient(circle at 18% 52%, rgba(126, 75, 160, 0.09), transparent 28%),
+    radial-gradient(circle at 82% 50%, rgba(110, 54, 170, 0.09), transparent 28%),
+    #000;
+  opacity: 0;
+  transition: opacity 1s ease;
+  overflow: hidden;
+}
+
+.s3-container.fade-in {
+  opacity: 1;
+}
+
+.s3-container.fade-out {
+  opacity: 0;
+}
+
+.wa-app {
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  max-height: 900px;
+  background-color: #0f091f;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #e9edef;
+  z-index: 4;
+}
+
+.wa-app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+  background-repeat: repeat;
+  background-size: 400px;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wa-status-bar {
+  background: #1a103c;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  z-index: 10;
+}
+
+.wa-system-icons {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.sc-icon {
+  font-size: 0.7rem;
+}
+
+.wa-header {
+  height: 60px;
+  background: #1a103c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.wa-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wa-back {
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: -5px;
+  color: #b39ddb;
+}
+
+.wa-pfp img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.wa-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.wa-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.wa-status-text {
+  font-size: 0.8rem;
+  color: #b39ddb;
+  font-weight: 400;
+  animation: fadeIn 0.3s ease;
+}
+
+.wa-header-right {
+  display: flex;
+  gap: 20px;
+  padding-right: 10px;
+  font-size: 1.1rem;
+  color: #b39ddb;
+}
+
+.wa-chat-area {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 5;
+  scrollbar-width: none;
+}
+
+.wa-chat-area::-webkit-scrollbar {
+  display: none;
+}
+
+.wa-date-pill {
+  background: #26164d;
+  color: #b39ddb;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 10px;
+  align-self: center;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.wa-bubble-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.wa-bubble-wrapper.his {
+  justify-content: flex-start;
+}
+
+.wa-bubble-wrapper.her {
+  justify-content: flex-end;
+}
+
+.wa-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  position: relative;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.wa-bubble-wrapper.his .wa-bubble {
+  background: #2b1754;
+  border-bottom-left-radius: 4px;
+}
+
+.wa-bubble-wrapper.her .wa-bubble {
+  background: #6d28d9;
+  border-bottom-right-radius: 4px;
+}
+
+.wa-bubble-wrapper.his .wa-bubble::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background: #2b1754;
+  border-bottom-right-radius: 15px;
+}
+
+.wa-bubble-wrapper.his .wa-bubble::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: #0f091f;
+  border-bottom-right-radius: 10px;
+}
+
+.wa-bubble-wrapper.her .wa-bubble::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  right: -7px;
+  height: 20px;
+  width: 20px;
+  background: #6d28d9;
+  border-bottom-left-radius: 15px;
+}
+
+.wa-bubble-wrapper.her .wa-bubble::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: #0f091f;
+  border-bottom-left-radius: 10px;
+}
+
+.wa-msg-text {
+  padding-right: 40px;
+  padding-bottom: 10px;
+}
+
+.wa-msg-meta {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  bottom: 8px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.wa-read-receipt {
+  color: #c4b5fd;
+  font-size: 0.6rem;
+  font-weight: bold;
+}
+
+.wa-footer {
+  background: #0f091f;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.wa-input-box {
+  flex: 1;
+  background: #1e1145;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  min-height: 45px;
+}
+
+.wa-icon-smile, .wa-icon-attach, .wa-icon-camera {
+  color: #b39ddb;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.wa-icon-attach {
+  margin-left: auto;
+  margin-right: 15px;
+}
+
+.wa-input-text {
+  flex: 1;
+  margin-left: 15px;
+  font-size: 1rem;
+  color: #fff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 60%;
+  border-right: 2px solid transparent;
+  animation: typingCursor 1s infinite;
+}
+
+@keyframes typingCursor {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #8b5cf6; }
+}
+
+.wa-input-text.placeholder {
+  color: #b39ddb;
+  animation: none;
+  border: none;
+}
+
+.wa-send-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+}
+
+.wa-send-btn.pulse {
+  cursor: pointer;
+  background: #8b5cf6;
+  box-shadow: 0 0 15px #7c3aed, 0 0 30px #7c3aed;
+  animation: bigPulse 1.5s infinite;
+}
+
+.wa-send-btn.pulse:hover {
+  transform: scale(1.1);
+}
+
+@keyframes bigPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(124, 58, 237, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+}
+
+.s3-flower-container,
+.s3-balloon-container {
+  flex: 1;
+  height: 100vh;
+  position: relative;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.s3-flower-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0;
+  padding-left: 0;
+}
+
+.s3-growing-flower {
+  display: none;
+}
+
+.s3-flower-art {
+  width: min(60%, 280px);
+  height: min(60vh, 520px);
+  max-height: 60%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: flowerIdleSway 6s ease-in-out 3.8s infinite;
+}
+
+.s3-flower-reveal {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  clip-path: inset(40% 0 0 0);
+  animation: flowerReveal 3.2s ease-in-out forwards;
+}
+
+.s3-flower-image {
+  width: 100%;
+  height: 112%;
+  object-fit: contain;
+  object-position: center top;
+  display: block;
+  clip-path: inset(0 0 16% 0);
+  filter: drop-shadow(0 0 8px rgba(177, 129, 234, 0.14));
+  transform: translateY(2%);
+}
+
+@keyframes flowerReveal {
+  0% { clip-path: inset(100% 0 0 0); }
+  28% { clip-path: inset(58% 0 0 0); }
+  56% { clip-path: inset(42% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes flowerIdleSway {
+  0%, 100% { transform: rotate(-0.35deg) translateY(0); }
+  50% { transform: rotate(0.4deg) translateY(-2px); }
+}
+
+.s3-balloon-container {
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  justify-content: center;
+}
+
+.heart-balloon-wrapper {
+  position: absolute;
+  left: var(--balloon-x);
+  bottom: -340px;
+  width: 235px;
+  transform: translateX(-50%) scale(var(--balloon-size));
+  transform-origin: center bottom;
+  animation: balloonFloat var(--float-duration) linear var(--float-delay) infinite;
+  will-change: transform;
+}
+
+.heart-balloon {
+  width: 100%;
+  height: auto;
+  display: block;
+  clip-path: inset(2% 4% 7% 4%);
+  filter: drop-shadow(0 0 10px rgba(123, 49, 219, 0.14));
+  animation: balloonBob var(--float-sway) ease-in-out infinite;
+}
+
+@keyframes balloonBob {
+  0%, 100% { transform: rotate(-0.8deg) scaleY(var(--string-scale)); }
+  50% { transform: rotate(0.8deg) scaleY(calc(var(--string-scale) + 0.012)); }
+}
+
+@keyframes balloonFloat {
+  0% {
+    transform: translateX(-50%) translateY(0) scale(var(--balloon-size)) rotate(-1.8deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  22% {
+    transform: translateX(calc(-50% - (var(--float-drift) * 0.25))) translateY(-20vh) scale(var(--balloon-size)) rotate(0.9deg);
+  }
+  44% {
+    transform: translateX(calc(-50% + (var(--float-drift) * 0.35))) translateY(-42vh) scale(var(--balloon-size)) rotate(-0.8deg);
+  }
+  68% {
+    transform: translateX(calc(-50% - (var(--float-drift) * 0.5))) translateY(-66vh) scale(var(--balloon-size)) rotate(0.7deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translateX(calc(-50% + (var(--float-drift) * 0.2))) translateY(-92vh) scale(var(--balloon-size)) rotate(-0.6deg);
+    opacity: 1;
+  }
+  97% {
+    transform: translateX(calc(-50% - (var(--float-drift) * 0.08))) translateY(-101vh) scale(var(--balloon-size)) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(-50% + (var(--float-drift) * 0.05))) translateY(-114vh) scale(var(--balloon-size)) rotate(0.2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.5; transform: translateY(1px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1000px) {
+  .s3-flower-container,
+  .s3-balloon-container {
+    display: none;
+  }
+}

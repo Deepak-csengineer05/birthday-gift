@@ -1,0 +1,303 @@
+﻿commit be452fc0e5bb2fc2ca91043e72844f2e26abeb97
+Author: Deepak-CSEngineer05 <deepakcsengineer05@gmail.com~>
+Date:   Mon Mar 23 01:42:44 2026 +0530
+
+    first commit
+
+diff --git a/app/src/scenes/Scene1Twin/Scene1Twin.css b/app/src/scenes/Scene1Twin/Scene1Twin.css
+new file mode 100644
+index 0000000..93d3084
+--- /dev/null
++++ b/app/src/scenes/Scene1Twin/Scene1Twin.css
+@@ -0,0 +1,291 @@
++/* ================================
++   Scene 1 ΓÇö Moon Dialogue
++   Violet Theme + Kawaii
++   ================================ */
++
++.scene1-wrapper {
++  position: fixed;
++  inset: 0;
++  background: var(--deep-black, #04020d);
++  background-image:
++    radial-gradient(ellipse 70% 55% at 50% 58%, rgba(45, 27, 105, 0.45) 0%, transparent 72%),
++    radial-gradient(ellipse 40% 30% at 50% 35%, rgba(74, 44, 158, 0.2) 0%, transparent 60%);
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  z-index: 100;
++  transition: opacity 0.85s ease;
++  overflow: hidden;
++}
++
++.scene1-exit {
++  opacity: 0;
++  pointer-events: none;
++}
++
++/* ΓöÇΓöÇ Layout column ΓöÇΓöÇ */
++.scene1-content {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 1.75rem;
++  padding: 1.5rem;
++  animation: sceneReveal 0.9s ease both;
++  max-width: 540px;
++  width: 100%;
++}
++
++@keyframes sceneReveal {
++  from { opacity: 0; transform: translateY(20px); }
++  to   { opacity: 1; transform: translateY(0); }
++}
++
++/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
++   MOON CHARACTER
++   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
++.moon-container {
++  position: relative;
++  width: clamp(140px, 28vw, 200px);
++  height: clamp(140px, 28vw, 200px);
++  animation: moonFloat 4s ease-in-out infinite;
++  filter: drop-shadow(0 0 24px rgba(179, 157, 219, 0.4));
++}
++
++@keyframes moonFloat {
++  0%, 100% { transform: translateY(0px); }
++  50%       { transform: translateY(-12px); }
++}
++
++.moon-svg {
++  width: 100%;
++  height: 100%;
++}
++
++/* Orbiting stars */
++.orbit-star {
++  position: absolute;
++  font-size: clamp(0.7rem, 2vw, 1rem);
++  color: rgba(212, 168, 83, 0.75);
++  animation: orbit 6s linear infinite;
++  transform-origin: center;
++}
++
++.s1 {
++  top: -10px;
++  left: 15%;
++  animation-duration: 5s;
++  animation-delay: 0s;
++  font-size: 0.75rem;
++}
++.s2 {
++  bottom: -5px;
++  right: 10%;
++  animation-duration: 7s;
++  animation-delay: -2s;
++  font-size: 0.65rem;
++}
++.s3 {
++  top: 30%;
++  right: -12px;
++  animation-duration: 6s;
++  animation-delay: -1s;
++  font-size: 0.8rem;
++}
++.s4 {
++  top: 60%;
++  left: -15px;
++  animation-duration: 8s;
++  animation-delay: -3s;
++  font-size: 0.85rem;
++}
++.s5 {
++  bottom: 12%;
++  left: 2%;
++  animation-duration: 5.5s;
++  animation-delay: -1.5s;
++  font-size: 0.7rem;
++}
++.s6 {
++  top: 5%;
++  right: 28%;
++  animation-duration: 6.5s;
++  animation-delay: -4s;
++  font-size: 0.9rem;
++}
++.s7 {
++  top: -8px;
++  right: -5px;
++  animation-duration: 7.5s;
++  animation-delay: -2.5s;
++  font-size: 0.65rem;
++}
++
++@keyframes orbit {
++  0%, 100% { transform: translateY(0) scale(1);   opacity: 0.7; }
++  50%       { transform: translateY(-8px) scale(1.15); opacity: 1; }
++}
++
++/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
++   SPEECH BUBBLE
++   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
++.speech-bubble {
++  position: relative;
++  background: rgba(26, 10, 56, 0.85);
++  border: 1.5px solid rgba(123, 82, 200, 0.45);
++  border-radius: 18px;
++  padding: 1.1rem 1.75rem;
++  text-align: center;
++  box-shadow:
++    0 0 30px rgba(74, 44, 158, 0.2),
++    inset 0 0 20px rgba(45, 27, 105, 0.15);
++  backdrop-filter: blur(6px);
++  animation: bubblePop 0.5s var(--ease-bounce, cubic-bezier(0.34,1.56,0.64,1)) both;
++  max-width: 420px;
++  width: 100%;
++}
++
++@keyframes bubblePop {
++  from { opacity: 0; transform: scale(0.88) translateY(10px); }
++  to   { opacity: 1; transform: scale(1) translateY(0); }
++}
++
++/* Triangle pointer pointing up to the moon */
++.bubble-pointer {
++  position: absolute;
++  top: -11px;
++  left: 50%;
++  transform: translateX(-50%);
++  width: 0;
++  height: 0;
++  border-left: 10px solid transparent;
++  border-right: 10px solid transparent;
++  border-bottom: 12px solid rgba(123, 82, 200, 0.45);
++}
++.bubble-pointer::after {
++  content: '';
++  position: absolute;
++  top: 2px;
++  left: -9px;
++  width: 0;
++  height: 0;
++  border-left: 9px solid transparent;
++  border-right: 9px solid transparent;
++  border-bottom: 11px solid rgba(26, 10, 56, 0.9);
++}
++
++/* Intro line (small label) */
++.bubble-intro {
++  font-family: 'Dancing Script', cursive;
++  font-size: clamp(1.1rem, 3vw, 1.4rem);
++  font-weight: 600;
++  color: var(--violet-light, #b39ddb);
++  letter-spacing: 0.03em;
++  margin-bottom: 0.35rem;
++  text-shadow: 0 0 12px rgba(179, 157, 219, 0.3);
++}
++
++/* Main question line */
++.bubble-question {
++  font-family: 'Cormorant Garamond', serif;
++  font-size: clamp(1.3rem, 4vw, 1.85rem);
++  font-weight: 300;
++  font-style: italic;
++  color: rgba(255, 255, 255, 0.92);
++  line-height: 1.25;
++  text-shadow: 0 0 20px rgba(123, 82, 200, 0.2);
++}
++
++/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
++   OPTION BUTTONS
++   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
++.scene1-buttons {
++  display: flex;
++  gap: 1.25rem;
++  flex-wrap: wrap;
++  justify-content: center;
++  animation: buttonsReveal 0.6s ease 0.3s both;
++}
++
++@keyframes buttonsReveal {
++  from { opacity: 0; transform: translateY(12px); }
++  to   { opacity: 1; transform: translateY(0); }
++}
++
++/* Shared base */
++.btn-option {
++  font-family: 'Cormorant Garamond', serif;
++  font-size: clamp(1.1rem, 3vw, 1.4rem);
++  font-weight: 400;
++  letter-spacing: 0.12em;
++  padding: 0.7rem 2.25rem;
++  border-radius: 50px;
++  cursor: pointer;
++  transition: all 0.32s cubic-bezier(0.23, 1, 0.32, 1);
++}
++
++/* YES / positive button */
++.btn-yes {
++  background: var(--grad-violet-glow, linear-gradient(135deg, #2d1b69, #7b52c8));
++  border: 1.5px solid rgba(123, 82, 200, 0.65);
++  color: #fff;
++  box-shadow: 0 4px 18px rgba(74, 44, 158, 0.35);
++}
++
++.btn-yes:hover {
++  transform: translateY(-3px);
++  box-shadow:
++    0 10px 30px rgba(74, 44, 158, 0.55),
++    0 0 0 2px rgba(179, 157, 219, 0.35);
++}
++
++/* NO button ΓÇö ghost but visible when repelled */
++.btn-no {
++  background: rgba(13, 5, 32, 0.75);
++  border: 1.5px solid rgba(179, 157, 219, 0.4);
++  color: rgba(179, 157, 219, 0.6);
++  transition: background 0.2s, border-color 0.2s;
++  backdrop-filter: blur(6px);
++  box-shadow: 0 0 12px rgba(74, 44, 158, 0.25);
++}
++
++.btn-no:hover {
++  background: rgba(45, 27, 105, 0.35);
++  border-color: rgba(179, 157, 219, 0.55);
++}
++
++/* Portal floating NO ΓÇö always fully visible anywhere on screen */
++.btn-no-floating {
++  position: fixed !important;
++  background: rgba(13, 5, 32, 0.88) !important;
++  border: 1.5px solid rgba(179, 157, 219, 0.55) !important;
++  color: rgba(179, 157, 219, 0.75) !important;
++  box-shadow: 0 0 20px rgba(74, 44, 158, 0.35), 0 4px 15px rgba(0,0,0,0.5) !important;
++  backdrop-filter: blur(8px);
++  pointer-events: all;
++  will-change: left, top;
++}
++
++
++/* ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
++   MOBILE
++   ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
++@media (max-width: 480px) {
++  .moon-container {
++    width: 130px;
++    height: 130px;
++  }
++
++  .speech-bubble {
++    padding: 0.9rem 1.25rem;
++    border-radius: 14px;
++  }
++
++  .scene1-buttons {
++    gap: 0.9rem;
++  }
++
++  .btn-option {
++    padding: 0.65rem 1.6rem;
++    font-size: 1.1rem;
++  }
++}

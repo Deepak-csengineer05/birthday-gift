@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import './Scene1Twin.css';
+import { trackEvent } from '../../analytics';
 
 /* ─── Dialogue Steps ─────────────────────────────── */
 const STEPS = [
@@ -28,7 +29,7 @@ const STEPS = [
   {
     id: 'twin',
     moonMood: 'excited',
-    lines: ['Then...', 'Are you my twin? 🌙'],
+    lines: ['Then...', 'shall I call you my twin? 🌙'],
     options: ['Yes ✦', 'No'],
     onOption: (idx) => idx === 0 ? 'done' : 'twin_nudge',
     noRepels: true,
@@ -196,6 +197,11 @@ export default function Scene1Twin({ onProceed, onAudioStart }) {
   const step = STEP_MAP[stepId];
 
   const handleOption = useCallback((idx) => {
+    trackEvent('Scene1', 'option_click', {
+      stepId,
+      optionIndex: idx,
+      optionText: step.options[idx],
+    });
     const nextId = step.onOption(idx);
     if (nextId === 'done') {
       setExiting(true);
@@ -205,7 +211,7 @@ export default function Scene1Twin({ onProceed, onAudioStart }) {
     }
     setStepId(nextId);
     setBubbleKey(k => k + 1);
-  }, [step, onProceed, onAudioStart]);
+  }, [step, stepId, onProceed, onAudioStart]);
 
   return (
     <div className={`scene1-wrapper ${exiting ? 'scene1-exit' : ''}`}>

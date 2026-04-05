@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import './PasswordGate.css';
+import { trackEvent } from '../../analytics';
 
 const CORRECT_PASSWORD = '17042006';
+const ADMIN_PASSWORD = 'Admin@17';
 
-export default function PasswordGate({ onUnlock }) {
+export default function PasswordGate({ onUnlock, onAdminLogin }) {
   const [value, setValue] = useState('');
   const [shaking, setShaking] = useState(false);
   const [error, setError] = useState('');
@@ -11,10 +13,15 @@ export default function PasswordGate({ onUnlock }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (value === ADMIN_PASSWORD && onAdminLogin) {
+      onAdminLogin();
+      return;
+    }
     if (value === CORRECT_PASSWORD) {
       localStorage.setItem('lunar_unlocked', 'true');
       onUnlock();
     } else {
+      trackEvent('PasswordGate', 'failed_attempt', { attempted: value.length });
       setShaking(true);
       setError("are you poojetha? this gift was made only for her — you don't have permission to open it ok.");
       setValue('');
@@ -45,12 +52,10 @@ export default function PasswordGate({ onUnlock }) {
           ref={inputRef}
           className="gate-input"
           type="password"
-          inputMode="numeric"
           placeholder="Enter the password..."
           value={value}
           onChange={(e) => { setValue(e.target.value); setError(''); }}
           autoFocus
-          maxLength={8}
           autoComplete="off"
         />
       </form>

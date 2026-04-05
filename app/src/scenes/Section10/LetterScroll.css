@@ -1,0 +1,144 @@
+/* ─── LetterScroll.css ─── */
+.s10-letter-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 5, 20, 0.85); /* Deep dark background */
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.s10-letter-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.s10-paper-container {
+  width: 90%;
+  max-width: 600px;
+  height: 80vh;
+  background-color: #f7eed8;
+  background-image: 
+    radial-gradient(#e4d6bc 1px, transparent 1px),
+    linear-gradient(to right, rgba(0,0,0,0.02) 2px, transparent 2px),
+    repeating-linear-gradient(to bottom, #d9ccb4 0px, #d9ccb4 1px, transparent 1px, transparent 32px);
+  background-size: 20px 20px, 100% 100%, 100% 100%;
+  background-position: 0 0, 30px 0, 0 40px;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(180, 150, 100, 0.3);
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #d8c39e;
+  transform: translateY(40px) scale(0.95);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  padding: 40px 30px 80px 40px;
+}
+
+.s10-letter-overlay.show .s10-paper-container {
+  transform: translateY(0) scale(1);
+}
+
+/* Paper edge burn/wear effect */
+.s10-paper-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 60px rgba(130, 90, 50, 0.2);
+}
+
+/* Scrollbar styling for native feel */
+.s10-paper-container::-webkit-scrollbar {
+  width: 10px;
+}
+.s10-paper-container::-webkit-scrollbar-track {
+  background: rgba(200, 180, 140, 0.1);
+  border-radius: 10px;
+}
+.s10-paper-container::-webkit-scrollbar-thumb {
+  background: rgba(180, 150, 100, 0.4);
+  border-radius: 10px;
+}
+.s10-paper-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(180, 150, 100, 0.6);
+}
+
+/* Handwriting Typography */
+.s10-letter-content {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6rem;
+  color: #3b2f2f;
+  line-height: 2.2;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0px 1px 1px rgba(255,255,255,0.4);
+}
+
+.s10-letter-content p {
+  margin-bottom: 30px;
+  text-indent: 40px;
+}
+
+.s10-letter-content .s10-letter-greeting {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-indent: 0;
+  color: #261717;
+}
+
+.s10-letter-content .s10-letter-signoff {
+  margin-top: 60px;
+  text-align: right;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* Beautiful Action Button */
+.s10-fold-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.s10-fold-btn {
+  background: linear-gradient(135deg, #a05030, #6d331a);
+  color: #fffbdf;
+  border: 1px solid #c98e6e;
+  border-radius: 30px;
+  padding: 16px 40px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(100, 50, 30, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.s10-fold-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.4s ease;
+}
+
+.s10-fold-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(100, 50, 30, 0.6);
+  border-color: #ffdab3;
+}
+
+.s10-fold-btn:hover::before {
+  left: 150%;
+}

@@ -1,0 +1,26 @@
+.main-sections-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 250; /* Above the doors and Envelope scenes */
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.section-placeholder h1 {
+  font-family: 'DM Sans', sans-serif;
+  color: #d8b4fe;
+  font-weight: 300;
+  font-size: 2rem;
+  text-shadow: 0 0 20px rgba(216, 180, 254, 0.4);
+}
