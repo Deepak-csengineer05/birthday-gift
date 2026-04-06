@@ -242,3 +242,54 @@
   border-radius: 10px;
 }
 .hub-root::-webkit-scrollbar-thumb:hover { background: rgba(176, 136, 249, 0.6); }
+
+/* Special Mention Card */
+.hub-special-mention {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 20;
+  animation: hubFadeInUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, border-color 0.4s ease;
+}
+
+.hub-special-mention:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.mention-title {
+  font-size: 0.65rem;
+  color: #a395b5;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.mention-quote {
+  font-family: 'GreatVibes', cursive;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, #ffd8a0, #ffb2d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.mention-names {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
