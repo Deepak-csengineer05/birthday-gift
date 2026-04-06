@@ -693,7 +693,7 @@ export default function AdminDashboard() {
         <div className="admin-toast slide-in-top">
           <div className="toast-icon">🟢</div>
           <div className="toast-content">
-            <div className="toast-title">Target is ONLINE!</div>
+            <div className="toast-title">Person is ONLINE!</div>
             <div className="toast-message">They are actively viewing the experience now.</div>
           </div>
         </div>
