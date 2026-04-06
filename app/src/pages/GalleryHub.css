@@ -276,8 +276,28 @@
 }
 
 .mention-names {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-  margin-top: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #e8e0f5, #b39ddb, #b088f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 5px rgba(176, 136, 249, 0.2));
+  position: relative;
+  display: inline-block;
+  padding-top: 1.25rem;
+  text-transform: uppercase;
+}
+
+.mention-names::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(176, 136, 249, 0.8), transparent);
 }

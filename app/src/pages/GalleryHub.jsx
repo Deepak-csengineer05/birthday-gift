@@ -38,7 +38,7 @@ export default function GalleryHub({ onSelectScene, onSelectSection }) {
               <div key="special" className="hub-card hub-special-mention-card">
                 <span className="mention-title">Special Mention</span>
                 <span className="mention-quote">"Thanks for the Photos"</span>
-                <span className="mention-quote">Nidharshana &amp; Kanishka</span>
+                <span className="mention-names">Nidharshana &amp; Kanishka</span>
               </div>
             );
           }
