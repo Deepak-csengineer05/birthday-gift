@@ -15,6 +15,7 @@ const CARDS = [
   { id: 'sec6', typeLabel: 'Memory 06', title: 'Star Puzzle', icon: '✨', target: 6, type: 'section', gradient: 'linear-gradient(135deg, rgba(224,195,252,0.5) 0%, rgba(142,197,252,0.5) 100%)', glow: 'rgba(142,197,252,0.6)' },
   { id: 'sec7', typeLabel: 'Memory 07', title: 'Gallery', icon: '🖼️', target: 7, type: 'section', gradient: 'linear-gradient(135deg, rgba(240,147,251,0.5) 0%, rgba(245,87,108,0.5) 100%)', glow: 'rgba(240,147,251,0.6)' },
   { id: 'sec8', typeLabel: 'Memory 08', title: 'Midnight Diary', icon: '📖', target: 8, type: 'section', gradient: 'linear-gradient(135deg, rgba(94,231,223,0.5) 0%, rgba(180,144,202,0.5) 100%)', glow: 'rgba(180,144,202,0.6)' },
+  { id: 'special_mention', type: 'special' },
   { id: 'sec9', typeLabel: 'Memory 09', title: 'The Moon', icon: '🌙', target: 9, type: 'section', gradient: 'linear-gradient(135deg, rgba(102,126,234,0.5) 0%, rgba(118,75,162,0.5) 100%)', glow: 'rgba(102,126,234,0.6)' },
   { id: 'sec10', typeLabel: 'Memory 10', title: 'Heartfelt Letter', icon: '📜', target: 10, type: 'section', gradient: 'linear-gradient(135deg, rgba(255,8,68,0.5) 0%, rgba(255,177,153,0.5) 100%)', glow: 'rgba(255,8,68,0.6)' }
 ];
@@ -31,35 +32,41 @@ export default function GalleryHub({ onSelectScene, onSelectSection }) {
       </div>
 
       <div className="hub-grid">
-        {CARDS.map(card => (
-          <div 
-            key={card.id} 
-            className="hub-card" 
-            style={{ 
-              '--bg-gradient': card.gradient,
-              '--glow-color': card.glow
-            }}
-            onClick={() => {
-              if (card.type === 'scene') onSelectScene(card.target);
-              else onSelectSection(card.target);
-            }}
-          >
-            {/* The giant background watermark emoji */}
-            <div className="icon-bg">{card.icon}</div>
-            
-            <div className="card-content">
-              <div className="card-number">{card.typeLabel}</div>
-              <div className="title">{card.title}</div>
-              <button className="enter-btn">Relive</button>
-            </div>
-          </div>
-        ))}
-      </div>
+        {CARDS.map(card => {
+          if (card.type === 'special') {
+            return (
+              <div key="special" className="hub-card hub-special-mention-card">
+                <span className="mention-title">Special Mention</span>
+                <span className="mention-quote">"Thanks for the Photos"</span>
+                <span className="mention-names">Nidharshana &amp; Kanishka</span>
+              </div>
+            );
+          }
 
-      <div className="hub-special-mention">
-        <span className="mention-title">Special Mention</span>
-        <span className="mention-quote">"Thanks for the Photos"</span>
-        <span className="mention-names">Nidharshana &amp; Kanishka</span>
+          return (
+            <div 
+              key={card.id} 
+              className="hub-card" 
+              style={{ 
+                '--bg-gradient': card.gradient,
+                '--glow-color': card.glow
+              }}
+              onClick={() => {
+                if (card.type === 'scene') onSelectScene(card.target);
+                else onSelectSection(card.target);
+              }}
+            >
+              {/* The giant background watermark emoji */}
+              <div className="icon-bg">{card.icon}</div>
+              
+              <div className="card-content">
+                <div className="card-number">{card.typeLabel}</div>
+                <div className="title">{card.title}</div>
+                <button className="enter-btn">Relive</button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
