@@ -18,6 +18,21 @@ const SECTION9_QUESTIONS = [
   { id: 9, text: "Will you be his best friend in any situation, and not left him for anyone at any situation? Tell the truth.", type: 'input' },
 ];
 
+const LOCATION_MAP = {
+  'Scene1': 'Scene 1: Moon Twin',
+  'Scene3': 'Scene 3: Fireworks',
+  'Scene4': 'Scene 4: Envelope',
+  'Section2': 'Memory 02: Photos',
+  'Section4': 'Memory 04: Gifts',
+  'Section5': 'Memory 05: Cake',
+  'Section6': 'Memory 06: Puzzle',
+  'Section7': 'Memory 07: Scratch',
+  'Section8': 'Memory 08: Diary',
+  'Section9': 'Memory 09: Q&A',
+  'Section10': 'Memory 10: Letter',
+  'PasswordGate': 'Password Gate'
+};
+
 /* ── Time Formatter ────────────────────────────── */
 function formatDuration(totalSeconds) {
   if (!totalSeconds || totalSeconds < 0) return '0s';
@@ -202,6 +217,12 @@ export default function AdminDashboard() {
   const totalEvents = data.events.length;
   const lastVisit = data.visits.length > 0 ? data.visits[data.visits.length - 1] : null;
 
+  const recentEvents = [...data.events].reverse().slice(0, 20);
+  const mostRecentEvent = recentEvents[0];
+  const currentLocation = mostRecentEvent && LOCATION_MAP[mostRecentEvent.category] 
+    ? LOCATION_MAP[mostRecentEvent.category] 
+    : 'Unknown / Hub';
+
   /* ── Content Renderers ────────────────────────── */
   const renderOverview = () => (
     <div className="tab-pane fade-in">
@@ -210,9 +231,12 @@ export default function AdminDashboard() {
         <p className="admin-subtitle">
           Analytics Dashboard
           {isTargetOnline ? (
-            <span className="live-indicator online">🟢 Person is ONLINE</span>
+            <>
+              <span className="live-indicator online">🟢 ONLINE</span>
+              <span className="current-location-pill">📍 At: {currentLocation}</span>
+            </>
           ) : (
-            <span className="live-indicator offline">⚪ Person is Offline</span>
+            <span className="live-indicator offline">⚪ Offline</span>
           )}
         </p>
       </div>
@@ -279,6 +303,31 @@ export default function AdminDashboard() {
               <div className="empty-state">No failed attempts detected.</div>
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="admin-panel full-width mt-15">
+        <div className="panel-header">
+          <div className="panel-icon">⚡</div>
+          <div className="panel-title">Live Activity Feed</div>
+          <div className="panel-badge">{recentEvents.length} Recent Events</div>
+        </div>
+        <div className="event-list limit-height-large">
+          {recentEvents.length > 0 ? recentEvents.map((evt, i) => {
+            const rawData = evt.data ? JSON.stringify(evt.data).replace(/[{}"']/g, '').replace(/:/g, ': ') : '';
+            return (
+              <div key={i} className="event-item active-glow feed-item">
+                <div className="feed-category">{LOCATION_MAP[evt.category] || evt.category}</div>
+                <div className="event-text flex-1">
+                  <strong>{evt.action.replace(/_/g, ' ')}</strong>
+                  {rawData && <span className="feed-data-preview"> ({rawData})</span>}
+                </div>
+                <div className="event-time">{formatTime(evt.timestamp)}</div>
+              </div>
+            );
+          }) : (
+            <div className="empty-state">No recent activity.</div>
+          )}
         </div>
       </div>
     </div>
