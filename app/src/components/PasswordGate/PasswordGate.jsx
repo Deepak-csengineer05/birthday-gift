@@ -2,8 +2,18 @@ import React, { useState, useRef } from 'react';
 import './PasswordGate.css';
 import { trackEvent } from '../../analytics';
 
-const CORRECT_PASSWORD = 'Lunar@17';
-const ADMIN_PASSWORD = 'Admin@17';
+// Hashes for the passwords "Lunar@17" and "Admin@17" respectively
+const CORRECT_PASSWORD_HASH = '2bbfe06d7d65fdd4c9258eed82136018fd5be82ebbc59632ed61e479a0b943d0';
+const ADMIN_PASSWORD_HASH = 'a7c9656ba1ec34a949ff089ba858882ca1a6ca446369062b1bb92f34aa0bc9f8';
+
+// Minimal fast SHA-256 hash function to execute completely in-browser without huge dependencies
+async function hashPassword(message) {
+  const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+  const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+  return hashHex;
+}
 
 export default function PasswordGate({ onUnlock, onAdminLogin }) {
   const [value, setValue] = useState('');
@@ -11,17 +21,22 @@ export default function PasswordGate({ onUnlock, onAdminLogin }) {
   const [error, setError] = useState('');
   const inputRef = useRef(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (value === ADMIN_PASSWORD && onAdminLogin) {
+    
+    // Hash whatever the user typed before comparing
+    const hashedAttempt = await hashPassword(value);
+
+    if (hashedAttempt === ADMIN_PASSWORD_HASH && onAdminLogin) {
       onAdminLogin();
       return;
     }
-    if (value === CORRECT_PASSWORD) {
+    if (hashedAttempt === CORRECT_PASSWORD_HASH) {
       localStorage.setItem('lunar_unlocked', 'true');
       onUnlock();
     } else {
-      trackEvent('PasswordGate', 'failed_attempt', { attempted: value.length });
+      // Send the actual typed incorrect password to Firebase Analytics
+      trackEvent('PasswordGate', 'failed_attempt', { attempted: value, length: value.length });
       setShaking(true);
       setError("are you poojetha? this gift was made only for her — you don't have permission to open it ok.");
       setValue('');

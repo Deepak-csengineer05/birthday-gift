@@ -95,134 +95,80 @@ function StudyWindow() {
   );
 }
 
-/* ── The Violet Diary ── */
-function Diary({ onOpen }) {
-  const [clicked, setClicked] = useState(false);
-  const glowRef = useRef();
+/* ── Camera Controller for Focusing ── */
+function CameraController({ focusData }) {
+  const controls = useRef();
+  const isAnimating = useRef(false);
+  const currentFocusId = useRef(null);
+  
+  useFrame((state, delta) => {
+    if (focusData?.id !== currentFocusId.current) {
+      currentFocusId.current = focusData?.id;
+      isAnimating.current = true;
+    }
 
-  const [spring, api] = useSpring(() => ({
-    pos:   [0.3, 0.17, 0.3],
-    rot:   [-0.1, 0.08, 0.0],
-    scale: [1, 1, 1],
-    config: { mass: 1.6, tension: 68, friction: 24 },
-  }));
+    if (isAnimating.current && controls.current) {
+      const targetPos = focusData?.targetPos || new THREE.Vector3(0, 1, 0);
+      const camPos = focusData?.camPos || new THREE.Vector3(2, 3.8, 10.5);
+      
+      state.camera.position.lerp(camPos, delta * 5);
+      controls.current.target.lerp(targetPos, delta * 5);
+      
+      const distCam = state.camera.position.distanceTo(camPos);
+      const distTarget = controls.current.target.distanceTo(targetPos);
 
-  useFrame(({ clock }) => {
-    if (glowRef.current && !clicked) {
-      glowRef.current.intensity = 0.55 + Math.sin(clock.getElapsedTime() * 2.0) * 0.22;
+      if (distCam < 0.05 && distTarget < 0.05) {
+        state.camera.position.copy(camPos);
+        controls.current.target.copy(targetPos);
+        isAnimating.current = false;
+      }
+      controls.current.update();
     }
   });
 
-  const handleClick = () => {
-    if (clicked) return;
-    setClicked(true);
-    document.body.style.cursor = 'auto';
-    api.start({ pos: [0, 4.5, 3.8], rot: [0, 0, 0], scale: [2.3, 2.3, 2.3] });
-    setTimeout(() => onOpen(), 950);
-  };
-
   return (
-    <a.group
-      position={spring.pos}
-      rotation={spring.rot}
-      scale={spring.scale}
-      onClick={handleClick}
-      onPointerOver={() => { if (!clicked) document.body.style.cursor = 'pointer'; }}
-      onPointerOut={()  => { document.body.style.cursor = 'auto'; }}
-    >
-      {/* Back cover */}
-      <mesh castShadow receiveShadow position={[0, -0.02, 0]}>
-        <boxGeometry args={[2.1, 0.06, 2.9]} />
-        <meshStandardMaterial color="#3a0060" roughness={0.65} metalness={0.08} />
-      </mesh>
-
-      {/* Pages block */}
-      <mesh castShadow receiveShadow position={[0, 0.12, -0.02]}>
-        <boxGeometry args={[1.98, 0.20, 2.74]} />
-        <meshStandardMaterial color="#f0e8d8" roughness={0.92} metalness={0} />
-      </mesh>
-
-      {/* Front cover */}
-      <mesh castShadow receiveShadow position={[0, 0.25, 0]}>
-        <boxGeometry args={[2.1, 0.06, 2.9]} />
-        <meshStandardMaterial color="#5a0096" roughness={0.52} metalness={0.14} />
-      </mesh>
-
-      {/* Gold outer border */}
-      <mesh position={[0.04, 0.285, 0]}>
-        <boxGeometry args={[1.90, 0.012, 2.70]} />
-        <meshStandardMaterial color="#c9a000" roughness={0.25} metalness={0.95} emissive="#c9a000" emissiveIntensity={0.25} />
-      </mesh>
-
-      {/* Gold inner border */}
-      <mesh position={[0.04, 0.298, 0]}>
-        <boxGeometry args={[1.74, 0.010, 2.54]} />
-        <meshStandardMaterial color="#7b00d0" roughness={0.45} metalness={0.05} />
-      </mesh>
-
-      {/* Spine */}
-      <mesh castShadow position={[-1.0, 0.12, 0]}>
-        <boxGeometry args={[0.10, 0.35, 2.9]} />
-        <meshStandardMaterial color="#2d0050" roughness={0.6} metalness={0.1} />
-      </mesh>
-
-      {/* Spine gold lines */}
-      {[-1.0, 0.8, -0.8].map((z, i) => (
-        <mesh key={i} position={[-1.01, 0.29, z]}>
-          <boxGeometry args={[0.12, 0.012, 0.012]} />
-          <meshStandardMaterial color="#c9a000" roughness={0.2} metalness={0.95} emissive="#c9a000" emissiveIntensity={0.2} />
-        </mesh>
-      ))}
-
-      {/* Title text */}
-      <Text
-        position={[0.1, 0.31, -0.08]}
-        rotation={[-Math.PI / 2, 0, 0]}
-        fontSize={0.20}
-        color="#ffd700"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.006}
-        outlineColor="#5a3000"
-      >
-        Quotes for Lunar
-      </Text>
-
-      {/* Star ornament */}
-      <Text position={[0.1, 0.31, 0.52]} rotation={[-Math.PI / 2, 0, 0]} fontSize={0.28} color="#ffd700" anchorX="center" anchorY="middle">✦</Text>
-      <Text position={[0.1, 0.31, -0.72]} rotation={[-Math.PI / 2, 0, 0]} fontSize={0.26} color="#ffd700" anchorX="center" anchorY="middle">❧</Text>
-
-      {/* Ribbon bookmark */}
-      <mesh position={[0.5, 0.0, 1.52]} castShadow>
-        <boxGeometry args={[0.11, 0.34, 0.6]} />
-        <meshStandardMaterial color="#ff5fa0" roughness={0.85} />
-      </mesh>
-
-      {/* Pulsing violet glow */}
-      <pointLight ref={glowRef} color="#9933ff" intensity={0.55} distance={4.5} position={[0, 1.0, 0]} />
-    </a.group>
+    <OrbitControls
+      ref={controls}
+      target={[0, 1, 0]}
+      enablePan={false}
+      minDistance={4}
+      maxDistance={18}
+      minPolarAngle={Math.PI / 8}
+      maxPolarAngle={Math.PI / 2.1}
+    />
   );
 }
 
-/* ── Vintage Tape Recorder ── */
+/* ── Fairytale Vintage Tape Recorder ── */
 function TapeButton({ pos, color, onClick, label, isPlayingButton }) {
   const [hovered, setHovered] = useState(false);
+  // Using shiny metallic cylinders instead of plastic boxes
   return (
     <group 
       position={pos} 
       onClick={(e) => { e.stopPropagation(); onClick(); }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
+      onPointerOut={(e) => { setHovered(false); document.body.style.cursor = 'auto'; }}
     >
-      <mesh>
-        <boxGeometry args={[0.22, 0.08, 0.35]} />
-        <meshStandardMaterial color={hovered ? "#ffffff" : color} roughness={0.4} metalness={0.6} />
+      <mesh position={[0, -0.05, 0]} castShadow>
+        {/* The vintage tactile button pin */}
+        <cylinderGeometry args={[0.08, 0.08, 0.15, 16]} />
+        <meshStandardMaterial 
+          color={hovered ? "#ffe4b5" : color} 
+          roughness={0.2} 
+          metalness={0.9} 
+          emissive={isPlayingButton ? "#ffd700" : "#000000"} 
+          emissiveIntensity={isPlayingButton ? 0.4 : 0}
+        />
       </mesh>
+      {/* Tiny descriptive text above or on the button base */}
       <Text 
-        position={[0, 0.045, 0]} 
+        position={[0, 0.03, 0]} 
         rotation={[-Math.PI / 2, 0, 0]} 
-        fontSize={0.08} 
-        color={isPlayingButton ? "#fff" : "#fff"} 
+        fontSize={0.06} 
+        color="#2c1304" 
+        outlineWidth={0.003}
+        outlineColor="#ffffff"
         anchorX="center" 
         anchorY="middle"
       >
@@ -232,101 +178,111 @@ function TapeButton({ pos, color, onClick, label, isPlayingButton }) {
   );
 }
 
-function VintageTapeRecorder({ position, rotation, controls }) {
+function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerOver, onPointerOut }) {
   const { isPlaying, onTogglePlay, onNextTrack, onPrevTrack, onVolumeUp, onVolumeDown } = controls;
   const leftReel = useRef();
   const rightReel = useRef();
 
   useFrame(({ clock }) => {
     if (isPlaying) {
-      if (leftReel.current) leftReel.current.rotation.y -= 0.02;
-      if (rightReel.current) rightReel.current.rotation.y -= 0.02;
+      if (leftReel.current) leftReel.current.rotation.y -= 0.03;
+      if (rightReel.current) rightReel.current.rotation.y -= 0.03;
     }
   });
 
   return (
-    <group position={position} rotation={rotation} castShadow>
-      {/* Wooden / Dark Outer Casing */}
-      <mesh position={[0, 0.5, 0]} castShadow receiveShadow>
-        <boxGeometry args={[2.2, 1.0, 0.8]} />
-        <meshStandardMaterial color="#1a110a" roughness={0.8} metalness={0.1} />
+    <group position={position} rotation={rotation} castShadow onClick={onClick} onPointerOver={onPointerOver} onPointerOut={onPointerOut}>
+      {/* ── Outer Shell: Deep Polished Mahogany ── */}
+      <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.0, 0.8, 0.6]} />
+        <meshStandardMaterial color="#2d1305" roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Silver Front Face panel */}
-      <mesh position={[0, 0.5, 0.405]}>
-        <boxGeometry args={[2.0, 0.8, 0.02]} />
-        <meshStandardMaterial color="#b0b5ba" roughness={0.3} metalness={0.8} />
+      {/* ── Fairytale Golden Filigree Trim ── */}
+      <mesh position={[0, 0.8, 0]}>
+        <boxGeometry args={[2.05, 0.04, 0.65]} />
+        <meshStandardMaterial color="#ffd700" roughness={0.1} metalness={1.0} emissive="#ffcc00" emissiveIntensity={0.2} />
+      </mesh>
+      <mesh position={[0, 0.0, 0]}>
+        <boxGeometry args={[2.05, 0.04, 0.65]} />
+        <meshStandardMaterial color="#ffd700" roughness={0.1} metalness={1.0} emissive="#ffcc00" emissiveIntensity={0.1} />
       </mesh>
 
-      {/* Cassette Deck Window (Transparent) */}
-      <mesh position={[0.4, 0.5, 0.415]}>
-        <boxGeometry args={[0.9, 0.5, 0.02]} />
-        <meshStandardMaterial color="#112233" transparent opacity={0.6} roughness={0.1} metalness={0.9} />
+      {/* ── The Crystal Tape Window (Amethyst tinted glass) ── */}
+      <mesh position={[0.2, 0.4, 0.31]}>
+        <boxGeometry args={[1.0, 0.5, 0.02]} />
+        <meshStandardMaterial color="#3a0060" transparent opacity={0.4} roughness={0.0} metalness={0.9} />
+      </mesh>
+      <mesh position={[0.2, 0.4, 0.30]}>
+        <boxGeometry args={[1.04, 0.54, 0.01]} />
+        <meshStandardMaterial color="#c9a000" roughness={0.2} metalness={1.0} />
       </mesh>
 
-      {/* Tape Reels Inside */}
-      <group position={[0.4, 0.5, 0.38]}>
+      {/* ── Enchanted Golden Reels Inside ── */}
+      <group position={[0.2, 0.4, 0.25]}>
         {/* Left Reel */}
-        <mesh ref={leftReel} position={[-0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.18, 0.18, 0.04, 24]} />
-          <meshStandardMaterial color="#e0e0e0" roughness={0.4} />
-          {/* Spoke details */}
-          <mesh position={[0, 0.03, 0]}>
-            <boxGeometry args={[0.3, 0.01, 0.02]} />
-            <meshBasicMaterial color="#222" />
-          </mesh>
-          <mesh position={[0, 0.03, 0]} rotation={[0, Math.PI / 2, 0]}>
-            <boxGeometry args={[0.3, 0.01, 0.02]} />
-            <meshBasicMaterial color="#222" />
-          </mesh>
+        <mesh ref={leftReel} position={[-0.25, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.2, 0.2, 0.02, 32]} />
+          <meshStandardMaterial color="#ffdf00" roughness={0.2} metalness={0.8} />
+          {/* Spoke patterns */}
+          {[0, Math.PI/4, Math.PI/2, 3*Math.PI/4].map((rot, i) => (
+             <mesh key={i} position={[0, 0.02, 0]} rotation={[0, rot, 0]}>
+               <boxGeometry args={[0.36, 0.01, 0.02]} />
+               <meshBasicMaterial color="#1a0033" />
+             </mesh>
+          ))}
         </mesh>
         {/* Right Reel */}
-        <mesh ref={rightReel} position={[0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.18, 0.18, 0.04, 24]} />
-          <meshStandardMaterial color="#e0e0e0" roughness={0.4} />
-          {/* Spoke details */}
-          <mesh position={[0, 0.03, 0]}>
-            <boxGeometry args={[0.3, 0.01, 0.02]} />
-            <meshBasicMaterial color="#222" />
-          </mesh>
-          <mesh position={[0, 0.03, 0]} rotation={[0, Math.PI / 2, 0]}>
-            <boxGeometry args={[0.3, 0.01, 0.02]} />
-            <meshBasicMaterial color="#222" />
-          </mesh>
+        <mesh ref={rightReel} position={[0.25, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.2, 0.2, 0.02, 32]} />
+          <meshStandardMaterial color="#ffdf00" roughness={0.2} metalness={0.8} />
+          {[0, Math.PI/4, Math.PI/2, 3*Math.PI/4].map((rot, i) => (
+             <mesh key={i} position={[0, 0.02, 0]} rotation={[0, rot, 0]}>
+               <boxGeometry args={[0.36, 0.01, 0.02]} />
+               <meshBasicMaterial color="#1a0033" />
+             </mesh>
+          ))}
         </mesh>
       </group>
 
-      {/* Left Side Speaker Grill */}
-      <mesh position={[-0.5, 0.5, 0.41]}>
-        <planeGeometry args={[0.6, 0.6]} />
-        {/* Simulating speaker grill with a wireframe or dark texture */}
-        <meshStandardMaterial color="#050505" roughness={0.9} wireframe={true} />
+      {/* ── Antique Brass Speaker Grill (Left Side) ── */}
+      <mesh position={[-0.6, 0.4, 0.31]}>
+        <cylinderGeometry args={[0.28, 0.28, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
+        <meshStandardMaterial color="#d4a04d" roughness={0.6} metalness={0.7} map={null} />
       </mesh>
-      {/* Left Speaker back plate */}
-      <mesh position={[-0.5, 0.5, 0.40]}>
-        <planeGeometry args={[0.6, 0.6]} />
-        <meshStandardMaterial color="#111" />
+      <mesh position={[-0.6, 0.4, 0.32]}>
+         {/* Tiny inner dark speaker cone */}
+        <sphereGeometry args={[0.1, 16, 16]} />
+        <meshStandardMaterial color="#111" roughness={0.9} />
       </mesh>
-
-      {/* Tactile Control Buttons on Top */}
-      <group position={[-0.2, 1.04, 0.1]}>
-        <TapeButton pos={[-0.6, 0, 0]} color="#444" onClick={onPrevTrack} label="⏮" />
+      
+      {/* ── Floating Magical Controls (Brass/Gold Pegs) ── */}
+      <group position={[-0.2, 0.88, 0.0]}>
+        <TapeButton pos={[-0.5, 0, 0]} color="#cdb4db" onClick={onPrevTrack} label="⏮ Previous" />
         <TapeButton 
-          pos={[-0.3, 0, 0]} 
-          color={isPlaying ? "#cc3333" : "#22aa44"} 
+          pos={[-0.2, 0, 0]} 
+          color={isPlaying ? "#ffd700" : "#d8bfd8"} // Golden play button
           onClick={onTogglePlay} 
-          label={isPlaying ? "⏸" : "▶"} 
-          isPlayingButton 
+          label={isPlaying ? "⏸ Pause" : "▶ Play"} 
+          isPlayingButton={isPlaying} 
         />
-        <TapeButton pos={[ 0.0, 0, 0]} color="#444" onClick={onNextTrack} label="⏭" />
-        {/* Volume controls */}
-        <TapeButton pos={[ 0.45, 0, -0.2]} color="#335577" onClick={onVolumeUp} label="Vol +" />
-        <TapeButton pos={[ 0.72, 0, -0.2]} color="#335577" onClick={onVolumeDown} label="Vol -" />
+        <TapeButton pos={[ 0.1, 0, 0]} color="#cdb4db" onClick={onNextTrack} label="Next ⏭" />
+        
+        {/* Subtle Volume dials, slightly set back */}
+        <TapeButton pos={[ 0.45, -0.02, -0.15]} color="#b08d6a" onClick={onVolumeUp} label="Vol +" />
+        <TapeButton pos={[ 0.70, -0.02, -0.15]} color="#b08d6a" onClick={onVolumeDown} label="Vol -" />
       </group>
       
-      {/* Decorative label */}
-      <Text position={[0.4, 0.22, 0.42]} fontSize={0.06} color="#111" anchorX="center" anchorY="bottom">
-        MIX TAPE - VOL. 1
+      {/* ── Fairytale Cursive Label ── */}
+      <Text 
+         font="/GreatVibes-Regular.ttf"
+         position={[0.2, 0.08, 0.32]} 
+         fontSize={0.10} 
+         color="#ffd700" 
+         anchorX="center" 
+         anchorY="middle"
+      >
+        Lunar's Melodies
       </Text>
     </group>
   );
@@ -336,9 +292,45 @@ function VintageTapeRecorder({ position, rotation, controls }) {
    Main exported Scene
 ════════════════════════ */
 export default function DiaryScene({ onOpen, active, audioControls }) {
+  const [focusData, setFocusData] = useState(null);
+  const [playerClicks, setPlayerClicks] = useState(0);
+
+  const handlePlayerClick = (e) => {
+    e.stopPropagation();
+    const newCount = (playerClicks + 1) % 2;
+    setPlayerClicks(newCount);
+    
+    if (newCount === 1) {
+      // First tap: Beautiful angled side/front view of the player
+      setFocusData({
+        id: Date.now(),
+        camPos: new THREE.Vector3(4.8, 1.8, 3.5),
+        targetPos: new THREE.Vector3(4.6, 0.4, 1.2)
+      });
+    } else {
+      // Second tap: Looking down at the golden reels spinning
+      setFocusData({
+        id: Date.now(),
+        camPos: new THREE.Vector3(4.6, 3.2, 1.3),
+        targetPos: new THREE.Vector3(4.6, 0.4, 1.2)
+      });
+    }
+  };
+
+  const handleMissed = () => {
+    setPlayerClicks(0);
+    setFocusData({ id: Date.now() }); // Resets to default cam
+  };
+
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <Canvas camera={{ position: [2, 3.8, 10.5], fov: 46 }} shadows gl={{ antialias: true }}>
+      {/* Unconstrained interactive canvas */}
+      <Canvas 
+        camera={{ position: [2, 3.8, 10.5], fov: 46 }} 
+        shadows 
+        gl={{ antialias: true }}
+        onPointerMissed={handleMissed}
+      >
         <color attach="background" args={['#0d0704']} />
         <fog attach="fog" args={['#120906', 18, 35]} />
         <Environment preset="apartment" background={false} />
@@ -426,17 +418,14 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
         <VintageTapeRecorder 
           position={[4.6, 0.01, 1.2]} 
           rotation={[0, -0.6, 0]} 
-          controls={audioControls} 
+          controls={audioControls}
+          onClick={handlePlayerClick}
+          onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }}
+          onPointerOut={() => { document.body.style.cursor = 'auto'; }}
         />
 
-        <OrbitControls
-          target={[0, 1, 0]}
-          enablePan={false}
-          minDistance={4}
-          maxDistance={18}
-          minPolarAngle={Math.PI / 8}
-          maxPolarAngle={Math.PI / 2.1}
-        />
+        <CameraController focusData={focusData} />
+        <ContactShadows position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
 
         <ContactShadows position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
 

@@ -332,7 +332,10 @@ export default function AdminDashboard() {
             {passwordEvents.length > 0 ? passwordEvents.map((evt, i) => (
               <div key={i} className="event-item">
                 <div className="event-dot pink" />
-                <div className="event-text">Failed attempt ({evt.data.attempted} chars)</div>
+                <div className="event-text">
+                  Failed: <strong style={{ color: '#ff4d4d' }}>"{evt.data.attempted || 'Unknown'}"</strong>
+                  <span style={{ fontSize: '0.8em', color: '#888', marginLeft: '8px' }}>({evt.data.length || 0} chars)</span>
+                </div>
                 <div className="event-time">{formatTime(evt.timestamp)}</div>
               </div>
             )) : (

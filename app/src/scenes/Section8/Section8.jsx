@@ -34,13 +34,28 @@ export default function Section8({ onNext }) {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load(); // Forces the new song to load
+      if (isPlaying) {
+        audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
+      }
+    }
+  }, [trackIndex]);
+
+  useEffect(() => {
+    if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
       } else {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, trackIndex, volume]);
+  }, [isPlaying]);
 
   const handleNextTrack = () => setTrackIndex(i => (i + 1) % TRACKS.length);
   const handlePrevTrack = () => setTrackIndex(i => (i - 1 + TRACKS.length) % TRACKS.length);

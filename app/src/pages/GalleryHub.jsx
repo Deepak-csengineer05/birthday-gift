@@ -27,7 +27,7 @@ export default function GalleryHub({ onSelectScene, onSelectSection }) {
       <div className="hub-background-particles" />
       
       <div className="hub-header">
-        <h1>Your Memories</h1>
+        <h1>Lunar Memories</h1>
         <p>A collection of moments to revisit anytime</p>
       </div>
 
