@@ -212,6 +212,8 @@ export default function AdminDashboard() {
   const letterTimeEvent = sec10Events.find(e => e.action === 'letter_read_time');
   const skippedFireworks = scene3Events.some(e => e.action === 'skip_fireworks');
 
+  const sec9Options = sec9Events.filter(e => e.action === 'option_click');
+
   const totalEvents = data.events.length;
   const lastVisit = data.visits.length > 0 ? data.visits[data.visits.length - 1] : null;
 
