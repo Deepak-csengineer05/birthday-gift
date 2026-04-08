@@ -57,7 +57,7 @@ function formatTimestamp(iso) {
 function formatTime(iso) {
   if (!iso) return '';
   const d = new Date(iso);
-  return d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  return d.toLocaleString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
 }
 
 /* ── Stars Background ──────────────────────────── */
@@ -212,10 +212,41 @@ export default function AdminDashboard() {
   const letterTimeEvent = sec10Events.find(e => e.action === 'letter_read_time');
   const skippedFireworks = scene3Events.some(e => e.action === 'skip_fireworks');
 
-  const sec9Options = sec9Events.filter(e => e.action === 'option_click');
-
   const totalEvents = data.events.length;
   const lastVisit = data.visits.length > 0 ? data.visits[data.visits.length - 1] : null;
+
+  /* ── Calculate Most Loved Memory ── */
+  const calculateMostLoved = () => {
+    if (totalEvents === 0) return 'None';
+    
+    // Group events by category (excluding system/login events if desired, but we'll use LOCATION_MAP to filter valid sections)
+    const categoryCounts = {};
+    data.events.forEach(evt => {
+      const category = evt.category;
+      if (LOCATION_MAP[category]) {
+        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+      }
+    });
+
+    // Find the category with the highest count
+    let maxCount = 0;
+    let topCategory = null;
+    
+    for (const [category, count] of Object.entries(categoryCounts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        topCategory = category;
+      }
+    }
+
+    if (!topCategory) return 'None';
+    
+    // Return a short, friendly name (e.g. "Memory 02", "Scene 1")
+    const fullName = LOCATION_MAP[topCategory];
+    return fullName.split(':')[0]; // Extracts just the "Scene X" or "Memory XX" part
+  };
+  
+  const mostLovedMemory = calculateMostLoved();
 
   const recentEvents = [...data.events].reverse().slice(0, 20);
   const mostRecentEvent = recentEvents[0];
@@ -263,6 +294,11 @@ export default function AdminDashboard() {
             {lastVisit ? formatTimestamp(lastVisit) : 'Never'}
           </div>
           <div className="stat-label">Last Visit</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">❤️</div>
+          <div className="stat-value">{mostLovedMemory}</div>
+          <div className="stat-label">Most Loved</div>
         </div>
       </div>
 

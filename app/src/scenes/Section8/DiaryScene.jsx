@@ -204,10 +204,138 @@ function Diary({ onOpen }) {
   );
 }
 
+/* ── Vintage Tape Recorder ── */
+function TapeButton({ pos, color, onClick, label, isPlayingButton }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <group 
+      position={pos} 
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
+    >
+      <mesh>
+        <boxGeometry args={[0.22, 0.08, 0.35]} />
+        <meshStandardMaterial color={hovered ? "#ffffff" : color} roughness={0.4} metalness={0.6} />
+      </mesh>
+      <Text 
+        position={[0, 0.045, 0]} 
+        rotation={[-Math.PI / 2, 0, 0]} 
+        fontSize={0.08} 
+        color={isPlayingButton ? "#fff" : "#fff"} 
+        anchorX="center" 
+        anchorY="middle"
+      >
+        {label}
+      </Text>
+    </group>
+  );
+}
+
+function VintageTapeRecorder({ position, rotation, controls }) {
+  const { isPlaying, onTogglePlay, onNextTrack, onPrevTrack, onVolumeUp, onVolumeDown } = controls;
+  const leftReel = useRef();
+  const rightReel = useRef();
+
+  useFrame(({ clock }) => {
+    if (isPlaying) {
+      if (leftReel.current) leftReel.current.rotation.y -= 0.02;
+      if (rightReel.current) rightReel.current.rotation.y -= 0.02;
+    }
+  });
+
+  return (
+    <group position={position} rotation={rotation} castShadow>
+      {/* Wooden / Dark Outer Casing */}
+      <mesh position={[0, 0.5, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.2, 1.0, 0.8]} />
+        <meshStandardMaterial color="#1a110a" roughness={0.8} metalness={0.1} />
+      </mesh>
+
+      {/* Silver Front Face panel */}
+      <mesh position={[0, 0.5, 0.405]}>
+        <boxGeometry args={[2.0, 0.8, 0.02]} />
+        <meshStandardMaterial color="#b0b5ba" roughness={0.3} metalness={0.8} />
+      </mesh>
+
+      {/* Cassette Deck Window (Transparent) */}
+      <mesh position={[0.4, 0.5, 0.415]}>
+        <boxGeometry args={[0.9, 0.5, 0.02]} />
+        <meshStandardMaterial color="#112233" transparent opacity={0.6} roughness={0.1} metalness={0.9} />
+      </mesh>
+
+      {/* Tape Reels Inside */}
+      <group position={[0.4, 0.5, 0.38]}>
+        {/* Left Reel */}
+        <mesh ref={leftReel} position={[-0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.04, 24]} />
+          <meshStandardMaterial color="#e0e0e0" roughness={0.4} />
+          {/* Spoke details */}
+          <mesh position={[0, 0.03, 0]}>
+            <boxGeometry args={[0.3, 0.01, 0.02]} />
+            <meshBasicMaterial color="#222" />
+          </mesh>
+          <mesh position={[0, 0.03, 0]} rotation={[0, Math.PI / 2, 0]}>
+            <boxGeometry args={[0.3, 0.01, 0.02]} />
+            <meshBasicMaterial color="#222" />
+          </mesh>
+        </mesh>
+        {/* Right Reel */}
+        <mesh ref={rightReel} position={[0.22, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.04, 24]} />
+          <meshStandardMaterial color="#e0e0e0" roughness={0.4} />
+          {/* Spoke details */}
+          <mesh position={[0, 0.03, 0]}>
+            <boxGeometry args={[0.3, 0.01, 0.02]} />
+            <meshBasicMaterial color="#222" />
+          </mesh>
+          <mesh position={[0, 0.03, 0]} rotation={[0, Math.PI / 2, 0]}>
+            <boxGeometry args={[0.3, 0.01, 0.02]} />
+            <meshBasicMaterial color="#222" />
+          </mesh>
+        </mesh>
+      </group>
+
+      {/* Left Side Speaker Grill */}
+      <mesh position={[-0.5, 0.5, 0.41]}>
+        <planeGeometry args={[0.6, 0.6]} />
+        {/* Simulating speaker grill with a wireframe or dark texture */}
+        <meshStandardMaterial color="#050505" roughness={0.9} wireframe={true} />
+      </mesh>
+      {/* Left Speaker back plate */}
+      <mesh position={[-0.5, 0.5, 0.40]}>
+        <planeGeometry args={[0.6, 0.6]} />
+        <meshStandardMaterial color="#111" />
+      </mesh>
+
+      {/* Tactile Control Buttons on Top */}
+      <group position={[-0.2, 1.04, 0.1]}>
+        <TapeButton pos={[-0.6, 0, 0]} color="#444" onClick={onPrevTrack} label="⏮" />
+        <TapeButton 
+          pos={[-0.3, 0, 0]} 
+          color={isPlaying ? "#cc3333" : "#22aa44"} 
+          onClick={onTogglePlay} 
+          label={isPlaying ? "⏸" : "▶"} 
+          isPlayingButton 
+        />
+        <TapeButton pos={[ 0.0, 0, 0]} color="#444" onClick={onNextTrack} label="⏭" />
+        {/* Volume controls */}
+        <TapeButton pos={[ 0.45, 0, -0.2]} color="#335577" onClick={onVolumeUp} label="Vol +" />
+        <TapeButton pos={[ 0.72, 0, -0.2]} color="#335577" onClick={onVolumeDown} label="Vol -" />
+      </group>
+      
+      {/* Decorative label */}
+      <Text position={[0.4, 0.22, 0.42]} fontSize={0.06} color="#111" anchorX="center" anchorY="bottom">
+        MIX TAPE - VOL. 1
+      </Text>
+    </group>
+  );
+}
+
 /* ════════════════════════
    Main exported Scene
 ════════════════════════ */
-export default function DiaryScene({ onOpen, active }) {
+export default function DiaryScene({ onOpen, active, audioControls }) {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       <Canvas camera={{ position: [2, 3.8, 10.5], fov: 46 }} shadows gl={{ antialias: true }}>
@@ -293,6 +421,13 @@ export default function DiaryScene({ onOpen, active }) {
           <cylinderGeometry args={[0.018, 0.004, 1.4, 8]} />
           <meshStandardMaterial color="#e8d8a0" roughness={0.9} />
         </mesh>
+
+        {/* ── The Realistic Vintage Tape Recorder ── */}
+        <VintageTapeRecorder 
+          position={[4.6, 0.01, 1.2]} 
+          rotation={[0, -0.6, 0]} 
+          controls={audioControls} 
+        />
 
         <OrbitControls
           target={[0, 1, 0]}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Section8.css';
 import DiaryScene from './DiaryScene';
 import DiaryBook  from './DiaryBook';
@@ -14,18 +14,65 @@ const QUOTES = [
   "Some bonds are written in stars — ours was written in gold. 💛",
 ];
 
+const TRACKS = [
+  '/bg-music-4.webm',
+  '/bg-music-1.webm',
+  '/bg-music-2.webm',
+  '/bg-music-3.webm',
+];
+
 export default function Section8({ onNext }) {
   const [phase,     setPhase]     = useState('table');   // 'table' | 'reading' | 'favourite'
   const [favourite, setFavourite] = useState(null);
 
+  // Audio State & Logic
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [volume, setVolume] = useState(0.5);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+      if (isPlaying) {
+        audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying, trackIndex, volume]);
+
+  const handleNextTrack = () => setTrackIndex(i => (i + 1) % TRACKS.length);
+  const handlePrevTrack = () => setTrackIndex(i => (i - 1 + TRACKS.length) % TRACKS.length);
+  const handleTogglePlay = () => setIsPlaying(prev => !prev);
+  const handleVolumeUp = () => setVolume(v => Math.min(1, v + 0.1));
+  const handleVolumeDown = () => setVolume(v => Math.max(0, v - 0.1));
+
   return (
     <div className="s8-root">
       {/* Background Audio */}
-      <audio src="/bg-music-4.webm" autoPlay loop style={{ display: 'none' }} />
+      <audio 
+        ref={audioRef}
+        src={TRACKS[trackIndex]} 
+        onEnded={handleNextTrack}
+        autoPlay 
+        style={{ display: 'none' }} 
+      />
 
       {/* ── R3F scene layer — fades when book opens ── */}
       <div className={`s8-scene-layer ${phase !== 'table' ? 's8-faded' : ''}`}>
-        <DiaryScene active={phase === 'table'} onOpen={() => setPhase('reading')} />
+        <DiaryScene 
+          active={phase === 'table'} 
+          onOpen={() => setPhase('reading')}
+          audioControls={{
+            isPlaying,
+            onTogglePlay: handleTogglePlay,
+            onNextTrack: handleNextTrack,
+            onPrevTrack: handlePrevTrack,
+            onVolumeUp: handleVolumeUp,
+            onVolumeDown: handleVolumeDown
+          }}
+        />
       </div>
 
       {/* ── Book reading phase ── */}
