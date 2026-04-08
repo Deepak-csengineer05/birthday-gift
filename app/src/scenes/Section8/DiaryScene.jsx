@@ -153,7 +153,7 @@ function TapeButton({ pos, color, onClick, label, isPlayingButton, size = [0.18,
         {/* Chunky rectangular retro buttons */}
         <boxGeometry args={size} />
         <meshStandardMaterial 
-          color={hovered ? "#ffe0e0" : color} 
+          color={hovered ? "#dfc9eb" : color} 
           roughness={0.3} 
           metalness={0.1}
         />
@@ -163,7 +163,7 @@ function TapeButton({ pos, color, onClick, label, isPlayingButton, size = [0.18,
         position={[0, 0.035, 0]} 
         rotation={[-Math.PI / 2, 0, 0]} 
         fontSize={0.05} 
-        color="#555" 
+        color="#321e52" 
         anchorX="center" 
         anchorY="middle"
       >
@@ -187,52 +187,52 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
 
   return (
     <group position={position} rotation={rotation} castShadow onClick={onClick} onPointerOver={onPointerOver} onPointerOut={onPointerOut}>
-      {/* ── Main Body: Cute Pastel Pink/Peach Retro Plastic ── */}
+      {/* ── Main Body: Cute Violet/Lavender Retro Plastic ── */}
       <mesh position={[0, 0.45, 0]} castShadow receiveShadow>
         <boxGeometry args={[2.2, 0.9, 0.4]} />
-        <meshStandardMaterial color="#ffb7b2" roughness={0.3} metalness={0.1} />
+        <meshStandardMaterial color="#6a4ca3" roughness={0.3} metalness={0.1} />
       </mesh>
       
-      {/* ── Front Face Plate: Creamy White ── */}
+      {/* ── Front Face Plate: Soft Creamy Lavender ── */}
       <mesh position={[0, 0.45, 0.205]} receiveShadow>
         <boxGeometry args={[2.1, 0.8, 0.02]} />
-        <meshStandardMaterial color="#fff2e6" roughness={0.4} />
+        <meshStandardMaterial color="#eae0f7" roughness={0.4} />
       </mesh>
 
       {/* ── Left Speaker ── */}
       <group position={[-0.65, 0.45, 0.21]}>
-        <mesh>
-          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#ffdac1" roughness={0.8} />
+        <mesh rotation={[Math.PI/2, 0, 0]}>
+          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} />
+          <meshStandardMaterial color="#4f3880" roughness={0.8} />
         </mesh>
-        <mesh position={[0, 0, 0.01]}>
-          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#e2c1c1" roughness={0.5} />
+        <mesh position={[0, 0, 0.01]} rotation={[Math.PI/2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} />
+          <meshStandardMaterial color="#321e52" roughness={0.5} />
         </mesh>
         {/* Speaker Grill Dots */}
         {[...Array(8)].map((_, i) => (
           <mesh key={`ls-${i}`} position={[Math.cos(i*Math.PI/4)*0.2, Math.sin(i*Math.PI/4)*0.2, 0.015]}>
             <circleGeometry args={[0.02, 8]} />
-            <meshBasicMaterial color="#d4a5a5" />
+            <meshBasicMaterial color="#bda8d6" />
           </mesh>
         ))}
       </group>
 
       {/* ── Right Speaker ── */}
       <group position={[0.65, 0.45, 0.21]}>
-        <mesh>
-          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#ffdac1" roughness={0.8} />
+        <mesh rotation={[Math.PI/2, 0, 0]}>
+          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} />
+          <meshStandardMaterial color="#4f3880" roughness={0.8} />
         </mesh>
-        <mesh position={[0, 0, 0.01]}>
-          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#e2c1c1" roughness={0.5} />
+        <mesh position={[0, 0, 0.01]} rotation={[Math.PI/2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} />
+          <meshStandardMaterial color="#321e52" roughness={0.5} />
         </mesh>
         {/* Speaker Grill Dots */}
         {[...Array(8)].map((_, i) => (
           <mesh key={`rs-${i}`} position={[Math.cos(i*Math.PI/4)*0.2, Math.sin(i*Math.PI/4)*0.2, 0.015]}>
             <circleGeometry args={[0.02, 8]} />
-            <meshBasicMaterial color="#d4a5a5" />
+            <meshBasicMaterial color="#bda8d6" />
           </mesh>
         ))}
       </group>
@@ -242,42 +242,47 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
         {/* Inner Dark Area (where the tape sits) */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[0.6, 0.36, 0.01]} />
-          <meshStandardMaterial color="#444" />
+          <meshStandardMaterial color="#2d1c4a" />
         </mesh>
         
         {/* The Cassette Tape Itself */}
         <mesh position={[0, -0.02, 0.005]}>
           <boxGeometry args={[0.5, 0.3, 0.01]} />
-          <meshStandardMaterial color="#ffdac1" roughness={0.6} /> {/* Pastel cassette casing */}
+          <meshStandardMaterial color="#8e6ec2" roughness={0.6} /> {/* Pastel cassette casing */}
         </mesh>
         {/* Tape label block */}
         <mesh position={[0, -0.02, 0.01]}>
           <boxGeometry args={[0.38, 0.15, 0.01]} />
-          <meshStandardMaterial color="#fff" />
+          <meshStandardMaterial color="#d9ccf0" />
         </mesh>
 
         {/* Reels */}
-        <mesh ref={leftReel} position={[-0.12, -0.02, 0.02]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#fff" />
-          <mesh position={[0, 0, 0.006]}>
-             <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} rotation={[Math.PI/2, 0, 0]} />
-             <meshBasicMaterial color="#e2c1c1" />
+        <group ref={leftReel} position={[-0.12, -0.02, 0.02]}>
+          <mesh rotation={[Math.PI/2, 0, 0]}>
+            <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} />
+            <meshStandardMaterial color="#fff" />
           </mesh>
-        </mesh>
-        <mesh ref={rightReel} position={[0.12, -0.02, 0.02]}>
-          <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} rotation={[Math.PI/2, 0, 0]} />
-          <meshStandardMaterial color="#fff" />
-          <mesh position={[0, 0, 0.006]}>
-             <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} rotation={[Math.PI/2, 0, 0]} />
-             <meshBasicMaterial color="#e2c1c1" />
+          <mesh position={[0, 0, 0.006]} rotation={[Math.PI/2, 0, 0]}>
+            <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} />
+            <meshBasicMaterial color="#4f3880" />
           </mesh>
-        </mesh>
+        </group>
+
+        <group ref={rightReel} position={[0.12, -0.02, 0.02]}>
+          <mesh rotation={[Math.PI/2, 0, 0]}>
+            <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} />
+            <meshStandardMaterial color="#fff" />
+          </mesh>
+          <mesh position={[0, 0, 0.006]} rotation={[Math.PI/2, 0, 0]}>
+            <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} />
+            <meshBasicMaterial color="#4f3880" />
+          </mesh>
+        </group>
 
         {/* Glass Cover */}
         <mesh position={[0, 0, 0.035]}>
           <boxGeometry args={[0.6, 0.36, 0.01]} />
-          <meshPhysicalMaterial color="#cde3eb" transmission={0.9} transparent opacity={0.4} roughness={0.1} />
+          <meshPhysicalMaterial color="#dfd8eb" transmission={0.9} transparent opacity={0.4} roughness={0.1} />
         </mesh>
       </group>
 
@@ -285,15 +290,15 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
       <group position={[0, 0.95, 0]}>
         <mesh position={[-0.8, 0, 0]}>
           <boxGeometry args={[0.06, 0.3, 0.15]} />
-          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+          <meshStandardMaterial color="#b08fe8" roughness={0.4} />
         </mesh>
         <mesh position={[0.8, 0, 0]}>
           <boxGeometry args={[0.06, 0.3, 0.15]} />
-          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+          <meshStandardMaterial color="#b08fe8" roughness={0.4} />
         </mesh>
         <mesh position={[0, 0.12, 0]}>
           <boxGeometry args={[1.66, 0.06, 0.15]} />
-          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+          <meshStandardMaterial color="#b08fe8" roughness={0.4} />
         </mesh>
       </group>
 
@@ -302,21 +307,21 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
         {/* Recessed button tray */}
         <mesh position={[0, -0.02, 0.0]}>
           <boxGeometry args={[1.6, 0.02, 0.25]} />
-          <meshStandardMaterial color="#f0d1d1" roughness={0.5} />
+          <meshStandardMaterial color="#8e6ec2" roughness={0.5} />
         </mesh>
 
         <TapeButton pos={[-0.6, 0.01, 0]} color="#fff" onClick={onPrevTrack} label="⏮" />
         <TapeButton 
           pos={[-0.3, 0.01, 0]} 
-          color={isPlaying ? "#ff9a9e" : "#fff"} 
+          color={isPlaying ? "#d4a8ff" : "#fff"} 
           onClick={onTogglePlay} 
           label={isPlaying ? "⏸" : "▶"} 
         />
         <TapeButton pos={[ 0.0, 0.01, 0]} color="#fff" onClick={onNextTrack} label="⏭" />
         
         {/* Smaller Volume Buttons */}
-        <TapeButton pos={[ 0.4, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#ffdac1" onClick={onVolumeUp} label="Vol +" />
-        <TapeButton pos={[ 0.65, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#ffdac1" onClick={onVolumeDown} label="Vol -" />
+        <TapeButton pos={[ 0.4, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#dfc9eb" onClick={onVolumeUp} label="Vol +" />
+        <TapeButton pos={[ 0.65, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#dfc9eb" onClick={onVolumeDown} label="Vol -" />
       </group>
       
       {/* ── Cute Bottom Label ── */}
@@ -324,7 +329,7 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
          font="/GreatVibes-Regular.ttf"
          position={[0, 0.15, 0.22]} 
          fontSize={0.12} 
-         color="#d4a5a5" 
+         color="#6a4ca3" 
          anchorX="center" 
          anchorY="middle"
       >

@@ -15,9 +15,9 @@ const QUOTES = [
 ];
 
 const TRACKS = [
-  '/bg-music-1.webm',
-  '/bg-music-2.webm',
-  '/bg-music-3.webm',
+  '/bg-music.mp3',
+  '/bg-music-2.mp3',
+  '/bg-music-3.mp3',
 ];
 
 export default function Section8({ onNext }) {
