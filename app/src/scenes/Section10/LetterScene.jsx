@@ -404,7 +404,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
     e.stopPropagation();
     setFocusData({
       id: Date.now(),
-      camPos: new THREE.Vector3(pos[0], pos[1] + 0.2, pos[2] + 3.0),
+      camPos: new THREE.Vector3(pos[0], pos[1] + 0.2, pos[2] + 5.0),
       targetPos: new THREE.Vector3(pos[0], pos[1] + 0.2, pos[2])
     });
   };
