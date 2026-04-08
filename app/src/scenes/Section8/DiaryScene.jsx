@@ -350,7 +350,7 @@ function Diary({ onOpen }) {
         rotation={[-Math.PI / 2, 0, 0]}
         fontSize={0.15}
         color="#d4af37"
-        font="https://fonts.gstatic.com/s/greatvibes/v14/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.woff"
+        font="/GreatVibes-Regular.ttf"
       >
         Our Memories
       </Text>
