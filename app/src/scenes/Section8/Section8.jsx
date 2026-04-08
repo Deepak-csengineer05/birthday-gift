@@ -15,7 +15,6 @@ const QUOTES = [
 ];
 
 const TRACKS = [
-  '/bg-music-4.webm',
   '/bg-music-1.webm',
   '/bg-music-2.webm',
   '/bg-music-3.webm',
@@ -26,34 +25,35 @@ export default function Section8({ onNext }) {
   const [favourite, setFavourite] = useState(null);
 
   // Audio State & Logic
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const bgAudioRef = useRef(null);
+  const tapeAudioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false); // Tape starts stopped
   const [trackIndex, setTrackIndex] = useState(0);
   const [volume, setVolume] = useState(0.5);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
+    if (tapeAudioRef.current) {
+      tapeAudioRef.current.volume = volume;
     }
   }, [volume]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.load(); // Forces the new song to load
-      if (isPlaying) {
-        audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
-      }
+    if (tapeAudioRef.current && isPlaying) {
+      tapeAudioRef.current.pause();
+      tapeAudioRef.current.load(); // Forces the new song to load
+      tapeAudioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
     }
   }, [trackIndex]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
-      } else {
-        audioRef.current.pause();
-      }
+    if (isPlaying) {
+      // Pause Section BG, Play Tape
+      if (bgAudioRef.current) bgAudioRef.current.pause();
+      if (tapeAudioRef.current) tapeAudioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
+    } else {
+      // Pause Tape, Play Section BG
+      if (tapeAudioRef.current) tapeAudioRef.current.pause();
+      if (bgAudioRef.current) bgAudioRef.current.play().catch(err => console.log('Autoplay blocked:', err));
     }
   }, [isPlaying]);
 
@@ -65,12 +65,20 @@ export default function Section8({ onNext }) {
 
   return (
     <div className="s8-root">
-      {/* Background Audio */}
+      {/* Background Audio of the Section */}
       <audio 
-        ref={audioRef}
+        ref={bgAudioRef}
+        src="/bg-music-4.webm" 
+        autoPlay 
+        loop
+        style={{ display: 'none' }} 
+      />
+
+      {/* Tape Recorder Audio */}
+      <audio 
+        ref={tapeAudioRef}
         src={TRACKS[trackIndex]} 
         onEnded={handleNextTrack}
-        autoPlay 
         style={{ display: 'none' }} 
       />
 

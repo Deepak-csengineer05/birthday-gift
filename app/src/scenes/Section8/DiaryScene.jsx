@@ -288,6 +288,76 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
   );
 }
 
+/* ── The Interactive Diary on Desk ── */
+function Diary({ onOpen }) {
+  const [hovered, setHovered] = useState(false);
+  const scale = hovered ? 1.05 : 1;
+
+  // We animate the scale & hover effect subtly
+  const { s } = useSpring({
+    s: scale,
+    config: { tension: 350, friction: 20 }
+  });
+
+  return (
+    <a.group 
+      position={[0, 0.05, 0.5]} 
+      scale={s.to(v => [v, v, v])}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpen();
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+        document.body.style.cursor = 'auto';
+      }}
+    >
+      {/* Diary Cover */}
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[1.8, 0.15, 2.4]} />
+        <meshStandardMaterial 
+          color="#2a0f3d"  // Deep purplish vintage leather
+          roughness={0.8} 
+        />
+      </mesh>
+
+      {/* Pages Edge */}
+      <mesh position={[-0.02, 0, 0]}>
+        <boxGeometry args={[1.75, 0.13, 2.36]} />
+        <meshStandardMaterial color="#f0e6d2" roughness={0.9} />
+      </mesh>
+
+      {/* Diary Spine */}
+      <mesh position={[0.9, 0, 0]}>
+        <boxGeometry args={[0.08, 0.17, 2.44]} />
+        <meshStandardMaterial color="#1a0624" roughness={0.7} />
+      </mesh>
+
+      {/* Golden Moon/Emblem on Cover */}
+      <mesh position={[0, 0.08, 0.4]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.2, 0.3, 32]} />
+        <meshStandardMaterial color="#d4af37" metalness={0.8} roughness={0.2} />
+      </mesh>
+      
+      {/* Text on Cover */}
+      <Text 
+        position={[0, 0.08, -0.4]} 
+        rotation={[-Math.PI / 2, 0, 0]}
+        fontSize={0.15}
+        color="#d4af37"
+        font="https://fonts.gstatic.com/s/greatvibes/v14/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.woff"
+      >
+        Our Memories
+      </Text>
+    </a.group>
+  );
+}
+
 /* ════════════════════════
    Main exported Scene
 ════════════════════════ */
