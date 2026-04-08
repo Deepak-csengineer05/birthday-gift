@@ -140,35 +140,30 @@ function CameraController({ focusData }) {
 }
 
 /* ── Fairytale Vintage Tape Recorder ── */
-function TapeButton({ pos, color, onClick, label, isPlayingButton }) {
+function TapeButton({ pos, color, onClick, label, isPlayingButton, size = [0.18, 0.06, 0.14] }) {
   const [hovered, setHovered] = useState(false);
-  // Using shiny metallic cylinders instead of plastic boxes
   return (
     <group 
       position={pos} 
       onClick={(e) => { e.stopPropagation(); onClick(); }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={(e) => { setHovered(false); document.body.style.cursor = 'auto'; }}
+      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
     >
-      <mesh position={[0, -0.05, 0]} castShadow>
-        {/* The vintage tactile button pin */}
-        <cylinderGeometry args={[0.08, 0.08, 0.15, 16]} />
+      <mesh position={[0, hovered ? -0.02 : 0, 0]} castShadow>
+        {/* Chunky rectangular retro buttons */}
+        <boxGeometry args={size} />
         <meshStandardMaterial 
-          color={hovered ? "#ffe4b5" : color} 
-          roughness={0.2} 
-          metalness={0.9} 
-          emissive={isPlayingButton ? "#ffd700" : "#000000"} 
-          emissiveIntensity={isPlayingButton ? 0.4 : 0}
+          color={hovered ? "#ffe0e0" : color} 
+          roughness={0.3} 
+          metalness={0.1}
         />
       </mesh>
-      {/* Tiny descriptive text above or on the button base */}
+      {/* Icon text carved into the button */}
       <Text 
-        position={[0, 0.03, 0]} 
+        position={[0, 0.035, 0]} 
         rotation={[-Math.PI / 2, 0, 0]} 
-        fontSize={0.06} 
-        color="#2c1304" 
-        outlineWidth={0.003}
-        outlineColor="#ffffff"
+        fontSize={0.05} 
+        color="#555" 
         anchorX="center" 
         anchorY="middle"
       >
@@ -185,104 +180,155 @@ function VintageTapeRecorder({ position, rotation, controls, onClick, onPointerO
 
   useFrame(({ clock }) => {
     if (isPlaying) {
-      if (leftReel.current) leftReel.current.rotation.y -= 0.03;
-      if (rightReel.current) rightReel.current.rotation.y -= 0.03;
+      if (leftReel.current) leftReel.current.rotation.z -= 0.03;
+      if (rightReel.current) rightReel.current.rotation.z -= 0.03;
     }
   });
 
   return (
     <group position={position} rotation={rotation} castShadow onClick={onClick} onPointerOver={onPointerOver} onPointerOut={onPointerOut}>
-      {/* ── Outer Shell: Deep Polished Mahogany ── */}
-      <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
-        <boxGeometry args={[2.0, 0.8, 0.6]} />
-        <meshStandardMaterial color="#2d1305" roughness={0.3} metalness={0.2} />
-      </mesh>
-
-      {/* ── Fairytale Golden Filigree Trim ── */}
-      <mesh position={[0, 0.8, 0]}>
-        <boxGeometry args={[2.05, 0.04, 0.65]} />
-        <meshStandardMaterial color="#ffd700" roughness={0.1} metalness={1.0} emissive="#ffcc00" emissiveIntensity={0.2} />
-      </mesh>
-      <mesh position={[0, 0.0, 0]}>
-        <boxGeometry args={[2.05, 0.04, 0.65]} />
-        <meshStandardMaterial color="#ffd700" roughness={0.1} metalness={1.0} emissive="#ffcc00" emissiveIntensity={0.1} />
-      </mesh>
-
-      {/* ── The Crystal Tape Window (Amethyst tinted glass) ── */}
-      <mesh position={[0.2, 0.4, 0.31]}>
-        <boxGeometry args={[1.0, 0.5, 0.02]} />
-        <meshStandardMaterial color="#3a0060" transparent opacity={0.4} roughness={0.0} metalness={0.9} />
-      </mesh>
-      <mesh position={[0.2, 0.4, 0.30]}>
-        <boxGeometry args={[1.04, 0.54, 0.01]} />
-        <meshStandardMaterial color="#c9a000" roughness={0.2} metalness={1.0} />
-      </mesh>
-
-      {/* ── Enchanted Golden Reels Inside ── */}
-      <group position={[0.2, 0.4, 0.25]}>
-        {/* Left Reel */}
-        <mesh ref={leftReel} position={[-0.25, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.2, 0.2, 0.02, 32]} />
-          <meshStandardMaterial color="#ffdf00" roughness={0.2} metalness={0.8} />
-          {/* Spoke patterns */}
-          {[0, Math.PI/4, Math.PI/2, 3*Math.PI/4].map((rot, i) => (
-             <mesh key={i} position={[0, 0.02, 0]} rotation={[0, rot, 0]}>
-               <boxGeometry args={[0.36, 0.01, 0.02]} />
-               <meshBasicMaterial color="#1a0033" />
-             </mesh>
-          ))}
-        </mesh>
-        {/* Right Reel */}
-        <mesh ref={rightReel} position={[0.25, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.2, 0.2, 0.02, 32]} />
-          <meshStandardMaterial color="#ffdf00" roughness={0.2} metalness={0.8} />
-          {[0, Math.PI/4, Math.PI/2, 3*Math.PI/4].map((rot, i) => (
-             <mesh key={i} position={[0, 0.02, 0]} rotation={[0, rot, 0]}>
-               <boxGeometry args={[0.36, 0.01, 0.02]} />
-               <meshBasicMaterial color="#1a0033" />
-             </mesh>
-          ))}
-        </mesh>
-      </group>
-
-      {/* ── Antique Brass Speaker Grill (Left Side) ── */}
-      <mesh position={[-0.6, 0.4, 0.31]}>
-        <cylinderGeometry args={[0.28, 0.28, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
-        <meshStandardMaterial color="#d4a04d" roughness={0.6} metalness={0.7} map={null} />
-      </mesh>
-      <mesh position={[-0.6, 0.4, 0.32]}>
-         {/* Tiny inner dark speaker cone */}
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial color="#111" roughness={0.9} />
+      {/* ── Main Body: Cute Pastel Pink/Peach Retro Plastic ── */}
+      <mesh position={[0, 0.45, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.2, 0.9, 0.4]} />
+        <meshStandardMaterial color="#ffb7b2" roughness={0.3} metalness={0.1} />
       </mesh>
       
-      {/* ── Floating Magical Controls (Brass/Gold Pegs) ── */}
-      <group position={[-0.2, 0.88, 0.0]}>
-        <TapeButton pos={[-0.5, 0, 0]} color="#cdb4db" onClick={onPrevTrack} label="⏮ Previous" />
-        <TapeButton 
-          pos={[-0.2, 0, 0]} 
-          color={isPlaying ? "#ffd700" : "#d8bfd8"} // Golden play button
-          onClick={onTogglePlay} 
-          label={isPlaying ? "⏸ Pause" : "▶ Play"} 
-          isPlayingButton={isPlaying} 
-        />
-        <TapeButton pos={[ 0.1, 0, 0]} color="#cdb4db" onClick={onNextTrack} label="Next ⏭" />
+      {/* ── Front Face Plate: Creamy White ── */}
+      <mesh position={[0, 0.45, 0.205]} receiveShadow>
+        <boxGeometry args={[2.1, 0.8, 0.02]} />
+        <meshStandardMaterial color="#fff2e6" roughness={0.4} />
+      </mesh>
+
+      {/* ── Left Speaker ── */}
+      <group position={[-0.65, 0.45, 0.21]}>
+        <mesh>
+          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#ffdac1" roughness={0.8} />
+        </mesh>
+        <mesh position={[0, 0, 0.01]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#e2c1c1" roughness={0.5} />
+        </mesh>
+        {/* Speaker Grill Dots */}
+        {[...Array(8)].map((_, i) => (
+          <mesh key={`ls-${i}`} position={[Math.cos(i*Math.PI/4)*0.2, Math.sin(i*Math.PI/4)*0.2, 0.015]}>
+            <circleGeometry args={[0.02, 8]} />
+            <meshBasicMaterial color="#d4a5a5" />
+          </mesh>
+        ))}
+      </group>
+
+      {/* ── Right Speaker ── */}
+      <group position={[0.65, 0.45, 0.21]}>
+        <mesh>
+          <cylinderGeometry args={[0.3, 0.3, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#ffdac1" roughness={0.8} />
+        </mesh>
+        <mesh position={[0, 0, 0.01]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.02, 32]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#e2c1c1" roughness={0.5} />
+        </mesh>
+        {/* Speaker Grill Dots */}
+        {[...Array(8)].map((_, i) => (
+          <mesh key={`rs-${i}`} position={[Math.cos(i*Math.PI/4)*0.2, Math.sin(i*Math.PI/4)*0.2, 0.015]}>
+            <circleGeometry args={[0.02, 8]} />
+            <meshBasicMaterial color="#d4a5a5" />
+          </mesh>
+        ))}
+      </group>
+
+      {/* ── Central Cassette Deck Window ── */}
+      <group position={[0, 0.45, 0.22]}>
+        {/* Inner Dark Area (where the tape sits) */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[0.6, 0.36, 0.01]} />
+          <meshStandardMaterial color="#444" />
+        </mesh>
         
-        {/* Subtle Volume dials, slightly set back */}
-        <TapeButton pos={[ 0.45, -0.02, -0.15]} color="#b08d6a" onClick={onVolumeUp} label="Vol +" />
-        <TapeButton pos={[ 0.70, -0.02, -0.15]} color="#b08d6a" onClick={onVolumeDown} label="Vol -" />
+        {/* The Cassette Tape Itself */}
+        <mesh position={[0, -0.02, 0.005]}>
+          <boxGeometry args={[0.5, 0.3, 0.01]} />
+          <meshStandardMaterial color="#ffdac1" roughness={0.6} /> {/* Pastel cassette casing */}
+        </mesh>
+        {/* Tape label block */}
+        <mesh position={[0, -0.02, 0.01]}>
+          <boxGeometry args={[0.38, 0.15, 0.01]} />
+          <meshStandardMaterial color="#fff" />
+        </mesh>
+
+        {/* Reels */}
+        <mesh ref={leftReel} position={[-0.12, -0.02, 0.02]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#fff" />
+          <mesh position={[0, 0, 0.006]}>
+             <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} rotation={[Math.PI/2, 0, 0]} />
+             <meshBasicMaterial color="#e2c1c1" />
+          </mesh>
+        </mesh>
+        <mesh ref={rightReel} position={[0.12, -0.02, 0.02]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.01, 16]} rotation={[Math.PI/2, 0, 0]} />
+          <meshStandardMaterial color="#fff" />
+          <mesh position={[0, 0, 0.006]}>
+             <cylinderGeometry args={[0.04, 0.04, 0.01, 8]} rotation={[Math.PI/2, 0, 0]} />
+             <meshBasicMaterial color="#e2c1c1" />
+          </mesh>
+        </mesh>
+
+        {/* Glass Cover */}
+        <mesh position={[0, 0, 0.035]}>
+          <boxGeometry args={[0.6, 0.36, 0.01]} />
+          <meshPhysicalMaterial color="#cde3eb" transmission={0.9} transparent opacity={0.4} roughness={0.1} />
+        </mesh>
+      </group>
+
+      {/* ── Cute Handle ── */}
+      <group position={[0, 0.95, 0]}>
+        <mesh position={[-0.8, 0, 0]}>
+          <boxGeometry args={[0.06, 0.3, 0.15]} />
+          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+        </mesh>
+        <mesh position={[0.8, 0, 0]}>
+          <boxGeometry args={[0.06, 0.3, 0.15]} />
+          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+        </mesh>
+        <mesh position={[0, 0.12, 0]}>
+          <boxGeometry args={[1.66, 0.06, 0.15]} />
+          <meshStandardMaterial color="#e2c1c1" roughness={0.4} />
+        </mesh>
+      </group>
+
+      {/* ── Top Chunky Controls ── */}
+      <group position={[0, 0.93, 0]}>
+        {/* Recessed button tray */}
+        <mesh position={[0, -0.02, 0.0]}>
+          <boxGeometry args={[1.6, 0.02, 0.25]} />
+          <meshStandardMaterial color="#f0d1d1" roughness={0.5} />
+        </mesh>
+
+        <TapeButton pos={[-0.6, 0.01, 0]} color="#fff" onClick={onPrevTrack} label="⏮" />
+        <TapeButton 
+          pos={[-0.3, 0.01, 0]} 
+          color={isPlaying ? "#ff9a9e" : "#fff"} 
+          onClick={onTogglePlay} 
+          label={isPlaying ? "⏸" : "▶"} 
+        />
+        <TapeButton pos={[ 0.0, 0.01, 0]} color="#fff" onClick={onNextTrack} label="⏭" />
+        
+        {/* Smaller Volume Buttons */}
+        <TapeButton pos={[ 0.4, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#ffdac1" onClick={onVolumeUp} label="Vol +" />
+        <TapeButton pos={[ 0.65, 0.01, 0]} size={[0.16, 0.05, 0.12]} color="#ffdac1" onClick={onVolumeDown} label="Vol -" />
       </group>
       
-      {/* ── Fairytale Cursive Label ── */}
+      {/* ── Cute Bottom Label ── */}
       <Text 
          font="/GreatVibes-Regular.ttf"
-         position={[0.2, 0.08, 0.32]} 
-         fontSize={0.10} 
-         color="#ffd700" 
+         position={[0, 0.15, 0.22]} 
+         fontSize={0.12} 
+         color="#d4a5a5" 
          anchorX="center" 
          anchorY="middle"
       >
-        Lunar's Melodies
+        Lunar's Mix
       </Text>
     </group>
   );
