@@ -338,11 +338,14 @@ function Diary({ onOpen }) {
         <meshStandardMaterial color="#1a0624" roughness={0.7} />
       </mesh>
 
-      {/* Golden Moon/Emblem on Cover */}
-      <mesh position={[0, 0.08, 0.4]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.2, 0.3, 32]} />
-        <meshStandardMaterial color="#d4af37" metalness={0.8} roughness={0.2} />
-      </mesh>
+      {/* Moon Emoji on Cover */}
+      <Text 
+        position={[0, 0.08, 0.1]} 
+        rotation={[-Math.PI / 2, 0, 0]}
+        fontSize={0.3}
+      >
+        🌙
+      </Text>
       
       {/* Text on Cover */}
       <Text 
@@ -352,7 +355,7 @@ function Diary({ onOpen }) {
         color="#d4af37"
         font="/GreatVibes-Regular.ttf"
       >
-        Our Memories
+        Quotes for Lunar
       </Text>
     </a.group>
   );
