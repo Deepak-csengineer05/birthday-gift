@@ -335,16 +335,32 @@ function Envelope({ onOpen }) {
 /* ── Camera Controller for Focusing ── */
 function CameraController({ focusData }) {
   const controls = useRef();
+  const isAnimating = useRef(false);
+  const currentFocusId = useRef(null);
   
   useFrame((state, delta) => {
-    if (focusData && controls.current) {
-      state.camera.position.lerp(focusData.camPos, delta * 3);
-      controls.current.target.lerp(focusData.targetPos, delta * 3);
-    } else if (!focusData && controls.current) {
-      state.camera.position.lerp(new THREE.Vector3(0, 5.5, 9.5), delta * 3);
-      controls.current.target.lerp(new THREE.Vector3(0, 2, -2), delta * 3);
+    if (focusData?.id !== currentFocusId.current) {
+      currentFocusId.current = focusData?.id;
+      isAnimating.current = true;
     }
-    if (controls.current) controls.current.update();
+
+    if (isAnimating.current && controls.current) {
+      const targetPos = focusData?.targetPos || new THREE.Vector3(0, 2, -2);
+      const camPos = focusData?.camPos || new THREE.Vector3(0, 5.5, 9.5);
+      
+      state.camera.position.lerp(camPos, delta * 5);
+      controls.current.target.lerp(targetPos, delta * 5);
+      
+      const distCam = state.camera.position.distanceTo(camPos);
+      const distTarget = controls.current.target.distanceTo(targetPos);
+
+      if (distCam < 0.05 && distTarget < 0.05) {
+        state.camera.position.copy(camPos);
+        controls.current.target.copy(targetPos);
+        isAnimating.current = false;
+      }
+      controls.current.update();
+    }
   });
 
   return (
@@ -362,21 +378,40 @@ function CameraController({ focusData }) {
 
 export default function LetterScene({ onOpen, active, isFoldingBack }) {
   const [focusData, setFocusData] = useState(null);
+  const [cakeClicks, setCakeClicks] = useState(0);
 
   const handleCakeClick = (e) => {
     e.stopPropagation();
-    setFocusData({
-      camPos: new THREE.Vector3(-5.6, 2.0, 3.5),
-      targetPos: new THREE.Vector3(-5.6, 0.38, 0.0)
-    });
+    const newCount = (cakeClicks + 1) % 2;
+    setCakeClicks(newCount);
+    
+    if (newCount === 1) {
+      setFocusData({
+        id: Date.now(),
+        camPos: new THREE.Vector3(-5.6, 2.0, 3.5),
+        targetPos: new THREE.Vector3(-5.6, 0.38, 0.0)
+      });
+    } else {
+      setFocusData({
+        id: Date.now(),
+        camPos: new THREE.Vector3(-5.6, 4.0, 0.1),
+        targetPos: new THREE.Vector3(-5.6, 0.38, 0.0)
+      });
+    }
   };
 
   const handlePolaroidClick = (e, pos) => {
     e.stopPropagation();
     setFocusData({
-      camPos: new THREE.Vector3(pos[0], pos[1] - 0.5, pos[2] + 4.0),
-      targetPos: new THREE.Vector3(pos[0], pos[1] - 0.5, pos[2])
+      id: Date.now(),
+      camPos: new THREE.Vector3(pos[0], pos[1] + 0.2, pos[2] + 3.0),
+      targetPos: new THREE.Vector3(pos[0], pos[1] + 0.2, pos[2])
     });
+  };
+
+  const handleMissed = () => {
+    setCakeClicks(0);
+    setFocusData({ id: Date.now() }); 
   };
 
   return (
@@ -386,7 +421,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
         camera={{ position: [0, 5.5, 9.5], fov: 42 }} 
         shadows 
         gl={{ antialias: true }}
-        onPointerMissed={() => setFocusData(null)}
+        onPointerMissed={handleMissed}
       >
         <color attach="background" args={['#090503']} />
         <fog attach="fog" args={['#0e0704', 12, 35]} />
