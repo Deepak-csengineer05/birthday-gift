@@ -367,7 +367,7 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
         {/* ── Mahogany Desk ── */}
         <mesh position={[0, -0.18, 0]} receiveShadow castShadow>
           <boxGeometry args={[14, 0.28, 7]} />
-          <meshStandardMaterial color="#2c1304" roughness={0.78} metalness={0.06} />
+        <meshStandardMaterial color="#2c1304" roughness={0.78} metalness={0.06} />
         </mesh>
         {/* Polished top surface */}
         <mesh position={[0, -0.02, 0]} receiveShadow>
@@ -397,6 +397,39 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
           <Book position={[0.25, 0.75, 0]} color="#5a0058" h={1.50} w={0.24} d={1.9}  />
           <Book position={[0.53, 0.60, 0]} color="#3a3a12" h={1.20} w={0.22} d={1.88} />
         </group>
+
+        {/* Flat book lying on desk (near diary) */}
+        <mesh position={[-2.5, 0.05, 0.5]} rotation={[0, 0.15, 0]} castShadow>
+          <boxGeometry args={[1.6, 0.08, 2.2]} />
+          <meshStandardMaterial color="#1a2a4a" roughness={0.75} />
+        </mesh>
+
+        {/* ── Candles ── */}
+        <Candle position={[ 3.8, 0.01, -0.5]} />
+        <Candle position={[-3.2, 0.01, -1.0]} />
+
+        {/* ── Small quill pen ── */}
+        <mesh position={[2.0, 0.04, 1.2]} rotation={[0, -0.4, 0]} castShadow>
+          <cylinderGeometry args={[0.018, 0.004, 1.4, 8]} />
+          <meshStandardMaterial color="#e8d8a0" roughness={0.9} />
+        </mesh>
+
+        {/* ── The Realistic Vintage Tape Recorder ── */}
+        <VintageTapeRecorder 
+          position={[4.6, 0.01, 1.2]} 
+          rotation={[0, -0.6, 0]} 
+          controls={audioControls}
+          onClick={handlePlayerClick}
+          onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }}
+          onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+        />
+
+        <CameraController focusData={focusData} />
+        <ContactShadows position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
+
+        {/* ── The Diary ── */}
+        <Diary onOpen={onOpen} />
+      </Canvas>
 
         {/* Flat book lying on desk (near diary) */}
         <mesh position={[-2.5, 0.05, 0.5]} rotation={[0, 0.15, 0]} castShadow>

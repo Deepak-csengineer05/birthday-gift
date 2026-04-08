@@ -106,7 +106,7 @@ const DIALOGUE = [
   {
     id: 8,
     type: 'info',
-    text: "I can simple say why he is doing to you but he gave me the answer before you thought and that will be in next section for you.",
+    text: "I can simple say why he is doing this to you but he gave me the answer before you thought about it and that will be in next section for you.",
     btnText: "Next",
     moonMood: "teasing"
   },
