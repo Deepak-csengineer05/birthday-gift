@@ -212,10 +212,15 @@ function ScatteredPapers() {
 }
 
 /* ── Realistic Hanging Polaroids ── */
-function HangingPolaroid({ position, rotation, url, caption, stringCurve }) {
+function HangingPolaroid({ position, rotation, url, caption, stringCurve, onClick }) {
   const texture = useLoader(THREE.TextureLoader, url);
   return (
-    <group position={position}>
+    <group 
+      position={position} 
+      onClick={onClick} 
+      onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }} 
+      onPointerOut={(e) => { document.body.style.cursor = 'auto'; }}
+    >
       {/* S-Curved Hanging String dropping from the dark ceiling out of view */}
       <CubicBezierLine
         start={[0, 12.0, 0.02]} 
@@ -327,11 +332,62 @@ function Envelope({ onOpen }) {
   );
 }
 
+/* ── Camera Controller for Focusing ── */
+function CameraController({ focusData }) {
+  const controls = useRef();
+  
+  useFrame((state, delta) => {
+    if (focusData && controls.current) {
+      state.camera.position.lerp(focusData.camPos, delta * 3);
+      controls.current.target.lerp(focusData.targetPos, delta * 3);
+    } else if (!focusData && controls.current) {
+      state.camera.position.lerp(new THREE.Vector3(0, 5.5, 9.5), delta * 3);
+      controls.current.target.lerp(new THREE.Vector3(0, 2, -2), delta * 3);
+    }
+    if (controls.current) controls.current.update();
+  });
+
+  return (
+    <OrbitControls
+      ref={controls}
+      target={[0, 2, -2]} 
+      enablePan={true}
+      minDistance={2}
+      maxDistance={30}
+      minPolarAngle={0}
+      maxPolarAngle={Math.PI / 1.8}
+    />
+  );
+}
+
 export default function LetterScene({ onOpen, active, isFoldingBack }) {
+  const [focusData, setFocusData] = useState(null);
+
+  const handleCakeClick = (e) => {
+    e.stopPropagation();
+    setFocusData({
+      camPos: new THREE.Vector3(-5.6, 2.0, 3.5),
+      targetPos: new THREE.Vector3(-5.6, 0.38, 0.0)
+    });
+  };
+
+  const handlePolaroidClick = (e, pos) => {
+    e.stopPropagation();
+    setFocusData({
+      camPos: new THREE.Vector3(pos[0], pos[1] - 0.5, pos[2] + 4.0),
+      targetPos: new THREE.Vector3(pos[0], pos[1] - 0.5, pos[2])
+    });
+  };
+
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
       {/* Deep Telephoto Zoom Camera for absolute realism! */}
-      <Canvas camera={{ position: [0, 5.5, 9.5], fov: 42 }} shadows gl={{ antialias: true }}>
+      <Canvas 
+        camera={{ position: [0, 5.5, 9.5], fov: 42 }} 
+        shadows 
+        gl={{ antialias: true }}
+        onPointerMissed={() => setFocusData(null)}
+      >
         <color attach="background" args={['#090503']} />
         <fog attach="fog" args={['#0e0704', 12, 35]} />
         <Environment preset="apartment" background={false} />
@@ -368,13 +424,13 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
 
         {/* ── Magnificent Hanging Memory Array ── */}
         <Suspense fallback={null}>
-          <HangingPolaroid position={[-6.8, 3.8, -5.8]} rotation={[0, 0, 0.06]} stringCurve={-0.8} url="/pic1.jpeg" caption="sweet memories" />
-          <HangingPolaroid position={[-4.5, 2.6, -5.8]} rotation={[0, 0, -0.05]} stringCurve={1.0} url="/sec7pic4.png" caption="vibes 💜" />
-          <HangingPolaroid position={[-2.4, 4.0, -5.8]} rotation={[0, 0, 0.08]} stringCurve={-1.2} url="/sec7pic1.jpeg" caption="beautiful" />
-          <HangingPolaroid position={[0.0, 2.5, -5.8]} rotation={[0, 0, -0.04]} stringCurve={0.8} url="/sec7pic7.png" caption="wild & free" />
-          <HangingPolaroid position={[2.5, 3.9, -5.8]} rotation={[0, 0, 0.05]} stringCurve={-1.0} url="/pic2.jpeg" caption="always smiling" />
-          <HangingPolaroid position={[4.8, 3.0, -5.8]} rotation={[0, 0, -0.07]} stringCurve={0.9} url="/sec7pic5Ghibli.jpeg" caption="shining" />
-          <HangingPolaroid position={[7.1, 4.3, -5.8]} rotation={[0, 0, 0.09]} stringCurve={-0.6} url="/pic3.jpeg" caption="perfect 💜" />
+          <HangingPolaroid position={[-6.8, 3.8, -5.8]} rotation={[0, 0, 0.06]} stringCurve={-0.8} url="/pic1.jpeg" caption="sweet memories" onClick={(e) => handlePolaroidClick(e, [-6.8, 3.8, -5.8])} />
+          <HangingPolaroid position={[-4.5, 2.6, -5.8]} rotation={[0, 0, -0.05]} stringCurve={1.0} url="/sec7pic4.png" caption="vibes 💜" onClick={(e) => handlePolaroidClick(e, [-4.5, 2.6, -5.8])} />
+          <HangingPolaroid position={[-2.4, 4.0, -5.8]} rotation={[0, 0, 0.08]} stringCurve={-1.2} url="/sec7pic1.jpeg" caption="beautiful" onClick={(e) => handlePolaroidClick(e, [-2.4, 4.0, -5.8])} />
+          <HangingPolaroid position={[0.0, 2.5, -5.8]} rotation={[0, 0, -0.04]} stringCurve={0.8} url="/sec7pic7.png" caption="wild & free" onClick={(e) => handlePolaroidClick(e, [0.0, 2.5, -5.8])} />
+          <HangingPolaroid position={[2.5, 3.9, -5.8]} rotation={[0, 0, 0.05]} stringCurve={-1.0} url="/pic2.jpeg" caption="always smiling" onClick={(e) => handlePolaroidClick(e, [2.5, 3.9, -5.8])} />
+          <HangingPolaroid position={[4.8, 3.0, -5.8]} rotation={[0, 0, -0.07]} stringCurve={0.9} url="/sec7pic5Ghibli.jpeg" caption="shining" onClick={(e) => handlePolaroidClick(e, [4.8, 3.0, -5.8])} />
+          <HangingPolaroid position={[7.1, 4.3, -5.8]} rotation={[0, 0, 0.09]} stringCurve={-0.6} url="/pic3.jpeg" caption="perfect 💜" onClick={(e) => handlePolaroidClick(e, [7.1, 4.3, -5.8])} />
         </Suspense>
 
         {/* ── Mahogany Desk & Legs ── */}
@@ -422,7 +478,13 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
         <FeatherPen position={[2.8, 0.02, 0.6]} rotation={[Math.PI / 2, 0, -1.0]} />
 
         {/* ── Miniature Birthday Cake (from Section 5) ── */}
-        <group position={[-5.6, 0.38, 0.0]} scale={[0.35, 0.35, 0.35]}>
+        <group 
+          position={[-5.6, 0.38, 0.0]} 
+          scale={[0.35, 0.35, 0.35]}
+          onClick={handleCakeClick}
+          onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }} 
+          onPointerOut={(e) => { document.body.style.cursor = 'auto'; }}
+        >
           <Cake3D blownCandles={[]} onBlowCandle={() => {}} showText={true} />
         </group>
 
@@ -430,14 +492,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
         <Envelope onOpen={onOpen} />
 
         {/* Unconstrained Camera Controls */}
-        <OrbitControls
-          target={[0, 2, -2]} 
-          enablePan={true}
-          minDistance={2}
-          maxDistance={30}
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 1.8}
-        />
+        <CameraController focusData={focusData} />
         <ContactShadows position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
       </Canvas>
 

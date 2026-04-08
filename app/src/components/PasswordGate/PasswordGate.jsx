@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import './PasswordGate.css';
 import { trackEvent } from '../../analytics';
 
-const CORRECT_PASSWORD = '17042006';
+const CORRECT_PASSWORD = 'Lunar@17';
 const ADMIN_PASSWORD = 'Admin@17';
 
 export default function PasswordGate({ onUnlock, onAdminLogin }) {
