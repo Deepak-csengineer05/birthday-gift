@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import PasswordGate from './components/PasswordGate/PasswordGate';
 import BirthdayExperience from './pages/BirthdayExperience';
@@ -24,17 +24,10 @@ function AdminRoute() {
 
 /* ── Main Experience Route ───────────────────────── */
 function MainRoute() {
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(() => localStorage.getItem('lunar_unlocked') === 'true');
   const [fading, setFading] = useState(false);
-  const [isRevisit, setIsRevisit] = useState(false);
+  const [isRevisit, setIsRevisit] = useState(() => localStorage.getItem('lunar_unlocked') === 'true');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (localStorage.getItem('lunar_unlocked') === 'true') {
-      setIsRevisit(true);
-      setUnlocked(true);
-    }
-  }, []);
 
   const handleUnlock = () => {
     setFading(true);

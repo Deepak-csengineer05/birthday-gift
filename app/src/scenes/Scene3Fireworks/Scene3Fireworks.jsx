@@ -105,8 +105,8 @@ const playFireworkSound = (isHuge) => {
     audio.volume = isHuge ? 0.2 : 0.05 + Math.random() * 0.15;
     // Vary the pitch slightly; lower pitch for huge explosions
     audio.playbackRate = isHuge ? 0.7 : 0.9 + Math.random() * 0.4;
-    audio.play().catch(() => {});
-  } catch (e) {}
+    audio.play().catch(() => { /* ignore */ });
+  } catch { /* ignore */ }
 };
 
 function makeExplosion(x, y, particles, count = 55, speed = 1, sizeMultiplier = 1) {
@@ -140,7 +140,6 @@ export default function Scene3Fireworks({ onProceed }) {
   const [showLunar, setShowLunar]       = useState(false);
   
   const [exiting, setExiting]   = useState(false);
-  const [showSkip, setShowSkip] = useState(false);
 
   /* ── Canvas fireworks loop ── */
   useEffect(() => {
@@ -259,16 +258,7 @@ export default function Scene3Fireworks({ onProceed }) {
       setTimeout(() => onProceed?.(), 1400);
     }, 20500);
 
-    // Skip button
-    T(() => setShowSkip(true), 8000);
-
     return () => timers.forEach(clearTimeout);
-  }, [onProceed]);
-
-  const handleSkip = useCallback(() => {
-    trackEvent('Scene3', 'skip_fireworks', { skipped: true });
-    setExiting(true);
-    setTimeout(() => onProceed?.(), 1200);
   }, [onProceed]);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useRef, useState, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Text, Environment, ContactShadows, OrbitControls, CubicBezierLine } from '@react-three/drei';
-import { useSpring, a } from '@react-spring/three';
 import * as THREE from 'three';
 import Cake3D from '../Section5/Cake3D';
 
@@ -219,7 +218,7 @@ function HangingPolaroid({ position, rotation, url, caption, stringCurve, onClic
       position={position} 
       onClick={onClick} 
       onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }} 
-      onPointerOut={(e) => { document.body.style.cursor = 'auto'; }}
+      onPointerOut={() => { document.body.style.cursor = 'auto'; }}
     >
       {/* S-Curved Hanging String dropping from the dark ceiling out of view */}
       <CubicBezierLine
@@ -518,7 +517,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
           scale={[0.35, 0.35, 0.35]}
           onClick={handleCakeClick}
           onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; }} 
-          onPointerOut={(e) => { document.body.style.cursor = 'auto'; }}
+          onPointerOut={() => { document.body.style.cursor = 'auto'; }}
         >
           <Cake3D blownCandles={[]} onBlowCandle={() => {}} showText={true} />
         </group>

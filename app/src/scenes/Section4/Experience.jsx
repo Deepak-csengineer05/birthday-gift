@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpring, a } from '@react-spring/three';
+import { useSpring } from '@react-spring/three';
 import { Center, Environment, ContactShadows } from '@react-three/drei';
 import GiftBox from './GiftBox';
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import LetterScene from './LetterScene';
 import LetterScroll from './LetterScroll';
 import './Section10.css';
@@ -6,13 +6,11 @@ import { trackEvent } from '../../analytics';
 
 export default function Section10({ onNext }) {
   const [phase, setPhase] = useState('table'); // table -> reading -> exiting
-  const [audioStarted, setAudioStarted] = useState(false);
 
   const readStartRef = useRef(null);
 
   const handleOpenEnvelope = () => {
     setPhase('reading');
-    setAudioStarted(true);
     readStartRef.current = Date.now();
   };
 

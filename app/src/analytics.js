@@ -5,7 +5,7 @@
 
 import { rtdb } from './firebase';
 import {
-  ref, set, get, update, push, serverTimestamp
+  ref, set, get, update, push
 } from 'firebase/database';
 
 const LOCAL_KEY = 'lunar_analytics';

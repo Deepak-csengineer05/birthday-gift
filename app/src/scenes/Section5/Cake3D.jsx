@@ -1,6 +1,6 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useSpring, a } from '@react-spring/three';
+import { useSpring } from '@react-spring/three';
 import { Text } from '@react-three/drei';
 
 export default function Cake3D({ blownCandles, onBlowCandle, showText }) {
@@ -16,7 +16,7 @@ export default function Cake3D({ blownCandles, onBlowCandle, showText }) {
   }, []);
 
   // Chocolate shavings
-  const shavingPositions = useMemo(() => {
+  const [shavingPositions] = useState(() => {
     const pos = [];
     for(let i=0; i<100; i++) {
         const radius = Math.random() * 1.35;
@@ -27,7 +27,7 @@ export default function Cake3D({ blownCandles, onBlowCandle, showText }) {
         });
     }
     return pos;
-  }, []);
+  });
 
   // Candles in a small circle
   const candlePositions = useMemo(() => {

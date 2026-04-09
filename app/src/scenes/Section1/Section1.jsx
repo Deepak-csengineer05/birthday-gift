@@ -17,7 +17,7 @@ export default function Section1({ onNext, onVideoStart }) {
         }
       }, 800); // 800ms delay, adjust if needed for perfect sync!
     }
-  }, []);
+  }, [onVideoStart]);
 
   const handleVideoEnded = () => {
     setShowNextButton(true);

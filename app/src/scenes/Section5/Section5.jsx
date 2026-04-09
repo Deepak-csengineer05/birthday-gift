@@ -10,7 +10,7 @@ const ConfettiItem = ({ style }) => <div className="confetti-item" style={style}
 
 const ConfettiContainer = () => {
     // Generate static stable array so they don't rerender randomly
-    const pieces = React.useMemo(() => Array.from({ length: 80 }).map((_, i) => {
+    const [pieces] = useState(() => Array.from({ length: 80 }).map((_, i) => {
         const left = Math.random() * 100;
         const width = 6 + Math.random() * 8;
         const height = 10 + Math.random() * 12;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
 import { clearAnalytics, FB_PATH } from '../analytics';
 import { rtdb } from '../firebase';
@@ -62,7 +62,7 @@ function formatTime(iso) {
 
 /* ── Stars Background ──────────────────────────── */
 function Starfield() {
-  const stars = useMemo(() =>
+  const [stars] = useState(() =>
     Array.from({ length: 120 }).map((_, i) => ({
       id: i,
       top: `${Math.random() * 100}%`,
@@ -70,7 +70,8 @@ function Starfield() {
       size: `${Math.random() * 2.5 + 0.5}px`,
       dur: `${2 + Math.random() * 4}s`,
       delay: `${Math.random() * 5}s`,
-    })), []);
+    }))
+  );
 
   return (
     <div className="admin-starfield">

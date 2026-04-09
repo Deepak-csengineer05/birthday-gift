@@ -101,6 +101,7 @@ function FloatingNo({ onNoClick, stepId }) {
       pos.current = { x: newX, y: newY };
 
       if (btnRef.current) {
+        btnRef.current.style.display = 'block';
         btnRef.current.style.left = `${newX}px`;
         btnRef.current.style.top  = `${newY}px`;
       }
@@ -118,10 +119,11 @@ function FloatingNo({ onNoClick, stepId }) {
       className="btn-option btn-no btn-no-floating"
       style={{
         position:  'fixed',
-        left:      pos.current.x,
-        top:       pos.current.y,
+        left:      0,
+        top:       0,
         transform: 'translate(-50%, -50%)',
         zIndex:    9998,
+        display:   'none'
       }}
       onClick={onNoClick}
     >
