@@ -388,26 +388,26 @@ function Diary({ onOpen }) {
         </mesh>
       ))}
 
-      {/* Ribbon Bookmark draped down */}
-      <group position={[-0.85, -0.06, 0.9]} rotation={[0, 0.2, 0]}>
+      {/* Ribbon Bookmark draped down on right */}
+      <group position={[0.85, -0.06, 0.9]} rotation={[0, -0.2, 0]}>
         <mesh castShadow>
           <boxGeometry args={[0.4, 0.005, 0.06]} />
           <meshStandardMaterial color="#a61c3a" roughness={0.7} />
         </mesh>
-        <mesh position={[-0.2, -0.02, 0]} rotation={[0, 0, Math.PI / 8]} castShadow>
+        <mesh position={[0.2, -0.02, 0]} rotation={[0, 0, -Math.PI / 8]} castShadow>
           <boxGeometry args={[0.1, 0.005, 0.06]} />
           <meshStandardMaterial color="#a61c3a" roughness={0.7} />
         </mesh>
       </group>
 
-      {/* Pages Edge */}
-      <mesh position={[-0.01, 0, 0]}>
+      {/* Pages Edge (Right side) */}
+      <mesh position={[0.02, 0, 0]}>
         <boxGeometry args={[1.78, 0.12, 2.38]} />
         <meshStandardMaterial color="#f8eedc" roughness={1.0} />
       </mesh>
 
-      {/* Diary Spine */}
-      <mesh position={[0.9, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      {/* Diary Spine (Left side) */}
+      <mesh position={[-0.91, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[0.09, 0.09, 2.45, 32]} />
         <meshPhysicalMaterial color="#1a0628" roughness={0.5} metalness={0.2} clearcoat={0.2} />
       </mesh>
