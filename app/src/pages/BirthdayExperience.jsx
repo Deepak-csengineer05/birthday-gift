@@ -17,6 +17,10 @@ export default function BirthdayExperience({ isRevisit = false }) {
   const [mainSectionToLoad, setMainSectionToLoad] = useState(1);
   const audioRef = useRef(null);
   const audio2Ref = useRef(null);
+  
+  // Refs to force preload heavy videos
+  const preloadVid1 = useRef(null);
+  const preloadVid2 = useRef(null);
 
   const next = () => {
     if (isHubMode) {
@@ -64,6 +68,33 @@ export default function BirthdayExperience({ isRevisit = false }) {
   };
 
   useEffect(() => {
+    // Force browser to start buffering heavy videos immediately upon entering experience
+    if (preloadVid1.current) preloadVid1.current.load();
+    if (preloadVid2.current) preloadVid2.current.load();
+
+    // Preload important images quietly in the background
+    const imagesToPreload = [
+      '/pic1.jpeg', '/pic2.jpeg', '/pic3.jpeg', '/pic4.jpeg',
+      '/pic5.jpeg', '/pic6.jpeg', '/pic7.jpeg', '/pic8.jpeg',
+      '/profile.jpeg', '/section3-flower-ref.png', '/section3-balloon-ref.png'
+    ];
+    imagesToPreload.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    // Preload other audio files using resource hints
+    const audiosToPreload = ['/bg-music-3.mp3', '/firework.mp3', '/crack.mp3'];
+    audiosToPreload.forEach(src => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = src;
+      link.as = 'audio';
+      document.head.appendChild(link);
+    });
+  }, []);
+
+  useEffect(() => {
     if (!audioRef.current) return;
 
     if (sceneIndex >= 4 || sceneIndex === 'hub') {
@@ -91,6 +122,10 @@ export default function BirthdayExperience({ isRevisit = false }) {
 
   return (
     <div className="experience-wrapper">
+      {/* ── Preload Heavy Video Assets early ── */}
+      <video ref={preloadVid1} style={{ display: 'none' }} preload="auto" playsInline src="/video.mp4" />
+      <video ref={preloadVid2} style={{ display: 'none' }} preload="auto" playsInline src="/section1.mp4" />
+
       <audio ref={audioRef} src="/bg-music.mp3" loop />
       <audio ref={audio2Ref} src="/bg-music-2.mp3" loop />
 
