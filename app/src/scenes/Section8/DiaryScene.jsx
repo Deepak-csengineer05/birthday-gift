@@ -359,7 +359,7 @@ function Diary({ onOpen }) {
     ctx.font = '160px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('🌕', 128, 140); // slightly vertically adjusted
+    ctx.fillText('🌙', 128, 140); // slightly vertically adjusted
     return new THREE.CanvasTexture(canvas);
   }, []);
 
