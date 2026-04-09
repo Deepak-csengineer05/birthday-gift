@@ -370,40 +370,48 @@ function Diary({ onOpen }) {
     >
       {/* Diary Cover */}
       <mesh castShadow receiveShadow>
-        <boxGeometry args={[1.8, 0.15, 2.4]} />
+        <boxGeometry args={[1.82, 0.15, 2.45]} />
         <meshStandardMaterial 
           color="#2a0f3d"  // Deep purplish vintage leather
-          roughness={0.8} 
+          roughness={0.7}
+          metalness={0.15}
         />
       </mesh>
 
+      {/* Ribbon Bookmark */}
+      <mesh position={[-0.8, -0.06, 0.9]} rotation={[0, 0, 0]} castShadow>
+        <boxGeometry args={[0.3, 0.015, 0.8]} />
+        <meshStandardMaterial color="#8e1e3b" roughness={0.9} />
+      </mesh>
+
       {/* Pages Edge */}
-      <mesh position={[-0.02, 0, 0]}>
-        <boxGeometry args={[1.75, 0.13, 2.36]} />
-        <meshStandardMaterial color="#f0e6d2" roughness={0.9} />
+      <mesh position={[-0.01, 0, 0]}>
+        <boxGeometry args={[1.78, 0.12, 2.38]} />
+        <meshStandardMaterial color="#f8eedc" roughness={1.0} />
       </mesh>
 
       {/* Diary Spine */}
       <mesh position={[0.9, 0, 0]}>
-        <boxGeometry args={[0.08, 0.17, 2.44]} />
-        <meshStandardMaterial color="#1a0624" roughness={0.7} />
+        <cylinderGeometry args={[0.09, 0.09, 2.45, 16]} rotation={[Math.PI / 2, 0, 0]} />
+        <meshStandardMaterial color="#1f0930" roughness={0.6} metalness={0.2} />
       </mesh>
 
-      {/* Moon Emoji on Cover */}
+      {/* Moon Symbol on Cover */}
       <Text 
-        position={[0, 0.08, 0.1]} 
+        position={[0, 0.08, 0.3]} 
         rotation={[-Math.PI / 2, 0, 0]}
-        fontSize={0.3}
+        fontSize={0.4}
+        color="#ffffff"
       >
-        🌙
+        ☽
       </Text>
-      
+
       {/* Text on Cover */}
       <Text 
-        position={[0, 0.08, -0.4]} 
+        position={[0, 0.08, -0.3]} 
         rotation={[-Math.PI / 2, 0, 0]}
-        fontSize={0.15}
-        color="#d4af37"
+        fontSize={0.26}
+        color="#efc964"
         font="/GreatVibes-Regular.ttf"
       >
         Quotes for Lunar
@@ -532,11 +540,39 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
         <Candle position={[ 3.8, 0.01, -0.5]} />
         <Candle position={[-3.2, 0.01, -1.0]} />
 
-        {/* ── Small quill pen ── */}
-        <mesh position={[2.0, 0.04, 1.2]} rotation={[0, -0.4, 0]} castShadow>
-          <cylinderGeometry args={[0.018, 0.004, 1.4, 8]} />
-          <meshStandardMaterial color="#e8d8a0" roughness={0.9} />
-        </mesh>
+        {/* ── Beautiful Fountain Pen ── */}
+        <group position={[1.8, 0.02, 1.0]} rotation={[0, -0.5, 0]}>
+          {/* Main Body */}
+          <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.03, 0.03, 0.5, 16]} />
+            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+          </mesh>
+          {/* Gold Trim (Middle) */}
+          <mesh position={[-0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.032, 0.032, 0.04, 16]} />
+            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          </mesh>
+          {/* Front Grip */}
+          <mesh position={[-0.37, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.03, 0.015, 0.2, 16]} />
+            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+          </mesh>
+          {/* Gold Nib (Tip) */}
+          <mesh position={[-0.52, 0, 0]} rotation={[0, 0, -Math.PI / 2]} castShadow>
+            <coneGeometry args={[0.015, 0.1, 16]} />
+            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          </mesh>
+          {/* Back Gold Cap */}
+          <mesh position={[0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.032, 0.032, 0.08, 16]} />
+            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          </mesh>
+          {/* Back Rounded Jewel */}
+          <mesh position={[0.29, 0, 0]} castShadow>
+            <sphereGeometry args={[0.032, 16, 16]} />
+            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+          </mesh>
+        </group>
 
         {/* ── The Realistic Vintage Tape Recorder ── */}
         <VintageTapeRecorder 
