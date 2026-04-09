@@ -417,9 +417,8 @@ function Diary({ onOpen }) {
         position={[0, 0.08, 0.3]} 
         rotation={[-Math.PI / 2, 0, 0]}
         fontSize={0.35}
-        color="#ffffff"
       >
-        ☾
+        🌕
       </Text>
 
       {/* Text on Cover */}
