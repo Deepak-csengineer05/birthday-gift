@@ -371,18 +371,34 @@ function Diary({ onOpen }) {
       {/* Diary Cover */}
       <mesh castShadow receiveShadow>
         <boxGeometry args={[1.82, 0.15, 2.45]} />
-        <meshStandardMaterial 
-          color="#2a0f3d"  // Deep purplish vintage leather
-          roughness={0.7}
-          metalness={0.15}
+        <meshPhysicalMaterial 
+          color="#220b34"
+          roughness={0.6}
+          metalness={0.1}
+          clearcoat={0.3}
+          clearcoatRoughness={0.4}
         />
       </mesh>
 
-      {/* Ribbon Bookmark */}
-      <mesh position={[-0.8, -0.06, 0.9]} rotation={[0, 0, 0]} castShadow>
-        <boxGeometry args={[0.3, 0.015, 0.8]} />
-        <meshStandardMaterial color="#8e1e3b" roughness={0.9} />
-      </mesh>
+      {/* Gold Corner Protectors */}
+      {[ [0.9, 1.22], [0.9, -1.22], [-0.9, 1.22], [-0.9, -1.22] ].map(([x, z], i) => (
+        <mesh key={`corner-${i}`} position={[x > 0 ? x-0.03 : x+0.03, 0, z > 0 ? z-0.03 : z+0.03]} castShadow>
+          <boxGeometry args={[0.08, 0.16, 0.08]} />
+          <meshStandardMaterial color="#d4af37" roughness={0.2} metalness={0.9} />
+        </mesh>
+      ))}
+
+      {/* Ribbon Bookmark draped down */}
+      <group position={[-0.85, -0.06, 0.9]} rotation={[0, 0.2, 0]}>
+        <mesh castShadow>
+          <boxGeometry args={[0.4, 0.005, 0.06]} />
+          <meshStandardMaterial color="#a61c3a" roughness={0.7} />
+        </mesh>
+        <mesh position={[-0.2, -0.02, 0]} rotation={[0, 0, Math.PI / 8]} castShadow>
+          <boxGeometry args={[0.1, 0.005, 0.06]} />
+          <meshStandardMaterial color="#a61c3a" roughness={0.7} />
+        </mesh>
+      </group>
 
       {/* Pages Edge */}
       <mesh position={[-0.01, 0, 0]}>
@@ -391,19 +407,19 @@ function Diary({ onOpen }) {
       </mesh>
 
       {/* Diary Spine */}
-      <mesh position={[0.9, 0, 0]}>
-        <cylinderGeometry args={[0.09, 0.09, 2.45, 16]} rotation={[Math.PI / 2, 0, 0]} />
-        <meshStandardMaterial color="#1f0930" roughness={0.6} metalness={0.2} />
+      <mesh position={[0.9, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.09, 0.09, 2.45, 32]} />
+        <meshPhysicalMaterial color="#1a0628" roughness={0.5} metalness={0.2} clearcoat={0.2} />
       </mesh>
 
       {/* Moon Symbol on Cover */}
       <Text 
         position={[0, 0.08, 0.3]} 
         rotation={[-Math.PI / 2, 0, 0]}
-        fontSize={0.4}
+        fontSize={0.35}
         color="#ffffff"
       >
-        ☽
+        ☾
       </Text>
 
       {/* Text on Cover */}
@@ -540,37 +556,37 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
         <Candle position={[ 3.8, 0.01, -0.5]} />
         <Candle position={[-3.2, 0.01, -1.0]} />
 
-        {/* ── Beautiful Fountain Pen ── */}
-        <group position={[1.8, 0.02, 1.0]} rotation={[0, -0.5, 0]}>
-          {/* Main Body */}
-          <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.03, 0.03, 0.5, 16]} />
-            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+        {/* ── Realistic Fountain Pen ── */}
+        <group position={[1.8, 0.02, 1.0]} rotation={[0, -0.6, 0]}>
+          {/* Main Body (Barrel) - tapers elegantly towards the back */}
+          <mesh position={[0.15, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.02, 0.035, 0.5, 32]} />
+            <meshStandardMaterial color="#1a0525" roughness={0.15} metalness={0.6} />
           </mesh>
-          {/* Gold Trim (Middle) */}
-          <mesh position={[-0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.032, 0.032, 0.04, 16]} />
-            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          {/* Back Gold Tip */}
+          <mesh position={[0.41, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.015, 0.02, 0.03, 32]} />
+            <meshStandardMaterial color="#d4af37" roughness={0.1} metalness={0.9} />
           </mesh>
-          {/* Front Grip */}
-          <mesh position={[-0.37, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.03, 0.015, 0.2, 16]} />
-            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+          {/* Gold Center Band */}
+          <mesh position={[-0.11, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.036, 0.036, 0.04, 32]} />
+            <meshStandardMaterial color="#d4af37" roughness={0.1} metalness={0.9} />
           </mesh>
-          {/* Gold Nib (Tip) */}
-          <mesh position={[-0.52, 0, 0]} rotation={[0, 0, -Math.PI / 2]} castShadow>
-            <coneGeometry args={[0.015, 0.1, 16]} />
-            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          {/* Grip Section - tapers towards the nib */}
+          <mesh position={[-0.24, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.02, 0.035, 0.22, 32]} />
+            <meshStandardMaterial color="#0a0a0a" roughness={0.2} metalness={0.8} />
           </mesh>
-          {/* Back Gold Cap */}
-          <mesh position={[0.25, 0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-            <cylinderGeometry args={[0.032, 0.032, 0.08, 16]} />
-            <meshStandardMaterial color="#e5c158" roughness={0.1} metalness={1} />
+          {/* Gold Nib Base */}
+          <mesh position={[-0.37, -0.002, 0]} rotation={[0, 0, -Math.PI / 2]} castShadow>
+            <cylinderGeometry args={[0.018, 0.02, 0.04, 32]} />
+            <meshStandardMaterial color="#d4af37" roughness={0.2} metalness={0.9} />
           </mesh>
-          {/* Back Rounded Jewel */}
-          <mesh position={[0.29, 0, 0]} castShadow>
-            <sphereGeometry args={[0.032, 16, 16]} />
-            <meshStandardMaterial color="#1c072b" roughness={0.2} metalness={0.5} />
+          {/* Gold Nib Tip (Flattened to look like real metal nib) */}
+          <mesh position={[-0.44, -0.005, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[1, 1, 0.3]} castShadow>
+            <coneGeometry args={[0.018, 0.12, 32]} />
+            <meshStandardMaterial color="#d4af37" roughness={0.1} metalness={1.0} />
           </mesh>
         </group>
 
