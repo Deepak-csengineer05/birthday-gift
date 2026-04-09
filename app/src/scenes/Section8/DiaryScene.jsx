@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, Environment, ContactShadows, OrbitControls } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
@@ -350,6 +350,19 @@ function Diary({ onOpen }) {
     config: { tension: 350, friction: 20 }
   });
 
+  // Create a canvas-based texture for the true OS-rendered emoji
+  const moonEmojiTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    ctx.font = '160px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🌕', 128, 140); // slightly vertically adjusted
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+
   return (
     <a.group 
       position={[0, 0.05, 0.5]} 
@@ -412,14 +425,11 @@ function Diary({ onOpen }) {
         <meshPhysicalMaterial color="#1a0628" roughness={0.5} metalness={0.2} clearcoat={0.2} />
       </mesh>
 
-      {/* Moon Symbol on Cover */}
-      <Text 
-        position={[0, 0.08, 0.3]} 
-        rotation={[-Math.PI / 2, 0, 0]}
-        fontSize={0.35}
-      >
-        🌕
-      </Text>
+      {/* Real OS Emoji Moon Symbol on Cover */}
+      <mesh position={[0, 0.08, 0.3]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[0.45, 0.45]} />
+        <meshBasicMaterial map={moonEmojiTexture} transparent={true} />
+      </mesh>
 
       {/* Text on Cover */}
       <Text 
