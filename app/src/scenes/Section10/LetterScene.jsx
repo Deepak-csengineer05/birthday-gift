@@ -1,6 +1,7 @@
 import React, { useRef, useState, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Text, Environment, ContactShadows, OrbitControls, CubicBezierLine } from '@react-three/drei';
+import { useSpring, a } from '@react-spring/three';
 import * as THREE from 'three';
 import Cake3D from '../Section5/Cake3D';
 

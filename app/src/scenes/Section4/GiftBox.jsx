@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useSpring } from '@react-spring/three';
+import { useSpring, a } from '@react-spring/three';
 import { RoundedBox } from '@react-three/drei';
 
 export default function GiftBox({

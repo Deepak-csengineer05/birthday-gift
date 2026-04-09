@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useSpring } from '@react-spring/three';
+import { useSpring, a } from '@react-spring/three';
 import { Text } from '@react-three/drei';
 
 export default function Cake3D({ blownCandles, onBlowCandle, showText }) {
