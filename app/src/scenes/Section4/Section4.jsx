@@ -34,6 +34,14 @@ export default function Section4({ onNext }) {
   const [activeLetter, setActiveLetter] = useState(null); // null or 0-4
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackResponse, setFeedbackResponse] = useState(null); // 'yes' or 'no'
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const toggleBox = useCallback((index) => {
     if (showFeedback) return;
@@ -113,7 +121,10 @@ export default function Section4({ onNext }) {
         <h1>Some gifts for you</h1>
       </div>
       <div className="canvas-container">
-        <Canvas camera={{ position: [0, 2.5, 9.5], fov: 45 }}>
+        <Canvas 
+          camera={{ position: [0, 2.5, 9.5], fov: isMobile ? 65 : 45 }}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
+        >
           <Experience 
             activeIndex={activeIndex}
             openedBoxes={openedBoxes}

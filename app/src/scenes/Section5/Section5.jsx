@@ -43,6 +43,15 @@ export default function Section5({ onNext }) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [countdown, setCountdown] = useState(null);
   const sectionAudioRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Countdown timer logic for mic start
   useEffect(() => {
     if (countdown === null || countdown === 0) return;
@@ -103,7 +112,11 @@ export default function Section5({ onNext }) {
            )}
         </div>
 
-        <Canvas shadows camera={{ position: [0, 4, 8], fov: 45 }}>
+        <Canvas 
+          shadows 
+          camera={{ position: [0, 4, 8], fov: isMobile ? 65 : 45 }}
+          dpr={isMobile ? [1, 1.5] : [1, 2]}
+        >
             <CameraRig isTopView={isTopView} />
             <ambientLight intensity={0.9} />
             <directionalLight 

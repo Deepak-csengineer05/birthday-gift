@@ -20,6 +20,20 @@ const Page = React.forwardRef((props, ref) => {
 export default function DiaryBook({ quotes, onComplete }) {
   const bookRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+
+  useEffect(() => {
+    // Check orientation on mount and resize
+    const checkOrientation = () => {
+      const isMobile = window.innerWidth <= 768;
+      const isPortrait = window.innerHeight > window.innerWidth;
+      setIsMobilePortrait(isMobile && isPortrait);
+    };
+
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    return () => window.removeEventListener('resize', checkOrientation);
+  }, []);
 
   const pages = [];
 
@@ -135,6 +149,25 @@ export default function DiaryBook({ quotes, onComplete }) {
 
   const currentPairIndex = Math.floor(currentPage / 2);
   const isEnd = currentPairIndex >= quotes.length;
+  
+  if (isMobilePortrait) {
+    return (
+      <div className="db-overlay" style={{ flexDirection: 'column', textAlign: 'center', padding: '2rem' }}>
+        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📱 ⤹</div>
+        <h2 style={{ color: '#fff', fontFamily: "'Dancing Script', cursive", fontSize: '2.5rem' }}>
+          Please rotate your phone
+        </h2>
+        <p style={{ color: '#ccc', fontSize: '1.2rem', marginTop: '1rem' }}>
+          This diary is best viewed sideways (landscape mode) so you have enough space to read the pages.
+        </p>
+      </div>
+    );
+  }
+
+  // Calculate dynamic dimensions for landscape mobile vs desktop
+  const isMobileLandscape = window.innerHeight <= 450; 
+  const bookWidth = isMobileLandscape ? window.innerWidth * 0.42 : 400;
+  const bookHeight = isMobileLandscape ? window.innerHeight * 0.85 : 530;
 
   return (
     <div className="db-overlay">
@@ -144,12 +177,12 @@ export default function DiaryBook({ quotes, onComplete }) {
         {/* We wrap it in a container with the cover spine background */}
         <div className="db-book-container">
           <HTMLFlipBook
-            width={400}
-            height={530}
+            width={bookWidth}
+            height={bookHeight}
             size="fixed"
             minWidth={300}
             maxWidth={450}
-            minHeight={400}
+            minHeight={300}
             maxHeight={600}
             maxShadowOpacity={0.65}
             showCover={false}

@@ -306,6 +306,21 @@
    MOBILE RESPONSIVENESS
    ================================== */
 @media (max-width: 768px) {
+  .s2-wrapper {
+    overflow-x: auto !important; /* Allow horizontal exploring */
+    overflow-y: hidden;
+    display: block;
+    -webkit-overflow-scrolling: touch;
+  }
+  .s2-gallery-container {
+    width: 280vw; /* Stretch it out so photos don't overlap as much */
+    position: relative;
+    inset: auto;
+    height: 100vh;
+  }
+  .s2-top-anchor {
+    width: 280vw;
+  }
   .s2-photo-system.is-active .s2-polaroid {
     transform: translate(-50%, -50%) scale(1.5) !important;
   }
