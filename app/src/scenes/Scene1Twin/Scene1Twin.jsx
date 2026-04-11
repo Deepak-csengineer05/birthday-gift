@@ -195,6 +195,14 @@ export default function Scene1Twin({ onProceed, onAudioStart }) {
   const [stepId, setStepId]       = useState('intro');
   const [exiting, setExiting]     = useState(false);
   const [bubbleKey, setBubbleKey] = useState(0);
+  const [isMobile, setIsMobile]   = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const step = STEP_MAP[stepId];
 
@@ -244,7 +252,7 @@ export default function Scene1Twin({ onProceed, onAudioStart }) {
           </button>
 
           {/* NO: floating portal if repels, otherwise normal */}
-          {step.noRepels ? (
+          {(step.noRepels && !isMobile) ? (
             <FloatingNo onNoClick={() => handleOption(1)} stepId={stepId} />
           ) : (
             <button

@@ -35,6 +35,7 @@ export default function Section4({ onNext }) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackResponse, setFeedbackResponse] = useState(null); // 'yes' or 'no'
   const [isMobile, setIsMobile] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -115,8 +116,31 @@ export default function Section4({ onNext }) {
     setFeedbackResponse(response);
   };
 
+  const handleTouchStart = (e) => {
+    if (activeLetter !== null || showFeedback) return;
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (Math.abs(diff) > 50) { // minimum threshold for swipe
+      if (diff > 0) {
+        setActiveIndex((prev) => (prev + 1) % 5);
+      } else {
+        setActiveIndex((prev) => (prev - 1 + 5) % 5);
+      }
+    }
+    setTouchStart(null);
+  };
+
   return (
-    <div className="section4-container">
+    <div 
+      className="section4-container"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="section-heading">
         <h1>Some gifts for you</h1>
       </div>

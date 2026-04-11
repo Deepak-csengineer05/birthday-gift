@@ -23,8 +23,17 @@ export default function Section6({ onNext }) {
   const [currentSelection, setCurrentSelection] = useState([]); // array of {r, c} strings
   const [completed, setCompleted] = useState(false);
   const [hintedCell, setHintedCell] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileQuestionIndex, setMobileQuestionIndex] = useState(0);
 
   const boardRef = useRef(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 900);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Generate background balloons
   const balloons = useMemo(() => {
@@ -224,6 +233,16 @@ export default function Section6({ onNext }) {
               gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
               gridTemplateRows: `repeat(${GRID_SIZE}, 1fr)`
             }}
+            onTouchMove={(e) => {
+              if (!isDragging) return;
+              const touch = e.touches[0];
+              const el = document.elementFromPoint(touch.clientX, touch.clientY);
+              if (el && el.hasAttribute('data-r')) {
+                const r = parseInt(el.getAttribute('data-r'), 10);
+                const c = parseInt(el.getAttribute('data-c'), 10);
+                handlePointerEnter(r, c);
+              }
+            }}
           >
             {boardData.grid.map((row, r) => (
               row.map((char, c) => {
@@ -237,6 +256,8 @@ export default function Section6({ onNext }) {
                   <div 
                     key={coord} 
                     className={`s6-cell ${isSelected ? 'selected' : ''} ${isFound ? 'found' : ''} ${isHinted ? 'hinted' : ''}`}
+                    data-r={r}
+                    data-c={c}
                     onPointerDown={(e) => { e.preventDefault(); handlePointerDown(r, c); }}
                     onPointerEnter={(e) => { e.preventDefault(); handlePointerEnter(r, c); }}
                     // Touch support requires different handling or rely on pointer events
@@ -250,19 +271,54 @@ export default function Section6({ onNext }) {
         </div>
 
         <div className="s6-questions">
-          {WORDS_DATA.map((item, idx) => {
-            const isFound = foundWords.includes(item.answer);
-            return (
-              <div key={idx} className={`s6-question-item ${isFound ? 'completed' : ''}`}>
-                <div className="q-number">{idx + 1}</div>
-                <div className="q-text">
-                  <div className="q-title">{item.question}</div>
-                  <div className="q-answer">{isFound ? item.answer : '_ '.repeat(item.answer.length)}</div>
-                </div>
-                {isFound && <div className="q-check">✓</div>}
+          {isMobile ? (
+            <div className="mobile-question-carousel" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button 
+                className="carousel-nav-btn" 
+                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '10px', borderRadius: '50%' }}
+                onClick={() => setMobileQuestionIndex((prev) => (prev - 1 + WORDS_DATA.length) % WORDS_DATA.length)}
+              >
+                &lt;
+              </button>
+              <div style={{ flex: 1 }}>
+                {(() => {
+                  const item = WORDS_DATA[mobileQuestionIndex];
+                  const isFound = foundWords.includes(item.answer);
+                  return (
+                    <div className={`s6-question-item ${isFound ? 'completed' : ''}`} style={{ width: '100%', marginBottom: 0 }}>
+                      <div className="q-number">{mobileQuestionIndex + 1}</div>
+                      <div className="q-text">
+                        <div className="q-title">{item.question}</div>
+                        <div className="q-answer">{isFound ? item.answer : '_ '.repeat(item.answer.length)}</div>
+                      </div>
+                      {isFound && <div className="q-check">✔</div>}
+                    </div>
+                  );
+                })()}
               </div>
-            );
-          })}
+              <button 
+                className="carousel-nav-btn" 
+                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '10px', borderRadius: '50%' }}
+                onClick={() => setMobileQuestionIndex((prev) => (prev + 1) % WORDS_DATA.length)}
+              >
+                &gt;
+              </button>
+            </div>
+          ) : (
+            WORDS_DATA.map((item, idx) => {
+              const isFound = foundWords.includes(item.answer);
+              return (
+                <div key={idx} className={`s6-question-item ${isFound ? 'completed' : ''}`}>
+                  <div className="q-number">{idx + 1}</div>
+                  <div className="q-text">
+                    <div className="q-title">{item.question}</div>
+                    <div className="q-answer">{isFound ? item.answer : '_ '.repeat(item.answer.length)}</div>
+                  </div>
+                  {isFound && <div className="q-check">✔</div>}
+                </div>
+              );
+            })
+          )}
           
           {!completed && (
             <button className="s6-hint-btn" onClick={giveHint}>
