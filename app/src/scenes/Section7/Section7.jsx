@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import './Section7.css';
 import ScratchCard from './ScratchCard';
 import { trackEvent } from '../../analytics';
@@ -7,6 +7,14 @@ export default function Section7({ onNext }) {
   const [focusedId, setFocusedId] = useState(null);
   const [transformedIds, setTransformedIds] = useState([]);
   const [isSectionComplete, setIsSectionComplete] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const CARDS = [1, 2, 3, 4, 5, 6, 7];
 
@@ -79,57 +87,91 @@ export default function Section7({ onNext }) {
         <p>Choose a star, uncover the memory, and tap to reveal the magic.</p>
       </div>
 
-      {/* 3D Tilted Orbital Carousel */}
-      <div className="s7-perspective-scene">
-        <div className={`s7-orbit-ring ${focusedId !== null ? 'paused' : 'spinning'}`}>
-          
-          <div className="s7-orbit-center-star">
-            <div className="moon-sphere"></div>
-          </div>
-
-          {CARDS.map((id, index) => {
-            const rotateZAngle = (index / 7) * 360;
+      {isMobile ? (
+        <div className="s7-mobile-carousel" style={{ display: focusedId !== null ? 'none' : 'flex' }}>
+          {CARDS.map((id) => {
             const isTransformed = transformedIds.includes(id);
-            const isHidden = focusedId === id; // Hide the orbiting copy when focused
-
             return (
               <div 
-                key={`orbit-${id}`}
-                className="s7-orbit-pivot" 
-                style={{ '--angle': `${rotateZAngle}deg` }}
+                key={`mobile-${id}`}
+                className={`s7-mobile-card ${isTransformed ? 'transformed' : ''}`}
+                onClick={() => handleCardClick(id)}
               >
-                <div className="s7-orbit-item-container">
-                  <div 
-                    className={`s7-card-counter-rotator ${isHidden ? 'hidden' : ''} ${isTransformed ? 'transformed' : ''}`}
-                    onClick={() => handleCardClick(id)}
-                  >
-                     {/* Miniature representation for the orbit with nice V1 stars */}
-                     <div className="mini-card-visual">
-                       {isTransformed ? (
-                         <img 
-                           src={`/sec7pic${id}Ghibli.${id === 6 ? 'png' : 'jpeg'}`} 
-                           alt={`Thumbnail ${id}`} 
-                           className="mini-ghibli-layer" 
-                           style={{ objectFit: 'cover' }} 
-                           onError={(e) => {
-                             e.target.onerror = null;
-                             e.target.src = `/sec7pic${id}.${[4, 5, 7].includes(id) ? 'png' : 'jpeg'}`;
-                           }}
-                         />
-                       ) : (
-                         <div className="mini-scratch-layer">
-                           <span>Scratch to reveal</span>
-                         </div>
-                       )}
-                       <div className="mini-border-glow"></div>
-                     </div>
-                  </div>
+                <div className="mini-card-visual">
+                  {isTransformed ? (
+                    <img 
+                      src={`/sec7pic${id}Ghibli.${id === 6 ? 'png' : 'jpeg'}`} 
+                      alt={`Thumbnail ${id}`} 
+                      className="mini-ghibli-layer" 
+                      style={{ objectFit: 'cover' }} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `/sec7pic${id}.${[4, 5, 7].includes(id) ? 'png' : 'jpeg'}`;
+                      }}
+                    />
+                  ) : (
+                    <div className="mini-scratch-layer">
+                      <span>Scratch to reveal</span>
+                    </div>
+                  )}
+                  <div className="mini-border-glow"></div>
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
+      ) : (
+        <div className="s7-perspective-scene">
+          <div className={`s7-orbit-ring ${focusedId !== null ? 'paused' : 'spinning'}`}>
+            
+            <div className="s7-orbit-center-star">
+              <div className="moon-sphere"></div>
+            </div>
+
+            {CARDS.map((id, index) => {
+              const rotateZAngle = (index / 7) * 360;
+              const isTransformed = transformedIds.includes(id);
+              const isHidden = focusedId === id; // Hide the orbiting copy when focused
+
+              return (
+                <div 
+                  key={`orbit-${id}`}
+                  className="s7-orbit-pivot" 
+                  style={{ '--angle': `${rotateZAngle}deg` }}
+                >
+                  <div className="s7-orbit-item-container">
+                    <div 
+                      className={`s7-card-counter-rotator ${isHidden ? 'hidden' : ''} ${isTransformed ? 'transformed' : ''}`}
+                      onClick={() => handleCardClick(id)}
+                    >
+                       {/* Miniature representation for the orbit with nice V1 stars */}
+                       <div className="mini-card-visual">
+                         {isTransformed ? (
+                           <img 
+                             src={`/sec7pic${id}Ghibli.${id === 6 ? 'png' : 'jpeg'}`} 
+                             alt={`Thumbnail ${id}`} 
+                             className="mini-ghibli-layer" 
+                             style={{ objectFit: 'cover' }} 
+                             onError={(e) => {
+                               e.target.onerror = null;
+                               e.target.src = `/sec7pic${id}.${[4, 5, 7].includes(id) ? 'png' : 'jpeg'}`;
+                             }}
+                           />
+                         ) : (
+                           <div className="mini-scratch-layer">
+                             <span>Scratch to reveal</span>
+                           </div>
+                         )}
+                         <div className="mini-border-glow"></div>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Focused Center Card (Flat to screen to ensure reliable scratching) */}
       <div className={`s7-focus-layer ${focusedId !== null ? 'active' : ''}`}>
