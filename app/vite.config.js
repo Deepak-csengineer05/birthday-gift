@@ -8,10 +8,19 @@ export default defineConfig({
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei', '@react-spring/three'],
-          firebase: ['firebase']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('three') || id.includes('@react-three') || id.includes('@react-spring')) {
+              return 'three';
+            }
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor';
+            }
+            if (id.includes('firebase')) {
+              return 'firebase';
+            }
+            return 'vendor-other';
+          }
         }
       }
     }
