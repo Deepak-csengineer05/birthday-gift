@@ -272,20 +272,19 @@ export default function Section6({ onNext }) {
 
         <div className="s6-questions">
           {isMobile ? (
-            <div className="mobile-question-carousel" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="mobile-question-carousel">
               <button 
                 className="carousel-nav-btn" 
-                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '10px', borderRadius: '50%' }}
                 onClick={() => setMobileQuestionIndex((prev) => (prev - 1 + WORDS_DATA.length) % WORDS_DATA.length)}
               >
-                &lt;
+                &#10094;
               </button>
-              <div style={{ flex: 1 }}>
+              <div className="carousel-question-wrapper">
                 {(() => {
                   const item = WORDS_DATA[mobileQuestionIndex];
                   const isFound = foundWords.includes(item.answer);
                   return (
-                    <div className={`s6-question-item ${isFound ? 'completed' : ''}`} style={{ width: '100%', marginBottom: 0 }}>
+                    <div className={`s6-question-item ${isFound ? 'completed' : ''} mobile-card`}>
                       <div className="q-number">{mobileQuestionIndex + 1}</div>
                       <div className="q-text">
                         <div className="q-title">{item.question}</div>
@@ -298,10 +297,9 @@ export default function Section6({ onNext }) {
               </div>
               <button 
                 className="carousel-nav-btn" 
-                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '10px', borderRadius: '50%' }}
                 onClick={() => setMobileQuestionIndex((prev) => (prev + 1) % WORDS_DATA.length)}
               >
-                &gt;
+                &#10095;
               </button>
             </div>
           ) : (
