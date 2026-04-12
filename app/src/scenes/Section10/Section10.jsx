@@ -29,7 +29,7 @@ export default function Section10({ onNext }) {
     <div className="s10-root">
       {/* Background BGM (Placeholder bg-music-4.webm or equivalent) */}
       <audio 
-        src="/bg-music-4.webm" 
+        src="/bg-music-5.mp3" 
         autoPlay 
         loop
         style={{ display: 'none' }} 
