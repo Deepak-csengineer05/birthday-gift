@@ -734,7 +734,7 @@ export default function AdminDashboard() {
           <div className="sidebar-menu scroll-hidden">
             {MENU_GROUPS.map((group, i) => (
               <div key={i} className="menu-group">
-                {isSidebarOpen && <div className="menu-group-title">{group.title}</div>}
+                <div className="menu-group-title">{group.title}</div>
                 {group.items.map(item => (
                   <button
                     key={item.id}
@@ -743,8 +743,8 @@ export default function AdminDashboard() {
                     title={!isSidebarOpen ? item.label : undefined}
                   >
                     <span className="menu-icon">{item.icon}</span>
-                    {isSidebarOpen && <span className="menu-label">{item.label}</span>}
-                    {activeTab === item.id && isSidebarOpen && <div className="active-indicator" />}
+                    <span className="menu-label">{item.label}</span>
+                    {activeTab === item.id && <div className="active-indicator" />}
                   </button>
                 ))}
               </div>
