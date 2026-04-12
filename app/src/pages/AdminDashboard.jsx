@@ -260,19 +260,21 @@ export default function AdminDashboard() {
   /* ── Content Renderers ────────────────────────── */
   const renderOverview = () => (
     <div className="tab-pane fade-in">
-      <div className="admin-header">
-        <h1 className="admin-title">Lunar Mission Control 🌙</h1>
-        <p className="admin-subtitle">
-          Analytics Dashboard
-          {isTargetOnline ? (
-            <>
-              <span className="live-indicator online">🟢 ONLINE</span>
-              <span className="current-location-pill">📍 At: {currentLocation}</span>
-            </>
-          ) : (
-            <span className="live-indicator offline">⚪ Offline</span>
-          )}
-        </p>
+      <div className="admin-panel desktop-only-header">
+        <div className="admin-header desktop-header-content">
+          <h1 className="admin-title">Lunar Mission Control 🌙</h1>
+          <p className="admin-subtitle">
+            Analytics Dashboard
+            {isTargetOnline ? (
+              <>
+                <span className="live-indicator online">🟢 ONLINE</span>
+                <span className="current-location-pill">📍 At: {currentLocation}</span>
+              </>
+            ) : (
+              <span className="live-indicator offline">⚪ Offline</span>
+            )}
+          </p>
+        </div>
       </div>
 
       <div className="admin-stats-row">
@@ -719,6 +721,9 @@ export default function AdminDashboard() {
 
       <div className={`admin-layout ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
         
+        {/* === MOBILE BACKDROP === */}
+        {isSidebarOpen && <div className="mobile-backdrop" onClick={() => setIsSidebarOpen(false)}></div>}
+
         {/* === SIDEBAR === */}
         <aside className="admin-sidebar glass-panel">
           <div className="sidebar-header">
@@ -739,7 +744,12 @@ export default function AdminDashboard() {
                   <button
                     key={item.id}
                     className={`menu-item ${activeTab === item.id ? 'active' : ''}`}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      if (window.innerWidth <= 768) {
+                        setIsSidebarOpen(false);
+                      }
+                    }}
                     title={!isSidebarOpen ? item.label : undefined}
                   >
                     <span className="menu-icon">{item.icon}</span>
@@ -762,6 +772,13 @@ export default function AdminDashboard() {
 
         {/* === MAIN CONTENT === */}
         <main className="admin-main">
+          <div className="mobile-header">
+            <button className="hamburger-btn" onClick={() => setIsSidebarOpen(true)}>
+              ☰
+            </button>
+            <div className="mobile-header-title">Mission Control</div>
+          </div>
+          
           <div className="main-scroll-area">
             {activeTab === 'overview' && renderOverview()}
             {activeTab === 'scene1' && renderScene1()}
