@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Section3.css';
 
 const INITIAL_MESSAGES = [
-  { id: 1, type: 'his', text: 'Hey na thunga poren', time: '11:58 PM', date: 'Today' },
-  { id: 2, type: 'her', text: 'Oh okk sleep well', time: '11:58 PM', date: 'Today' },
-  { id: 3, type: 'his', text: 'Ne thungalaya innum?', time: '11:59 PM', date: 'Today' },
-  { id: 4, type: 'her', text: 'Illa assignment ezhuthitu iruken', time: '11:59 PM', date: 'Today' },
-  { id: 5, type: 'his', text: 'Oh seri mudichitu thungu, goodnight!', time: '11:59 PM', date: 'Today' },
+  { id: 1, type: 'his', text: 'yenna thungalaya ino ?', time: '11:58 PM', date: 'Today' },
+  { id: 2, type: 'her', text: 'ila inne tha', time: '11:58 PM', date: 'Today' },
+  { id: 3, type: 'his', text: 'Haan seri seri', time: '11:59 PM', date: 'Today' },
+  { id: 4, type: 'her', text: 'thunga poriya nee', time: '11:59 PM', date: 'Today' },
+  { id: 5, type: 'his', text: 'ama thunga poren, goodnight!', time: '11:59 PM', date: 'Today' },
   { id: 6, type: 'her', text: 'Haan goodnight!!', time: '11:59 PM', date: 'Today' },
 ];
 
@@ -99,7 +99,7 @@ export default function Section3({ onNext }) {
       if (!active) return;
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), type: 'his', text: 'HAPPY BIRTHDAY POOJETHA!! ❤️🎂✨', time: '12:00 AM', date: 'Today' },
+        { id: Date.now(), type: 'his', text: 'Wishing you a Very Happiest birthday poojetha🎂💐🎁💜☺️🌕✨', time: '12:00 AM', date: 'Today' },
       ]);
       setStatus('online');
       await sleep(2000);
@@ -114,7 +114,7 @@ export default function Section3({ onNext }) {
         {
           id: Date.now() + 1,
           type: 'his',
-          text: 'Wishing you the most magical and happiest year ahead. You deserve the entire world!',
+          text: 'May all your dreams comes true,you are the best in all ways , thanks for being in my life..once again \n\n Happy Birthday my Best Friend..💜☺️💐🌕♾️❣️',
           time: '12:00 AM',
           date: 'Today',
         },
@@ -131,14 +131,14 @@ export default function Section3({ onNext }) {
       };
 
       if (!active) return;
-      await typeText('Aww thank you so much deepu!! 🥰🥺');
+      await typeText('Thank you so much 😊');
       await sleep(800);
 
       if (!active) return;
       setInputText('');
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 2, type: 'her', text: 'Aww thank you so much deepu!! 🥰🥺', time: '12:01 AM', date: 'Today' },
+        { id: Date.now() + 2, type: 'her', text: 'Thank you so much 😊', time: '12:01 AM', date: 'Today' },
       ]);
       setClock('12:01 AM');
       await sleep(1500);
@@ -153,7 +153,7 @@ export default function Section3({ onNext }) {
         {
           id: Date.now() + 3,
           type: 'his',
-          text: 'How is your special day starting off? Did you expect this? 😉',
+          text: 'intha time la wish panuven nu ninachiya ?',
           time: '12:01 AM',
           date: 'Today',
         },
@@ -162,14 +162,14 @@ export default function Section3({ onNext }) {
       await sleep(2000);
 
       if (!active) return;
-      await typeText('Not at all! You totally surprised me today 😭✨');
+      await typeText('ehh sathiyama illa , yaru yenaku sonathu ila ipidi');
       await sleep(600);
 
       if (!active) return;
       setInputText('');
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 4, type: 'her', text: 'Not at all! You totally surprised me today 😭✨', time: '12:01 AM', date: 'Today' },
+        { id: Date.now() + 4, type: 'her', text: 'ehh sathiyama illa , yaru yenaku sonathu ila ipidi', time: '12:01 AM', date: 'Today' },
       ]);
       await sleep(1500);
 
@@ -183,7 +183,7 @@ export default function Section3({ onNext }) {
         {
           id: Date.now() + 5,
           type: 'his',
-          text: 'I have something else entirely to show you. Are you ready for the next surprise?',
+          text: 'Haan unaku neraya surprise vachiruken, pakuriya ?',
           time: '12:02 AM',
           date: 'Today',
         },
@@ -193,7 +193,7 @@ export default function Section3({ onNext }) {
       await sleep(2500);
 
       if (!active) return;
-      await typeText('YES!! What is it? 👀');
+      await typeText('Yenathu ?');
       setSendPulse(true);
     };
 

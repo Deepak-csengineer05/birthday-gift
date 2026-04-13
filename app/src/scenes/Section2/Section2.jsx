@@ -4,14 +4,14 @@ import { trackEvent } from '../../analytics';
 
 // Sample photos to display. We stagger their anchor points and initial sway timings perfectly.
 const PHOTOS = [
-  { id: 1, src: 'pic1.jpeg', caption: 'sweet memory ✨', anchorX: 10, stringLength: 120, rotSpeed: 3.5 },
-  { id: 6, src: 'pic2.jpeg', caption: 'vibes 💜', anchorX: 20, stringLength: 320, rotSpeed: 5.1, isCurly: true },
-  { id: 2, src: 'pic3.jpeg', caption: 'beautiful day 🌙', anchorX: 35, stringLength: 180, rotSpeed: 4.2 },
-  { id: 7, src: 'pic4.jpeg', caption: 'wild & free 🌌', anchorX: 47, stringLength: 400, rotSpeed: 6.2, isCurly: true },
-  { id: 3, src: 'pic5.jpeg', caption: 'always smiling 😊', anchorX: 58, stringLength: 140, rotSpeed: 3.8 },
+  { id: 1, src: 'pic1.jpeg', caption: 'Smile ✨', anchorX: 10, stringLength: 120, rotSpeed: 3.5 },
+  { id: 6, src: 'pic2.jpeg', caption: 'Pooji 🌙', anchorX: 20, stringLength: 320, rotSpeed: 5.1, isCurly: true },
+  { id: 2, src: 'pic3.jpeg', caption: 'violet Saree 💜', anchorX: 35, stringLength: 180, rotSpeed: 4.2 },
+  { id: 7, src: 'pic4.jpeg', caption: '3d model art 🖌️', anchorX: 47, stringLength: 400, rotSpeed: 6.2, isCurly: true },
+  { id: 3, src: 'pic5.jpeg', caption: 'Your Favourite 😊', anchorX: 58, stringLength: 140, rotSpeed: 3.8 },
   { id: 4, src: 'pic6.jpeg', caption: 'shining 💫', anchorX: 72, stringLength: 200, rotSpeed: 4.5 },
-  { id: 8, src: 'pic7.jpeg', caption: 'stars 🌟', anchorX: 82, stringLength: 340, rotSpeed: 5.4, isCurly: true },
-  { id: 5, src: 'pic8.jpeg', caption: 'perfect 💜', anchorX: 92, stringLength: 160, rotSpeed: 3.9 }
+  { id: 8, src: 'pic7.jpeg', caption: 'My First Ghibli 🖼️', anchorX: 82, stringLength: 340, rotSpeed: 5.4, isCurly: true },
+  { id: 5, src: 'pic8.jpeg', caption: 'Bangle 💜', anchorX: 92, stringLength: 160, rotSpeed: 3.9 }
 ];
 
 export default function Section2({ onNext }) {

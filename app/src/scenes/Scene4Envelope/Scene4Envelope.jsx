@@ -265,9 +265,6 @@ export default function Scene4Envelope({ onProceed, onDoorsOpen }) {
               <text x="160" y="58" fontSize="16" fill="#d8b4fe" textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: 'var(--font-primary, sans-serif)', letterSpacing: '1px', fontStyle: 'italic' }}>
                 Are you waiting to explore ?
               </text>
-              <text x="160" y="165" fontSize="16" fill="#d8b4fe" textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: 'var(--font-primary, sans-serif)', letterSpacing: '2px', fontStyle: 'italic' }}>
-                - deepak
-              </text>
             </svg>
 
             {phase !== 'falling' && phase !== 'landed' && (

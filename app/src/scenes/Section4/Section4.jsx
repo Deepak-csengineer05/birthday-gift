@@ -18,11 +18,11 @@ const LETTERS = [
     text: "You've found the third gift. [Placeholder text for Letter 3]"
   },
   {
-    image: null,
+    image: "pic1.jpeg",
     text: "Almost there... four down, one to go! [Placeholder text for Letter 4]"
   },
   {
-    image: null,
+    image: "pic4.jpeg",
     text: "The final box. I hope this birthday is as special as you are to me. [Placeholder text for Letter 5]"
   }
 ];
