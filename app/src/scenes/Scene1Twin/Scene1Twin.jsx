@@ -8,37 +8,37 @@ const STEPS = [
   {
     id: 'intro',
     moonMood: 'happy',
-    lines: ['Hi! I am Moon 🌕', 'Is it any special day today?'],
-    options: ['Of course ✦', 'Yes for sure ✨'],
+    lines: ['Hi! Enoda Peru Moon 🌕', 'Inaiki yethachu special day va?'],
+    options: ['Of course ✦', 'Yes, for sure ✨'],
     onOption: () => 'beautiful',
   },
   {
     id: 'beautiful',
     moonMood: 'curious',
-    lines: ['Haan...', 'I heard that you are more beautiful than me?'],
-    options: ['Yes ✨', 'No'],
+    lines: ['Haan...', 'Ama na kelvi patten nee enna vida azhagamey apidiya ?'],
+    options: ['Aama ✨', 'illaye'],
     onOption: (idx) => idx === 0 ? 'twin' : 'beautiful_nudge',
   },
   {
     id: 'beautiful_nudge',
     moonMood: 'teasing',
-    lines: ['Hey, click yes —', "because it's true 💜"],
-    options: ['Yes ✨', 'No'],
+    lines: ['illaya, poi solladha —', " nee azhagadha iruka, aama sollu 💜"],
+    options: ['Aama ✨', 'illaye'],
     onOption: (idx) => idx === 0 ? 'twin' : 'beautiful_nudge',
   },
   {
     id: 'twin',
     moonMood: 'excited',
-    lines: ['Then...', 'shall I call you my twin? 🌙'],
-    options: ['Yes ✦', 'No'],
+    lines: ['Seri appo...', 'Unakku en friend uh onnu kudukka sonnaan kudukkatuma ?'],
+    options: ['Haan kudu ✦', 'ila vena'],
     onOption: (idx) => idx === 0 ? 'done' : 'twin_nudge',
     noRepels: true,
   },
   {
     id: 'twin_nudge',
     moonMood: 'pleading',
-    lines: ['why no?', 'say yes 💜'],
-    options: ['Yes ✦', 'No'],
+    lines: ['yen venam?', 'Na kudupen 💜'],
+    options: ['Haan kudu ✦', 'illa vena'],
     onOption: (idx) => idx === 0 ? 'done' : 'twin_nudge',
     noRepels: true,
   },
@@ -127,7 +127,7 @@ function FloatingNo({ onNoClick, stepId }) {
       }}
       onClick={onNoClick}
     >
-      No
+      illa venam
     </button>,
     document.body
   );

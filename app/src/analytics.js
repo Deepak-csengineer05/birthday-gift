@@ -37,7 +37,7 @@ function createEmptyStore() {
     sessionStart: null,
     lastActivity: null,
     events: [],
-    section9Answers: {},
+    section10Answers: {},
   };
 }
 
@@ -159,7 +159,7 @@ export function trackEvent(category, action, data = {}) {
 /**
  * Store a Section 9 text answer.
  */
-export function trackSection9Answer(questionId, questionText, answer) {
+export function trackSection10Answer(questionId, questionText, answer) {
   const entry = {
     question: questionText,
     answer,
@@ -168,12 +168,12 @@ export function trackSection9Answer(questionId, questionText, answer) {
 
   // Local
   const store = getLocalStore();
-  store.section9Answers[questionId] = entry;
+  store.section10Answers[questionId] = entry;
   saveLocalStore(store);
 
   // Firebase
-  fbSet(`${FB_PATH}/section9Answers/${questionId}`, entry).catch(e =>
-    console.warn('[Analytics] Section9 save failed:', e)
+  fbSet(`${FB_PATH}/section10Answers/${questionId}`, entry).catch(e =>
+    console.warn('[Analytics] Section10 save failed:', e)
   );
 }
 
@@ -204,3 +204,4 @@ export async function clearAnalytics() {
  * Returns the Firebase RTDB path for the admin dashboard to listen on.
  */
 export { FB_PATH };
+

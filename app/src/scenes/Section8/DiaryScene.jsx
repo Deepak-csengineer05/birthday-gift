@@ -1,5 +1,5 @@
-import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text, Environment, ContactShadows, OrbitControls } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
 import * as THREE from 'three';
@@ -484,8 +484,8 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
       {/* Unconstrained interactive canvas */}
       <Canvas 
         camera={{ position: [2, 3.8, 10.5], fov: 46 }} 
-        shadows 
-        gl={{ antialias: true }}
+        shadows={{ type: THREE.PCFShadowMap }}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
         onPointerMissed={handleMissed}
       >
         <color attach="background" args={['#0d0704']} />
@@ -497,7 +497,7 @@ export default function DiaryScene({ onOpen, active, audioControls }) {
 
         {/* Moonlight from window — cool blue */}
         <directionalLight position={[0, 6, -6]} intensity={1.4} color="#b8d8ff" castShadow
-          shadow-mapSize={[2048, 2048]}
+          shadow-mapSize={[1024, 1024]}
           shadow-camera-left={-10} shadow-camera-right={10}
           shadow-camera-top={8}   shadow-camera-bottom={-4}
         />

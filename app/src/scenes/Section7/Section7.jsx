@@ -194,7 +194,7 @@ export default function Section7({ onNext }) {
           <h2>Did you like these?</h2>
           <p>Every memory with you rests safely among the stars.</p>
           <button className="next-section-btn s7-next" style={{ padding: '15px 40px', fontSize: '1.2rem', borderRadius: '30px', cursor: 'pointer', background: 'linear-gradient(135deg, #a374ff, #ff8a65)', border: 'none', color: '#fff', marginTop: '20px' }} onClick={onNext}>
-            Can we go for next section?
+            Next Section
           </button>
         </div>
       </div>

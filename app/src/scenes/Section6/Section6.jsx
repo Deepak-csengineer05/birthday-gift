@@ -176,11 +176,18 @@ export default function Section6({ onNext }) {
   const giveHint = () => {
     if (!boardData) return;
     trackEvent('Section6', 'hint_used', { hintsTotal: 'increment' });
-    const unfoundWords = boardData.wordsPlaced.filter(wp => !foundWords.includes(wp.word));
-    if (unfoundWords.length > 0) {
-      // Pick a random unfound word
-      const randomWord = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
-      setHintedCell(randomWord.coords[0]);
+    
+    // Find the first word in WORDS_DATA that hasn't been found yet (ordered 1 to 7)
+    const nextUnfoundWordData = WORDS_DATA.find(wd => !foundWords.includes(wd.answer));
+    
+    if (nextUnfoundWordData) {
+      const targetWord = boardData.wordsPlaced.find(wp => wp.word === nextUnfoundWordData.answer);
+      if (targetWord && targetWord.coords.length > 0) {
+        setHintedCell(targetWord.coords[0]);
+        // Also auto-scroll mobile carousel to the hinted word's index
+        const index = WORDS_DATA.findIndex(wd => wd.answer === nextUnfoundWordData.answer);
+        if (index !== -1) setMobileQuestionIndex(index);
+      }
     }
   };
 
@@ -214,7 +221,7 @@ export default function Section6({ onNext }) {
           <h2>You found all the Words!</h2>
           <p>Every piece of your life forms a beautiful Memory.</p>
           <button className="next-section-btn s6-next" onClick={onNext}>
-            Can we go next section
+           Next Section
           </button>
         </div>
       </div>

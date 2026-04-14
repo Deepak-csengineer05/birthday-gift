@@ -1,5 +1,5 @@
-import React, { useRef, useState, useMemo, Suspense } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import React, { useRef, useState, useMemo, Suspense, useEffect } from 'react';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import { Text, Environment, ContactShadows, OrbitControls, CubicBezierLine } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
 import * as THREE from 'three';
@@ -419,8 +419,9 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
       {/* Deep Telephoto Zoom Camera for absolute realism! */}
       <Canvas 
         camera={{ position: [0, 5.5, 9.5], fov: 42 }} 
-        shadows 
+        shadows={{ type: THREE.PCFShadowMap }}
         gl={{ antialias: true }}
+        dpr={[1, 1.5]}
         onPointerMissed={handleMissed}
       >
         <color attach="background" args={['#090503']} />
@@ -429,7 +430,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
 
         <ambientLight intensity={0.35} color="#ffd8a0" />
         <directionalLight position={[0, 8, 4]} intensity={1.4} color="#b8d8ff" castShadow
-          shadow-mapSize={[2048, 2048]}
+          shadow-mapSize={[1024, 1024]}
           shadow-camera-left={-12} shadow-camera-right={12}
           shadow-camera-top={10} shadow-camera-bottom={-6}
         />
@@ -528,7 +529,7 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
 
         {/* Unconstrained Camera Controls */}
         <CameraController focusData={focusData} />
-        <ContactShadows position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
+        <ContactShadows frames={1} resolution={512} position={[0, 0.01, 0]} opacity={0.8} blur={2.5} scale={18} />
       </Canvas>
 
       {!isFoldingBack && active && (

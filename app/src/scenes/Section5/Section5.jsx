@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useSpring } from '@react-spring/three';
 import { Environment } from '@react-three/drei';
+import * as THREE from 'three';
 import Cake3D from './Cake3D';
 import './Section5.css';
 import { trackEvent } from '../../analytics';
@@ -113,7 +114,7 @@ export default function Section5({ onNext }) {
         </div>
 
         <Canvas 
-          shadows 
+          shadows={{ type: THREE.PCFShadowMap }}
           camera={{ position: [0, 4, 8], fov: isMobile ? 65 : 45 }}
           dpr={isMobile ? [1, 1.5] : [1, 2]}
         >

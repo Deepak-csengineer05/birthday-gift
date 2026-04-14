@@ -5,7 +5,7 @@ import { rtdb } from '../firebase';
 import { ref, onValue } from 'firebase/database';
 
 /* ── Section 9 Question Map ────────────────────── */
-const SECTION9_QUESTIONS = [
+const SECTION10_QUESTIONS = [
   { id: 0, text: "Are you surprised by the gift?", type: 'options' },
   { id: 1, text: "Sorry for this, next time I assure the gift will be the best to make you smile.", type: 'info' },
   { id: 2, text: "Do you know who done this for you?", type: 'options' },
@@ -28,8 +28,9 @@ const LOCATION_MAP = {
   'Section6': 'Memory 06: Puzzle',
   'Section7': 'Memory 07: Scratch',
   'Section8': 'Memory 08: Diary',
-  'Section9': 'Memory 09: Q&A',
-  'Section10': 'Memory 10: Letter',
+    'Section9': 'Memory 09: Cards',
+  'Section10': 'Memory 10: Q&A',
+  'Section11': 'Memory 11: Letter',
   'PasswordGate': 'Password Gate'
 };
 
@@ -112,8 +113,9 @@ const MENU_GROUPS = [
       { id: 'sec6', icon: '✨', label: 'Mem 06: Puzzle' },
       { id: 'sec7', icon: '🖼️', label: 'Mem 07: Scratch' },
       { id: 'sec8', icon: '📖', label: 'Mem 08: Diary' },
-      { id: 'sec9', icon: '🌙', label: 'Mem 09: Q&A' },
-      { id: 'sec10', icon: '📜', label: 'Mem 10: Letter' },
+      { id: 'sec9', icon: '💖', label: 'Mem 09: Cards' },
+      { id: 'sec10', icon: '🌙', label: 'Mem 10: Q&A' },
+      { id: 'sec11', icon: '📜', label: 'Mem 11: Letter' },
     ]
   }
 ];
@@ -133,7 +135,7 @@ export default function AdminDashboard() {
 
     const unsubscribe = onValue(analyticsRef, (snapshot) => {
       if (!snapshot.exists()) {
-        setData({ visitCount: 0, visits: [], totalTimeSpent: 0, events: [], section9Answers: {}, lastActivity: null });
+        setData({ visitCount: 0, visits: [], totalTimeSpent: 0, events: [], section10Answers: {}, lastActivity: null });
         return;
       }
 
@@ -144,13 +146,13 @@ export default function AdminDashboard() {
         ? Object.values(raw.events).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
         : [];
       const visits = raw.visits ? Object.values(raw.visits) : [];
-      const section9Answers = raw.section9Answers || {};
+      const section10Answers = raw.section10Answers || {};
 
       const normalized = {
         ...raw,
         events,
         visits,
-        section9Answers,
+        section10Answers,
       };
 
       setData(normalized);
@@ -178,7 +180,7 @@ export default function AdminDashboard() {
   const handleClear = async () => {
     if (confirmClear) {
       await clearAnalytics(); // clears both localStorage + Firebase
-      setData({ visitCount: 0, visits: [], totalTimeSpent: 0, events: [], section9Answers: {}, lastActivity: null });
+      setData({ visitCount: 0, visits: [], totalTimeSpent: 0, events: [], section10Answers: {}, lastActivity: null });
       setConfirmClear(false);
       setActiveTab('overview');
     } else {
@@ -201,6 +203,7 @@ export default function AdminDashboard() {
   const sec8Events = data.events.filter(e => e.category === 'Section8');
   const sec9Events = data.events.filter(e => e.category === 'Section9');
   const sec10Events = data.events.filter(e => e.category === 'Section10');
+  const sec11Events = data.events.filter(e => e.category === 'Section11');
   const passwordEvents = data.events.filter(e => e.category === 'PasswordGate');
 
   const giftBoxOpenEvents = sec4Events.filter(e => e.action === 'gift_box_open');
@@ -210,10 +213,10 @@ export default function AdminDashboard() {
   const hintEvents = sec6Events.filter(e => e.action === 'hint_used');
   const scratchEvents = sec7Events.filter(e => e.action === 'scratch_reveal');
   const favQuoteEvent = sec8Events.find(e => e.action === 'favourite_quote');
-  const letterTimeEvent = sec10Events.find(e => e.action === 'letter_read_time');
+  const letterTimeEvent = sec11Events.find(e => e.action === 'letter_read_time');
   const skippedFireworks = scene3Events.some(e => e.action === 'skip_fireworks');
 
-  const sec9Options = sec9Events.filter(e => e.action === 'option_click');
+  const sec10Options = sec10Events.filter(e => e.action === 'option_click');
 
   const totalEvents = data.events.length;
   const lastVisit = data.visits.length > 0 ? data.visits[data.visits.length - 1] : null;
@@ -651,17 +654,17 @@ export default function AdminDashboard() {
     </div>
   );
 
-  const renderSec9 = () => (
+  const renderSec10 = () => (
     <div className="tab-pane fade-in">
       <div className="admin-panel full-height premium-border">
         <div className="panel-header">
           <div className="panel-icon highlight-icon">🌙</div>
-          <div className="panel-title highlight-text">Memory 09 — Her Answers</div>
+          <div className="panel-title highlight-text">Memory 10 — Her Answers</div>
           <div className="panel-badge highlight-badge">⭐ Key Insights</div>
         </div>
-        {(sec9Options.length > 0 || Object.keys(data.section9Answers).length > 0) ? (
+        {(sec10Options.length > 0 || Object.keys(data.section10Answers).length > 0) ? (
           <div className="qa-grid">
-            {sec9Options.map((evt, i) => (
+            {sec10Options.map((evt, i) => (
               <div key={`opt-${i}`} className="qa-card active-glow slide-up">
                 <div className="qa-question">
                   <span className="qa-question-num">Q</span>
@@ -672,7 +675,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
-            {Object.entries(data.section9Answers).map(([qId, entry], i) => (
+            {Object.entries(data.section10Answers).map(([qId, entry], i) => (
               <div key={`ans-${qId}`} className="qa-card active-glow gold-border slide-up" style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="qa-question">
                   <span className="qa-question-num gold-num">Q</span>
@@ -689,12 +692,81 @@ export default function AdminDashboard() {
     </div>
   );
 
-  const renderSec10 = () => (
+  const renderSec9 = () => {
+    const cardFlips = sec9Events.filter(e => e.action === 'card_flip').sort((a, b) => a.timestamp - b.timestamp);
+    const cardCounts = {};
+    cardFlips.forEach(c => {
+      const lbl = c.data?.label || c.data?.cardId || 'Unknown';
+      cardCounts[lbl] = (cardCounts[lbl] || 0) + 1;
+    });
+
+    return (
+      <div className="tab-pane fade-in">
+        <div className="admin-panel full-height">
+          <div className="panel-header">
+            <div className="panel-icon">🌟</div>
+            <div className="panel-title">Memory 09 — Emotional Cards</div>
+          </div>
+          
+          <div className="stat-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
+            <div className="stat-card gold-glow glass-panel" style={{ padding: '20px', borderRadius: '15px', textAlign: 'center' }}>
+               <div className="stat-value" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{cardFlips.length}</div>
+               <div className="stat-label" style={{ opacity: 0.8, marginTop: '5px' }}>Total Flips</div>
+            </div>
+            <div className="stat-card purple-glow glass-panel" style={{ padding: '20px', borderRadius: '15px', textAlign: 'center' }}>
+               <div className="stat-value" style={{ fontSize: '2rem', fontWeight: 'bold' }}>{Object.keys(cardCounts).length}</div>
+               <div className="stat-label" style={{ opacity: 0.8, marginTop: '5px' }}>Unique Cards</div>
+            </div>
+          </div>
+
+          <div className="panel-content split-view" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginTop: '20px' }}>
+            <div className="history-column glass-panel" style={{ padding: '20px', borderRadius: '15px' }}>
+              <h3 style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px', marginBottom: '15px' }}>Chronological History</h3>
+              {cardFlips.length > 0 ? (
+                <div className="event-list scrollable" style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '5px' }}>
+                  {cardFlips.map((evt, idx) => (
+                    <div key={idx} className="event-item card-style">
+                       <div className="event-dot purple highlight-glow"/>
+                       <div className="event-time" style={{ minWidth: '80px', fontSize: '0.9rem' }}>{formatTime(evt.timestamp)}</div>
+                       <div className="event-text" style={{ wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: '1.4' }}>
+                         <span style={{ opacity: 0.6, marginRight: '5px' }}>#{idx + 1}</span> 
+                         <strong>{evt.data?.label || evt.data?.cardId || 'Unknown'}</strong>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+              ) : <div className="empty-state">No cards flipped yet.</div>}
+            </div>
+
+            <div className="counts-column glass-panel" style={{ padding: '20px', borderRadius: '15px' }}>
+               <h3 style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px', marginBottom: '15px' }}>Total Tap Counts</h3>
+               {Object.keys(cardCounts).length > 0 ? (
+                 <div className="event-list scrollable" style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '5px' }}>
+                   {Object.entries(cardCounts).sort((a,b) => b[1] - a[1]).map(([lbl, count], idx) => (
+                      <div key={idx} className="event-item card-style" style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '15px', alignItems: 'center' }}>
+                         <div className="event-text" style={{ flex: 1, paddingRight: '10px', wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: '1.4' }}>
+                           <strong>{lbl}</strong>
+                         </div>
+                         <div className="event-badge gold highlight-glow" style={{ padding: '4px 12px', borderRadius: '20px', background: 'var(--gold-main)', color: '#fff', fontWeight: 'bold' }}>
+                           {count} {count === 1 ? 'tap' : 'taps'}
+                         </div>
+                      </div>
+                   ))}
+                 </div>
+               ) : <div className="empty-state">No data available.</div>}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderSec11 = () => (
     <div className="tab-pane fade-in">
       <div className="admin-panel full-height">
         <div className="panel-header">
           <div className="panel-icon">📜</div>
-          <div className="panel-title">Memory 10 — Heartfelt Letter</div>
+          <div className="panel-title">Memory 11 — Heartfelt Letter</div>
         </div>
         {letterTimeEvent ? (
           <div className="event-list large">
@@ -792,6 +864,7 @@ export default function AdminDashboard() {
             {activeTab === 'sec8' && renderSec8()}
             {activeTab === 'sec9' && renderSec9()}
             {activeTab === 'sec10' && renderSec10()}
+            {activeTab === 'sec11' && renderSec11()}
           </div>
         </main>
       </div>

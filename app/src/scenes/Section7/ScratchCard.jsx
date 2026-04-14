@@ -87,7 +87,9 @@ export default function ScratchCard({
     // only scratch if mouse is down or touching
     if (e.buttons !== 1 && e.type !== 'touchmove' && e.type !== 'pointerdown') return;
 
-    e.preventDefault(); // Stop scrolling on phones while scratching
+    if (e.cancelable) {
+      e.preventDefault(); // Stop scrolling on phones while scratching
+    }
 
     const canvas = canvasRef.current;
     if (!canvas) return;

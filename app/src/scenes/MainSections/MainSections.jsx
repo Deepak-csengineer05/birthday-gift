@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MainSections.css';
 import Section1 from '../Section1/Section1';
 import Section2 from '../Section2/Section2';
@@ -10,22 +10,22 @@ import Section7 from '../Section7/Section7';
 import Section8 from '../Section8/Section8';
 import Section9 from '../Section9/Section9';
 import Section10 from '../Section10/Section10';
+import Section11 from '../Section11/Section11';
 
 export default function MainSections({ onProceed, onVideoStart, onSection5Start, initialSection = 1, isHubMode = false }) {
   const [currentSection, setCurrentSection] = useState(initialSection);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentSection(initialSection);
   }, [initialSection]);
 
   const goToNextSection = () => {
     if (isHubMode) {
-      // In hub mode, finishing any single section just kicks you back to the hub.
       onProceed?.();
     } else {
       setCurrentSection((prev) => {
         const nextSection = prev + 1;
-        if (nextSection > 10) {
+        if (nextSection > 11) {
           onProceed?.();
         }
         return nextSection;
@@ -33,7 +33,7 @@ export default function MainSections({ onProceed, onVideoStart, onSection5Start,
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (currentSection === 5 && onSection5Start) {
       onSection5Start();
     }
@@ -51,6 +51,7 @@ export default function MainSections({ onProceed, onVideoStart, onSection5Start,
       {currentSection === 8 && <Section8 onNext={goToNextSection} />}
       {currentSection === 9 && <Section9 onNext={goToNextSection} />}
       {currentSection === 10 && <Section10 onNext={goToNextSection} />}
+      {currentSection === 11 && <Section11 onNext={goToNextSection} />}
     </div>
   );
 }

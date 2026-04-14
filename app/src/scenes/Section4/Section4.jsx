@@ -198,26 +198,26 @@ export default function Section4({ onNext }) {
 
       <div className={`feedback-dialog-overlay ${showFeedback ? 'show' : ''}`}>
         <div className="feedback-dialog">
-          <h2>Did you like the gift?</h2>
+          <h2>Intha gifts unaku pidichiruka?</h2>
           
           {!feedbackResponse && (
             <div className="feedback-buttons">
-              <button className="feedback-btn yes" onClick={() => handleFeedback('yes')}>Yes</button>
-              <button className="feedback-btn no" onClick={() => handleFeedback('no')}>No</button>
+              <button className="feedback-btn yes" onClick={() => handleFeedback('yes')}>Pidichiruku</button>
+              <button className="feedback-btn no" onClick={() => handleFeedback('no')}>illa</button>
             </div>
           )}
           
           {feedbackResponse === 'yes' && (
             <div className="feedback-response">
-              <p>Really, Wait still many to go can we go next</p>
-              <button className="next-section-btn" onClick={onNext}>Next Section</button>
+              <p>nejamavey pidichiruka… innum neraya iruku, next ku polama?</p>
+              <button className="next-section-btn" onClick={onNext}>Next Section polam</button>
             </div>
           )}
 
           {feedbackResponse === 'no' && (
             <div className="feedback-response">
-              <p>Sorry, These gift not made you happy ,next time it will make you smile I sure..</p>
-              <button className="next-section-btn" onClick={onNext}>Next Section</button>
+              <p>Sorry, indha gifts unna happy aa feel panna vaikala… next time kandippa unaku smile vara vaikuren I am sure..</p>
+              <button className="next-section-btn" onClick={onNext}>Next Section Polama</button>
             </div>
           )}
         </div>

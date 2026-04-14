@@ -5,10 +5,10 @@ export default function LetterScroll({ show, onFold }) {
   if (!show) return null;
 
   return (
-    <div className={`s10-letter-overlay ${show ? 'show' : ''}`}>
-      <div className="s10-paper-container">
-        <div className="s10-letter-content">
-          <div className="s10-letter-greeting">Dearest Best Friend,</div>
+    <div className={`s11-letter-overlay ${show ? 'show' : ''}`}>
+      <div className="s11-paper-container">
+        <div className="s11-letter-content">
+          <div className="s11-letter-greeting">Dearest Best Friend,</div>
           
           <p>
             I wanted to create something truly magical to celebrate exactly who you are to me. When I sat down to think about what gift could encompass the weight of all our shared memories, all the inside jokes, and all the quiet moments where your support meant the absolute world to me—I realized a normal gift wouldn't do. I wanted to build an experience.
@@ -26,13 +26,13 @@ export default function LetterScroll({ show, onFold }) {
             Take a moment, look back, and realize how far we've come. You are incredible, you are loved, and you are cherished beyond words. I hope this interactive birthday journey made you smile as brightly as you make me smile.
           </p>
 
-          <div className="s10-letter-signoff">
+          <div className="s11-letter-signoff">
             Yours always,<br />
             Deepak
           </div>
 
-          <div className="s10-fold-btn-container">
-            <button className="s10-fold-btn" onClick={onFold}>
+          <div className="s11-fold-btn-container">
+            <button className="s11-fold-btn" onClick={onFold}>
               Fold & Return Letter
             </button>
           </div>
