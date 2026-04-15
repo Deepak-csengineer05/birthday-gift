@@ -1,6 +1,6 @@
 .section7-container {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   position: relative;
   background: radial-gradient(circle at center, #18122a, #050308);
   overflow: hidden;
@@ -70,7 +70,7 @@
 .s7-starfield-container {
   position: absolute;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100vw; height: 100dvh;
   pointer-events: none;
   z-index: 1; /* Above nebulas */
 }
@@ -92,7 +92,7 @@
 .section7-vignette {
   position: absolute;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100vw; height: 100dvh;
   background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.8) 100%);
   pointer-events: none;
   z-index: 2; /* Cover stars and nebulas heavily around edges */
@@ -130,7 +130,7 @@
   z-index: 10;
   perspective: 1200px;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,7 +276,7 @@
   position: absolute;
   top: 0; left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -498,7 +498,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;

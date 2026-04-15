@@ -44,71 +44,77 @@ export default function Scene4Envelope({ onProceed, onDoorsOpen }) {
 
   // Generate dynamic crack perfectly matching window size, originating from EXACT center
   useEffect(() => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const cx = w / 2;
-    const cy = h / 2;
-    
-    // Generate UP crack from center
-    let upPts = [];
-    let x = cx;
-    let y = cy;
-    upPts.push({ x, y });
-
-    while (y > -100) {
-      let direction = Math.random() > 0.5 ? 1 : -1;
-      let dx = direction * (5 + Math.random() * 20); 
-      let dy = -(10 + Math.random() * 25);
+    const handleResizeOrGenerate = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const cx = w / 2;
+      const cy = h / 2;
       
-      if (x < cx - 120) dx = Math.abs(dx);
-      if (x > cx + 120) dx = -Math.abs(dx);
-
-      x += dx;
-      y += dy;
+      // Generate UP crack from center
+      let upPts = [];
+      let x = cx;
+      let y = cy;
       upPts.push({ x, y });
-    }
-    
-    // Generate DOWN crack from center
-    let downPts = [];
-    x = cx;
-    y = cy;
-    downPts.push({ x, y });
 
-    while (y < h + 100) {
-      let direction = Math.random() > 0.5 ? 1 : -1;
-      let dx = direction * (5 + Math.random() * 20); 
-      let dy = 10 + Math.random() * 25;
+      while (y > -100) {
+        let direction = Math.random() > 0.5 ? 1 : -1;
+        let dx = direction * (5 + Math.random() * 20); 
+        let dy = -(10 + Math.random() * 25);
+        
+        if (x < cx - 120) dx = Math.abs(dx);
+        if (x > cx + 120) dx = -Math.abs(dx);
+
+        x += dx;
+        y += dy;
+        upPts.push({ x, y });
+      }
       
-      if (x < cx - 120) dx = Math.abs(dx);
-      if (x > cx + 120) dx = -Math.abs(dx);
-
-      x += dx;
-      y += dy;
+      // Generate DOWN crack from center
+      let downPts = [];
+      x = cx;
+      y = cy;
       downPts.push({ x, y });
-    }
-    
-    setCrackPoints({ up: upPts, down: downPts });
 
-    if (upPts.length > 0 && downPts.length > 0) {
-      const leftPoly = [
-        `0px 0px`,
-        `${upPts[upPts.length - 1].x}px 0px`,
-        ...[...upPts].reverse().map(p => `${p.x}px ${p.y}px`),
-        ...downPts.slice(1).map(p => `${p.x}px ${p.y}px`),
-        `${downPts[downPts.length - 1].x}px ${h}px`,
-        `0px ${h}px`
-      ].join(', ');
+      while (y < h + 100) {
+        let direction = Math.random() > 0.5 ? 1 : -1;
+        let dx = direction * (5 + Math.random() * 20); 
+        let dy = 10 + Math.random() * 25;
+        
+        if (x < cx - 120) dx = Math.abs(dx);
+        if (x > cx + 120) dx = -Math.abs(dx);
+
+        x += dx;
+        y += dy;
+        downPts.push({ x, y });
+      }
       
-      const rightPoly = [
-        `${w}px 0px`,
-        `${w}px ${h}px`,
-        ...[...downPts].reverse().map(p => `${p.x}px ${p.y}px`),
-        ...upPts.slice(1).map(p => `${p.x}px ${p.y}px`)
-      ].join(', ');
+      setCrackPoints({ up: upPts, down: downPts });
 
-      setClipPathLeft(`polygon(${leftPoly})`);
-      setClipPathRight(`polygon(${rightPoly})`);
-    }
+      if (upPts.length > 0 && downPts.length > 0) {
+        const leftPoly = [
+          `0px 0px`,
+          `${upPts[upPts.length - 1].x}px 0px`,
+          ...[...upPts].reverse().map(p => `${p.x}px ${p.y}px`),
+          ...downPts.slice(1).map(p => `${p.x}px ${p.y}px`),
+          `${downPts[downPts.length - 1].x}px ${h}px`,
+          `0px ${h}px`
+        ].join(', ');
+        
+        const rightPoly = [
+          `${w}px 0px`,
+          `${w}px ${h}px`,
+          ...[...downPts].reverse().map(p => `${p.x}px ${p.y}px`),
+          ...upPts.slice(1).map(p => `${p.x}px ${p.y}px`)
+        ].join(', ');
+
+        setClipPathLeft(`polygon(${leftPoly})`);
+        setClipPathRight(`polygon(${rightPoly})`);
+      }
+    };
+    
+    handleResizeOrGenerate();
+    window.addEventListener('resize', handleResizeOrGenerate);
+    return () => window.removeEventListener('resize', handleResizeOrGenerate);
   }, []);
 
   useEffect(() => {

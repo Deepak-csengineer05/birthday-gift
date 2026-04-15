@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background: var(--deep-black, #04020d);
   overflow: hidden;
   display: flex;
@@ -316,7 +316,7 @@
     width: 280vw; /* Stretch it out so photos don't overlap as much */
     position: relative;
     inset: auto;
-    height: 100vh;
+    height: 100dvh;
   }
   .s2-top-anchor {
     width: 280vw;

@@ -7,23 +7,23 @@ import { trackEvent } from '../../analytics';
 const LETTERS = [
   {
     image: "gift1.jpeg", // Add your image path here (e.g., "/images/memory1.jpg")
-    text: "Dear Poojetha,\n\nOpening this first box reminds me of the first time we met. [Placeholder text for Letter 1]"
+    text: "A Sketch of you \n\nThis is the first art...I wish to do for you."
   },
   {
     image: "gift2.jpeg",
-    text: "Second box, second memory! [Placeholder text for Letter 2]"
+    text: "Even you look beautiful in violet 💜..\n\nThis red suits you."
   },
   {
     image: "gift3.jpeg",
-    text: "You've found the third gift. [Placeholder text for Letter 3]"
+    text: "My first Ghibli art done , just to see your smile 😊."
   },
   {
     image: "pic1.jpeg",
-    text: "Almost there... four down, one to go! [Placeholder text for Letter 4]"
+    text: "Even an AI image looks beautiful , because of you."
   },
   {
     image: "pic4.jpeg",
-    text: "The final box. I hope this birthday is as special as you are to me. [Placeholder text for Letter 5]"
+    text: "3D Model Art\n\nEven in all trends , you look unique."
   }
 ];
 

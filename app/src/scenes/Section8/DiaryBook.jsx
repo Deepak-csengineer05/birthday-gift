@@ -158,7 +158,7 @@ export default function DiaryBook({ quotes, onComplete }) {
     return (
       <div className="db-overlay" style={{ flexDirection: 'column', backgroundColor: '#0d0704' }}>
         <h2 style={{ color: '#d4af37', fontFamily: "'Dancing Script', cursive", fontSize: '2.5rem', marginBottom: '20px' }}>
-          My Diary for You
+          A Diary for Lunar
         </h2>
         
         <div className="db-book-container" style={{ position: 'relative', width: '85%', height: '60%', padding: '10px' }}>

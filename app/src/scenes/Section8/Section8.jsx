@@ -5,13 +5,13 @@ import DiaryBook  from './DiaryBook';
 import { trackEvent } from '../../analytics';
 
 const QUOTES = [
-  "Every moment with you feels like a dream I never want to wake from. 💜",
-  "You make ordinary days feel like the most beautiful adventure.",
-  "In a world of chaos, you are my favourite kind of calm.",
-  "Not all stars shine in the sky — some walk beside us every day. 🌟",
+  "There are people who bring smiles with just their words—you’re one of them. 💜",
+  "You make ordinary days feel like the most beautiful just by words.",
+  "Not every bond needs big words - just a quiet understanding of it.",
+  "If they ask friendship as an example… I’m pretty sure it would be you.. 🌟",
   "Thank you for being the reason I smile without knowing why.",
-  "You are the story I will always want to tell. ✨",
-  "Some bonds are written in stars — ours was written in gold. 💛",
+  "Some bonds don’t need daily conversations… they just stay strong ✨",
+  "In a world full of betrayal, I found a pure soul who healed me—and that’s you, Lunar.. 💛",
 ];
 
 const TRACKS = [
@@ -23,6 +23,14 @@ const TRACKS = [
 export default function Section8({ onNext }) {
   const [phase,     setPhase]     = useState('table');   // 'table' | 'reading' | 'favourite'
   const [favourite, setFavourite] = useState(null);
+  const [renderScene, setRenderScene] = useState(true);
+
+  useEffect(() => {
+    if (phase !== 'table') {
+      const t = setTimeout(() => setRenderScene(false), 900); // Wait for fade out
+      return () => clearTimeout(t);
+    }
+  }, [phase]);
 
   // Audio State & Logic
   const bgAudioRef = useRef(null);
@@ -68,7 +76,7 @@ export default function Section8({ onNext }) {
       {/* Background Audio of the Section */}
       <audio 
         ref={bgAudioRef}
-        src="/bg-music-4.webm" 
+        src="/bg-music-6.mp3" 
         autoPlay 
         loop
         style={{ display: 'none' }} 
@@ -84,18 +92,20 @@ export default function Section8({ onNext }) {
 
       {/* ── R3F scene layer — fades when book opens ── */}
       <div className={`s8-scene-layer ${phase !== 'table' ? 's8-faded' : ''}`}>
-        <DiaryScene 
-          active={phase === 'table'} 
-          onOpen={() => setPhase('reading')}
-          audioControls={{
-            isPlaying,
-            onTogglePlay: handleTogglePlay,
-            onNextTrack: handleNextTrack,
-            onPrevTrack: handlePrevTrack,
-            onVolumeUp: handleVolumeUp,
-            onVolumeDown: handleVolumeDown
-          }}
-        />
+        {renderScene && (
+          <DiaryScene 
+            active={phase === 'table'} 
+            onOpen={() => setPhase('reading')}
+            audioControls={{
+              isPlaying,
+              onTogglePlay: handleTogglePlay,
+              onNextTrack: handleNextTrack,
+              onPrevTrack: handlePrevTrack,
+              onVolumeUp: handleVolumeUp,
+              onVolumeDown: handleVolumeDown
+            }}
+          />
+        )}
       </div>
 
       {/* ── Book reading phase ── */}

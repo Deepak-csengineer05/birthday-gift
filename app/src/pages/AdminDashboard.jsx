@@ -4,20 +4,6 @@ import { clearAnalytics, FB_PATH } from '../analytics';
 import { rtdb } from '../firebase';
 import { ref, onValue } from 'firebase/database';
 
-/* ── Section 9 Question Map ────────────────────── */
-const SECTION10_QUESTIONS = [
-  { id: 0, text: "Are you surprised by the gift?", type: 'options' },
-  { id: 1, text: "Sorry for this, next time I assure the gift will be the best to make you smile.", type: 'info' },
-  { id: 2, text: "Do you know who done this for you?", type: 'options' },
-  { id: 3, text: "Hey pooji, for all the options, I would say only one name - Deepak...", type: 'info' },
-  { id: 4, text: "Who is Deepak to you?", type: 'input' },
-  { id: 5, text: "Are you really happy on this gift, are you expected this from him?", type: 'input' },
-  { id: 6, text: "If you wish to say one thing to Deepak what it would be?", type: 'input' },
-  { id: 7, text: "Are you thinking like why this boy Deepak doing like this to you, what you done for him?", type: 'input' },
-  { id: 8, text: "I can simple say why he is doing to you but...", type: 'info' },
-  { id: 9, text: "Will you be his best friend in any situation, and not left him for anyone at any situation? Tell the truth.", type: 'input' },
-];
-
 const LOCATION_MAP = {
   'Scene1': 'Scene 1: Moon Twin',
   'Scene3': 'Scene 3: Fireworks',
@@ -28,7 +14,7 @@ const LOCATION_MAP = {
   'Section6': 'Memory 06: Puzzle',
   'Section7': 'Memory 07: Scratch',
   'Section8': 'Memory 08: Diary',
-    'Section9': 'Memory 09: Cards',
+  'Section9': 'Memory 09: Cards',
   'Section10': 'Memory 10: Q&A',
   'Section11': 'Memory 11: Letter',
   'PasswordGate': 'Password Gate'

@@ -40,6 +40,7 @@ export default function BirthdayExperience({ isRevisit = false }) {
 
   const startAudio = () => {
     if (audioRef.current) {
+      audioRef.current.currentTime = 0;
       audioRef.current.volume = 0.8;
       audioRef.current.play().catch(e => console.log('Audio play blocked:', e));
     }
@@ -47,6 +48,7 @@ export default function BirthdayExperience({ isRevisit = false }) {
 
   const startBgMusic2 = () => {
     if (audio2Ref.current) {
+      audio2Ref.current.currentTime = 0;
       audio2Ref.current.volume = 0.6;
       audio2Ref.current.play().catch(e => console.log('Audio 2 play error:', e));
     }

@@ -4,16 +4,16 @@ import { trackEvent } from '../../analytics';
 
 const MOOD_CARDS = [
   { id: 1, front: "Sad", back: "I will be your shoulder" },
-  { id: 2, front: "Happy", back: "Let's celebrate together!" },
+  { id: 2, front: "Happy", back: "Share with me" },
   { id: 3, front: "Alone", back: "I am always here with you" },
   { id: 4, front: "Worrying", back: "We will face it together" },
   { id: 5, front: "Need to speak", back: "Call me, I'm listening" },
-  { id: 6, front: "Need to cry", back: "Let it out, I've got you" },
-  { id: 7, front: "Stressed", back: "Take a deep breath" },
-  { id: 8, front: "Angry", back: "Vent it all out to me" },
+  { id: 6, front: "Need to cry", back: "Remember me, I will be there to hear" },
+  { id: 7, front: "Need Help", back: "Ask me anything" },
+  { id: 8, front: "Bored", back: "I try to make you feel better!" },
   { id: 9, front: "Confused", back: "We will figure it out" },
-  { id: 10, front: "Tired", back: "Rest now, darling" },
-  { id: 11, front: "Miss me", back: "I miss you more!" }
+  { id: 10, front: "Overthinking", back: "Share to me, We both do it together" },
+  { id: 11, front: "Betrayed", back: "I assure you, it won't be me" }
 ];
 
 export default function Section9({ onNext }) {
@@ -55,7 +55,7 @@ export default function Section9({ onNext }) {
   return (
     <div className="s9-root">
       {/* Background BGM */}
-      <audio src="/bg-music-4.webm" autoPlay loop style={{ display: 'none' }} />
+      <audio src="/bg-music-7.mp3" autoPlay loop style={{ display: 'none' }} />
 
       <div className="s9-nebula s9-nebula-1"></div>
       <div className="s9-nebula s9-nebula-2"></div>

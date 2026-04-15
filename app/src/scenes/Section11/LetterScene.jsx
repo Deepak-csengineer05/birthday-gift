@@ -461,9 +461,9 @@ export default function LetterScene({ onOpen, active, isFoldingBack }) {
         {/* ── Magnificent Hanging Memory Array ── */}
         <Suspense fallback={null}>
           <HangingPolaroid position={[-6.8, 3.8, -5.8]} rotation={[0, 0, 0.06]} stringCurve={-0.8} url="/pic1.jpeg" caption="sweet memories" onClick={(e) => handlePolaroidClick(e, [-6.8, 3.8, -5.8])} />
-          <HangingPolaroid position={[-4.5, 2.6, -5.8]} rotation={[0, 0, -0.05]} stringCurve={1.0} url="/sec7pic4.png" caption="vibes 💜" onClick={(e) => handlePolaroidClick(e, [-4.5, 2.6, -5.8])} />
+          <HangingPolaroid position={[-4.5, 2.6, -5.8]} rotation={[0, 0, -0.05]} stringCurve={1.0} url="/sec7pic4.png" caption="💜" onClick={(e) => handlePolaroidClick(e, [-4.5, 2.6, -5.8])} />
           <HangingPolaroid position={[-2.4, 4.0, -5.8]} rotation={[0, 0, 0.08]} stringCurve={-1.2} url="/sec7pic1.jpeg" caption="beautiful" onClick={(e) => handlePolaroidClick(e, [-2.4, 4.0, -5.8])} />
-          <HangingPolaroid position={[0.0, 2.5, -5.8]} rotation={[0, 0, -0.04]} stringCurve={0.8} url="/sec7pic7.png" caption="wild & free" onClick={(e) => handlePolaroidClick(e, [0.0, 2.5, -5.8])} />
+          <HangingPolaroid position={[0.0, 2.5, -5.8]} rotation={[0, 0, -0.04]} stringCurve={0.8} url="/sec7pic7.png" caption="Nature" onClick={(e) => handlePolaroidClick(e, [0.0, 2.5, -5.8])} />
           <HangingPolaroid position={[2.5, 3.9, -5.8]} rotation={[0, 0, 0.05]} stringCurve={-1.0} url="/pic2.jpeg" caption="always smiling" onClick={(e) => handlePolaroidClick(e, [2.5, 3.9, -5.8])} />
           <HangingPolaroid position={[4.8, 3.0, -5.8]} rotation={[0, 0, -0.07]} stringCurve={0.9} url="/sec7pic5Ghibli.jpeg" caption="shining" onClick={(e) => handlePolaroidClick(e, [4.8, 3.0, -5.8])} />
           <HangingPolaroid position={[7.1, 4.3, -5.8]} rotation={[0, 0, 0.09]} stringCurve={-0.6} url="/pic3.jpeg" caption="perfect 💜" onClick={(e) => handlePolaroidClick(e, [7.1, 4.3, -5.8])} />
