@@ -6,6 +6,11 @@ import { trackEvent } from '../../analytics';
 
 export default function Section11({ onNext }) {
   const [phase, setPhase] = useState('table'); // table -> reading -> exiting
+  const [currentTrack, setCurrentTrack] = useState('/bg-music-5.mp3');
+
+  const handleTrackEnd = () => {
+    setCurrentTrack(prev => prev === '/bg-music-5.mp3' ? '/bg-music-6.mp3' : '/bg-music-5.mp3');
+  };
 
   const readStartRef = useRef(null);
 
@@ -27,11 +32,11 @@ export default function Section11({ onNext }) {
 
   return (
     <div className="s10-root">
-      {/* Background BGM (Placeholder bg-music-4.webm or equivalent) */}
+      {/* Background BGM */}
       <audio 
-        src="/bg-music-5.mp3" 
+        src={currentTrack} 
         autoPlay 
-        loop
+        onEnded={handleTrackEnd}
         style={{ display: 'none' }} 
       />
 

@@ -18,6 +18,9 @@ const TRACKS = [
   '/bg-music.mp3',
   '/bg-music-2.mp3',
   '/bg-music-3.mp3',
+  '/bg-music-5.mp3',
+  '/bg-music-6.mp3',
+  '/bg-music-7.mp3',
 ];
 
 export default function Section8({ onNext }) {
