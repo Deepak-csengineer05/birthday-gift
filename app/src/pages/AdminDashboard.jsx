@@ -147,12 +147,14 @@ export default function AdminDashboard() {
         : [];
       const visits = raw.visits ? Object.values(raw.visits) : [];
       const section10Answers = raw.section10Answers || {};
+      const replies = raw.replies ? Object.values(raw.replies).sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0)) : [];
 
       const normalized = {
         ...raw,
         events,
         visits,
         section10Answers,
+        replies,
       };
 
       setData(normalized);
@@ -779,6 +781,29 @@ export default function AdminDashboard() {
             </div>
           </div>
         ) : <div className="empty-state">Not reached yet.</div>}
+
+        <div className="panel-header mt-15" style={{ marginTop: '30px' }}>
+          <div className="panel-icon">💌</div>
+          <div className="panel-title">Her Replies</div>
+          <div className="panel-badge pink">{data.replies?.length || 0} received</div>
+        </div>
+        {data.replies && data.replies.length > 0 ? (
+          <div className="event-list large" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            {data.replies.map((reply, i) => (
+              <div key={i} className="event-item active-glow card-style" style={{ display: 'block', padding: '20px', width: '100%', boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', width: '100%', alignItems: 'center', marginBottom: '15px' }}>
+                  <div className="event-dot pink highlight-glow" style={{ position: 'static', margin: '0 10px 0 0', flexShrink: 0 }} />
+                  <div className="event-time" style={{ marginLeft: 'auto', flexShrink: 0 }}>{formatTime(reply.timestamp)}</div>
+                </div>
+                <div className="event-text" style={{ fontSize: '1.4rem', fontStyle: 'italic', color: '#ffdab3', whiteSpace: 'pre-wrap', lineHeight: '1.8', fontFamily: "'Dancing Script', cursive", wordBreak: 'break-word', letterSpacing: '1px' }}>
+                  "{reply.text}"
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">No replies sent yet.</div>
+        )}
       </div>
     </div>
   );
