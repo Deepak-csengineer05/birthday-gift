@@ -7,11 +7,11 @@ import './LetterScroll.css';
 export default function LetterScroll({ show, onFold }) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyText, setReplyText] = useState("");
-  const [sendingState, setSendingState] = useState('idle'); // 'idle', 'sending', 'sent'
+  const [sendingState, setSendingState] = useState('idle'); // 'idle', 'folding', 'stamping', 'addressing', 'flying', 'sent'
 
   const handleSendReply = async () => {
     if (!replyText.trim()) return;
-    setSendingState('stamping');
+    setSendingState('folding');
     try {
       const repliesRef = ref(rtdb, 'lunar_analytics/replies');
       await push(repliesRef, {
@@ -20,15 +20,25 @@ export default function LetterScroll({ show, onFold }) {
       });
       trackEvent('Section11', 'letter_reply_sent', { length: replyText.length });
       
-      // 1. Show stamping animation (1.5s)
-      // 2. Play fly away animation (1.5s)
+      // Step 1: Fold (1.2s)
+      setTimeout(() => {
+        setSendingState('stamping');
+      }, 1200);
+
+      // Step 2: Stamp animation (1.5s)
+      setTimeout(() => {
+        setSendingState('addressing');
+      }, 2700);
+
+      // Step 3: Typewriter addressing (4s)
       setTimeout(() => {
         setSendingState('flying');
-      }, 1500);
+      }, 6700);
 
+      // Step 4: Fly away (1.5s)
       setTimeout(() => {
         setSendingState('sent');
-      }, 3000);
+      }, 8200);
     } catch (e) {
       console.error("Failed to send reply:", e);
       setSendingState('idle'); // revert so she can try again
@@ -48,10 +58,10 @@ export default function LetterScroll({ show, onFold }) {
           </button>
         </div>
       ) : (
-        <div className={`s11-paper-container ${sendingState === 'flying' ? 's11-fly-away' : ''}`}>
+        <div className={`s11-paper-container ${sendingState !== 'idle' ? 's11-folded-state' : ''} ${sendingState === 'flying' ? 's11-fly-away' : ''}`}>
           {isReplying ? (
-            <div className={`s11-letter-content s11-reply-view ${(sendingState === 'stamping' || sendingState === 'flying') ? 'is-sending' : ''}`}>
-              <>
+            <div className={`s11-letter-content s11-reply-view`}>
+              <div className={`s11-reply-inner-content ${sendingState !== 'idle' ? 's11-fade-out-fast' : ''}`}>
                 <div className="s11-letter-greeting" style={{ textAlign: 'center', marginBottom: '20px' }}>Your Reply</div>
                 <textarea 
                   className="s11-reply-textarea"
@@ -60,31 +70,35 @@ export default function LetterScroll({ show, onFold }) {
                   onChange={(e) => setReplyText(e.target.value)}
                   disabled={sendingState !== 'idle'}
                 />
-                
-                {/* Overlay the massive Wax Seal while sending! */}
-                {(sendingState === 'stamping' || sendingState === 'flying') && (
-                  <div className="s11-magical-seal-container">
-                    <div className="s11-magical-seal">🌙</div>
-                    <div className="s11-seal-sparks"></div>
-                  </div>
-                )}
-
                 <div className="s11-fold-btn-container" style={{ marginTop: 'auto', zIndex: 100 }}>
-                  {sendingState === 'idle' && (
-                    <>
-                      <button className="s11-fold-btn mr-15" style={{ background: 'transparent', color: '#a05030', border: '1px solid #a05030', boxShadow: 'none' }} onClick={() => setIsReplying(false)}>
-                        Cancel
-                      </button>
-                      <button className="s11-fold-btn s11-send-btn" onClick={handleSendReply}>
-                        Seal & Send
-                      </button>
-                    </>
+                  <button className="s11-fold-btn mr-15" style={{ background: 'transparent', color: '#a05030', border: '1px solid #a05030', boxShadow: 'none' }} onClick={() => setIsReplying(false)}>
+                    Cancel
+                  </button>
+                  <button className="s11-fold-btn s11-send-btn" onClick={handleSendReply}>
+                    Seal & Send
+                  </button>
+                </div>
+              </div>
+              
+              {/* Overlay the massive Wax Seal while sending! */}
+              {sendingState !== 'idle' && (
+                <div className="s11-folded-cover">
+                  {(sendingState === 'stamping' || sendingState === 'addressing' || sendingState === 'flying') && (
+                    <div className="s11-magical-seal-container">
+                      <div className="s11-magical-seal">🌙</div>
+                      {sendingState === 'stamping' && <div className="s11-seal-sparks"></div>}
+                    </div>
                   )}
-                  {(sendingState === 'stamping' || sendingState === 'flying') && (
-                    <div className="s11-sending-text">Sealing with magic...</div>
+
+                  {/* Addressing typing animation */}
+                  {(sendingState === 'addressing' || sendingState === 'flying') && (
+                    <div className="s11-address-text">
+                      <div className="s11-typewriter-line1">To,</div>
+                      <div className="s11-typewriter-line2">Lunar's Bestfriend</div>
+                    </div>
                   )}
                 </div>
-              </>
+              )}
             </div>
           ) : (
           <div className="s11-letter-content">
